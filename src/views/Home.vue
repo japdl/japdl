@@ -1,18 +1,40 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
+  <img class="icon" src="../assets/noun_torii.png" />
+  <ChooseManga @manga="getMangaName" />
+  <ChooseDownloadType v-if="mangaName" :mangaName="mangaName" @type="getType" />
+  <ChooseRangeAndDownload />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import ChooseManga from "@/components/ChooseManga.vue";
+import ChooseDownloadType from "@/components/ChooseDownloadType.vue";
+import ChooseRangeAndDownload from "@/components/ChooseRangeAndDownload.vue";
 
 export default defineComponent({
   name: "Home",
-  components: {
-    HelloWorld,
+  components: { ChooseManga, ChooseDownloadType, ChooseRangeAndDownload },
+  data() {
+    return {
+      mangaName: "" as string,
+      mangaType: "" as string,
+    };
+  },
+  methods: {
+    getMangaName(name: string) {
+      console.log("Nom du manga: ", name);
+      this.mangaName = name;
+    },
+    getType(type: string) {
+      this.mangaType = type;
+      console.log("type: ", type);
+    },
   },
 });
 </script>
+
+<style scoped>
+.icon {
+  width: 40px;
+}
+</style>

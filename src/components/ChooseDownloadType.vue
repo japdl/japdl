@@ -2,7 +2,7 @@
   <h1>{{ mangaName }}</h1>
   <div class="informations">
     <h2>tatata volumes</h2>
-    <h2>tatata chapitres</h2>
+    <h3>tatata chapitres</h3>
   </div>
   <select class="chooseType" v-model="type" @change="submitType">
     <option value="" disabled selected>Selectionner</option>
@@ -10,10 +10,12 @@
     <option value="volume">Volume(s)</option>
   </select>
   <div v-if="type">
-    {{ type }}(s)
-    <input type="text" v-model="start" />
-    à
-    <input type="text" v-model="end" />
+    <span>
+      {{ type }}(s)
+      <input type="number" v-model="start" />
+      à
+      <input type="number" v-model="end" />
+    </span>
     <br />
     <!-- Grisés temps que start n'a pas de valeur -->
     <button>Télécharger</button>

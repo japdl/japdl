@@ -1,7 +1,13 @@
 <template>
   <img class="icon" src="../assets/noun_torii.png" />
-  <ChooseManga @manga="getMangaName" />
-  <ChooseDownloadType v-if="mangaName" :mangaName="mangaName" @type="getType" />
+  <ChooseManga @manga="getMangaInfos" />
+  <ChooseDownloadType
+    v-if="mangaName"
+    :mangaName="mangaName"
+    @type="getType"
+    :volumes="mangaVolumes"
+    :chapters="mangaChapters"
+  />
   <ChooseRangeAndDownload />
 </template>
 
@@ -17,11 +23,13 @@ export default defineComponent({
   data() {
     return {
       mangaName: "" as string,
+      mangaVolumes: null as null | number,
+      mangaChapters: null as null | number,
       mangaType: "" as string,
     };
   },
   methods: {
-    getMangaName(name: string) {
+    getMangaInfos(name: string) {
       console.log("Nom du manga: ", name);
       this.mangaName = name;
     },

@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125" x="0px" y="0px"><title>japanese pack</title><g data-name="Your Icon"><path d="M93,21.25l4.82-8a536.08,536.08,0,0,1-95.53,0l4.82,8s5,.35,13.12.7l-.39,9.29-4.46-1.34v3.2H7v5.66H19.47L17.89,76.21l-.44,10.5H24.7l.44-10.5,1.58-37.45H73.28l1.58,37.45.44,10.5h7.25l-.44-10.5L80.53,38.77H93V33.1H84.44v-3.2l-4.23,1.27L79.83,22C84.19,21.83,88.58,21.58,93,21.25ZM46.37,22.62V33.1H30.78v-3.2L27,31l.37-8.8C33,22.41,39.38,22.56,46.37,22.62ZM73,31.1l-4-1.19v3.2H53.63V22.64c6.06,0,12.44-.11,19-.32Z"/></g><text x="0" y="115" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by Claudio Gomboli</text><text x="0" y="120" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" x="0px" y="0px">
+    <title>japanese pack</title>
+    <g data-name="Your Icon">
+        <path fill="#ffffff" d="M93,21.25l4.82-8a536.08,536.08,0,0,1-95.53,0l4.82,8s5,.35,13.12.7l-.39,9.29-4.46-1.34v3.2H7v5.66H19.47L17.89,76.21l-.44,10.5H24.7l.44-10.5,1.58-37.45H73.28l1.58,37.45.44,10.5h7.25l-.44-10.5L80.53,38.77H93V33.1H84.44v-3.2l-4.23,1.27L79.83,22C84.19,21.83,88.58,21.58,93,21.25ZM46.37,22.62V33.1H30.78v-3.2L27,31l.37-8.8C33,22.41,39.38,22.56,46.37,22.62ZM73,31.1l-4-1.19v3.2H53.63V22.64c6.06,0,12.44-.11,19-.32Z"/>
+    </g>
+</svg>

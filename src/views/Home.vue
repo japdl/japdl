@@ -1,48 +1,37 @@
 <template>
-  <img class="icon" src="../assets/noun_torii.png" />
-  <ChooseManga @manga="getMangaInfos" />
-  <ChooseDownloadType
-    v-if="mangaName"
-    :mangaName="mangaName"
-    @type="getType"
-    :volumes="mangaVolumes"
-    :chapters="mangaChapters"
-  />
-  <ChooseRangeAndDownload />
+  <h1>Bienvenue sur japdl!</h1>
+  <p ref="welcome" v-if="info">{{ info }}</p>
+  <p v-else>Chargement...</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ChooseManga from "@/components/ChooseManga.vue";
-import ChooseDownloadType from "@/components/ChooseDownloadType.vue";
-import ChooseRangeAndDownload from "@/components/ChooseRangeAndDownload.vue";
+import axios from "axios";
 
 export default defineComponent({
-  name: "Home",
-  components: { ChooseManga, ChooseDownloadType, ChooseRangeAndDownload },
   data() {
     return {
-      mangaName: "" as string,
-      mangaVolumes: null as null | number,
-      mangaChapters: null as null | number,
-      mangaType: "" as string,
+      info: "" as string,
     };
   },
-  methods: {
-    getMangaInfos(name: string) {
-      console.log("Nom du manga: ", name);
-      this.mangaName = name;
-    },
-    getType(type: string) {
-      this.mangaType = type;
-      console.log("type: ", type);
-    },
+  name: "Home",
+  async mounted() {
+    axios
+      .get("https://raw.githubusercontent.com/Seysa/japdl/main/README.md", {
+        responseType: "text",
+      })
+      .then((data) => {
+        const infos: string[] = data.data.split(/#+.*\n/);
+        infos.shift();
+        this.info = infos[0];
+      })
+      .catch((e) => {
+        this.info =
+          "Une erreur s'est produite pendant la récupération du message d'accueil. Veuillez vérifier votre connexion internet. Erreur complète: " +
+          e;
+      });
   },
 });
 </script>
 
-<style scoped>
-.icon {
-  width: 40px;
-}
-</style>
+<style scoped></style>

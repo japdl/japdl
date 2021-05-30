@@ -42,7 +42,7 @@ export default defineComponent({
 
 <style scoped>
 button {
-  background-color: black;
+  background-color: #42b983;
   border: none;
   color: white;
   padding: 7px;

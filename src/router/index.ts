@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import About from "../views/About.vue";
 import Telecharger from "../views/Telecharger.vue";
 import Infos from "../views/Infos.vue";
+import Lecteur from "../views/Lecteur.vue";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -25,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/infos",
     name: "Infos",
     component: Infos,
+  },
+  {
+    path: "/lecteur",
+    name: "Lecteur",
+    component: Lecteur,
   },
 ];
 

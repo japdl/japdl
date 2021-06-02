@@ -1,7 +1,17 @@
 
-import { app, protocol, BrowserWindow, ipcMain } from "electron";
+import { app, protocol, BrowserWindow, ipcMain, dialog } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+
+ipcMain.on('directory-question', async (event, data) => {
+    let fileChooser = null;
+    if(data === true){
+        fileChooser = await dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']});
+    } else {
+        fileChooser = await dialog.showOpenDialog({properties: ['openFile', 'openDirectory']});
+    }
+    event.returnValue = fileChooser.filePaths;
+})
 
 ipcMain.on('msg', (event, data) => console.log("Recu du bg:", data));
 
@@ -16,9 +26,12 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 750,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
+      webSecurity: false,
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env
@@ -29,9 +42,8 @@ async function createWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    console.log(process.env.WEBPACK_DEV_SERVER_URL);
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
+    //if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development

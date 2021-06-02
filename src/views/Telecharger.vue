@@ -1,14 +1,16 @@
 <template>
-  <img class="icon" src="../assets/noun_torii.svg" />
-  <ChooseManga @manga="getMangaInfos" />
-  <ChooseDownloadType
-    v-if="mangaName"
-    :mangaName="mangaName"
-    @type="getType"
-    :volumes="mangaVolumes"
-    :chapters="mangaChapters"
-  />
-  <ChooseRangeAndDownload />
+  <div class="telecharger">
+    <img class="icon" src="../assets/noun_torii.svg" />
+    <ChooseManga @manga="getMangaInfos" />
+    <ChooseDownloadType
+      v-if="mangaName"
+      :mangaName="mangaName"
+      @type="getType"
+      :volumes="mangaVolumes"
+      :chapters="mangaChapters"
+    />
+    <ChooseRangeAndDownload />
+  </div>
 </template>
 
 <script lang="ts">
@@ -42,7 +44,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.icon {
-  width: 40px;
+.telecharger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

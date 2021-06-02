@@ -1,7 +1,9 @@
 <template>
-  <h1>Bienvenue sur japdl!</h1>
-  <p ref="welcome" v-if="info">{{ info }}</p>
-  <p v-else>Chargement...</p>
+  <div class="home">
+    <h1>Bienvenue sur japdl!</h1>
+    <p ref="welcome" v-if="info">{{ info }}</p>
+    <p v-else>Chargement...</p>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,7 +17,7 @@ export default defineComponent({
     };
   },
   name: "Home",
-  async mounted() {
+  mounted() {
     axios
       .get("https://raw.githubusercontent.com/Seysa/japdl/main/README.md", {
         responseType: "text",
@@ -34,4 +36,10 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

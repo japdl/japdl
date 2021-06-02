@@ -11,7 +11,7 @@ import { ipcRenderer } from "electron";
 export default defineComponent({
   props: ["multiple", "buttonText"],
   name: "chooseFolder",
-  emits: ["folders"],
+  emits: ["selected"],
   methods: {
     queryDirectory(): string {
       return ipcRenderer.sendSync("directory-question", false)[0];
@@ -21,9 +21,9 @@ export default defineComponent({
     },
     handleDirectory() {
       if (this.multiple) {
-        this.$emit("folders", this.queryDirectories());
+        this.$emit("selected", this.queryDirectories());
       } else {
-        this.$emit("folders", this.queryDirectory());
+        this.$emit("selected", this.queryDirectory());
       }
     },
   },

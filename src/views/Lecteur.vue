@@ -1,7 +1,7 @@
 <template>
   <div class="reader">
     <h1>Lecteur de mangas</h1>
-    <ChooseFolder @folders="handleDirectory" />
+    <ChooseFolder @selected="handleDirectory" />
     <h3>Dossier choisi: {{ directoryPath }}</h3>
     <div class="files">
       <div

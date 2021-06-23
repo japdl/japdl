@@ -5,7 +5,18 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-export default defineComponent({});
+export default defineComponent({
+  data() {
+    return {};
+  },
+});
 </script>
 
-<style></style>
+<style scoped>
+meter {
+  width: 500px;
+  height: 50px;
+  color: aliceblue;
+  background-color: blue;
+}
+</style>

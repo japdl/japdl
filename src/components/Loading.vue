@@ -1,4 +1,8 @@
-<template><img src="../assets/loading.gif" /> <br /></template>
+<template>
+  <div class="loading">
+    <img src="../assets/loading.gif" />
+  </div>
+</template>
 
 <script lang="ts">
 import { defineComponent } from "vue";

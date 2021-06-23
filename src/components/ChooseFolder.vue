@@ -20,11 +20,8 @@ export default defineComponent({
       return ipcRenderer.sendSync("directory-question", true);
     },
     handleDirectory() {
-      if (this.multiple) {
-        this.$emit("selected", this.queryDirectories());
-      } else {
-        this.$emit("selected", this.queryDirectory());
-      }
+      let result = ipcRenderer.sendSync("directory-question", this.multiple);
+      if (result) this.$emit("selected", result);
     },
   },
   mounted() {

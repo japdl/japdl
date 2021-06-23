@@ -1,18 +1,22 @@
 <template>
   <div id="nav">
     <router-link to="/">Accueil</router-link>
-    <router-link to="/telecharger">Télécharger un manga</router-link>
+    <router-link to="/download">Télécharger un manga</router-link>
     <router-link to="/infos">Informations sur un manga</router-link>
-    <router-link to="/lecteur">Lecteur de manga</router-link>
     <router-link to="/about">À propos</router-link>
   </div>
-  <router-view class="view" />
+  <router-view />
+  <DownloadBar />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import DownloadBar from "@/components/footer/DownloadFooter.vue";
 
-export default defineComponent({});
+export default defineComponent({
+  name: "App",
+  components: { DownloadBar },
+});
 </script>
 
 <style>
@@ -52,15 +56,19 @@ body {
 }
 
 #nav a:hover {
-  color: #3ea37a;
+  color: red;
   background-color: #628290;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #880921;
 }
 
 .icon {
   width: 40px;
+}
+
+.error {
+  color: red;
 }
 </style>

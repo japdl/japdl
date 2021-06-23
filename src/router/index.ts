@@ -1,9 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import About from "../views/About.vue";
-import Telecharger from "../views/Telecharger.vue";
+import Download from "../views/Download.vue";
 import Infos from "../views/Infos.vue";
-import Lecteur from "../views/Lecteur.vue";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -18,24 +17,19 @@ const routes: Array<RouteRecordRaw> = [
     component: About,
   },
   {
-    path: "/telecharger",
-    name: "Telecharger",
-    component: Telecharger,
+    path: "/download",
+    name: "Download",
+    component: Download,
   },
   {
     path: "/infos",
     name: "Infos",
     component: Infos,
   },
-  {
-    path: "/lecteur",
-    name: "Lecteur",
-    component: Lecteur,
-  },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes,
 });
 

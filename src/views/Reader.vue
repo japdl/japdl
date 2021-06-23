@@ -33,8 +33,7 @@ export default defineComponent({
   },
   methods: {
     getPath(directory: string, filename: string): string {
-      const fullPath = path.resolve(directory, filename);
-      return fullPath;
+      return path.resolve(directory, filename);
     },
     getNumberFromFilename(filename: string): number {
       // chapterNumber_pageNumber.extension
@@ -46,8 +45,8 @@ export default defineComponent({
     startReadingAtFile(file: string): void {
       console.log(file);
     },
-    handleDirectory(directoryPath: string): void {
-      this.directoryPath = directoryPath;
+    handleDirectory(directoriesPath: string[]): void {
+      this.directoryPath = directoriesPath[0];
       fs.readdir(this.directoryPath, (err, files) => {
         if (err) console.log(err);
         files.sort((a, b) => {
@@ -67,7 +66,7 @@ export default defineComponent({
   align-items: center;
 }
 .file {
-  cursor: crosshair;
+  cursor: pointer;
   display: flex;
   align-items: center;
 }

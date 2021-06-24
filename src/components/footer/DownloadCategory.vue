@@ -1,7 +1,11 @@
 <template>
   <div class="download" v-for="(download, index) in downloads" :key="download">
     Téléchargement de {{ download.name }}
-    <button @click="removeDownload(download.name, index)" class="remove">
+    <button
+      @click="removeDownload(download.name, index)"
+      class="remove basic"
+      v-if="download.progress == 100"
+    >
       Cacher
     </button>
     <LoadingBar :done="download.progress" />
@@ -27,9 +31,5 @@ export default defineComponent({
 <style scoped>
 .download {
   text-align: left;
-}
-
-button.remove {
-  float: right;
 }
 </style>

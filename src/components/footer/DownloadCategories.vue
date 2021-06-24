@@ -6,7 +6,7 @@
       :key="name"
     >
       <p>{{ name }}</p>
-      <button class="openFolder" @click="openMangaFolder(name)">
+      <button class="openFolder basic" @click="openMangaFolder(name)">
         Ouvrir le dossier du manga
       </button>
       <DownloadCategory

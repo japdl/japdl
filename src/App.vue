@@ -19,25 +19,13 @@ export default defineComponent({
 });
 </script>
 
-<style>
-body {
-  margin: 0;
-  background-color: #24292e;
-}
-#app {
-  display: flex;
-  flex-direction: column;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  align-items: center;
-  color: white;
-}
+<style src="../public/global.css"></style>
 
+<style scoped>
 #nav {
   display: flex;
   height: 80px;
-  background-color: #1d2125;
+  background-color: var(--dark-background);
   width: 100vw;
   justify-content: space-evenly;
   align-items: unset;
@@ -54,21 +42,15 @@ body {
   justify-content: center;
   align-items: center;
 }
-
-#nav a:hover {
-  color: red;
-  background-color: #628290;
-}
-
 #nav a.router-link-exact-active {
-  color: #880921;
+  color: var(--dark-primary);
 }
-
-.icon {
-  width: 40px;
-}
-
-.error {
-  color: red;
+#nav a:hover {
+  color: var(--primary);
+  background-image: linear-gradient(
+    to bottom left,
+    var(--light-background),
+    var(--dark-background)
+  );
 }
 </style>

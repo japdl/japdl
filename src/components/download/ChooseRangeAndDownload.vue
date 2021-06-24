@@ -32,7 +32,9 @@
     </div>
     <div class="downloadButtons">
       <!-- Grisés temps que start n'a pas de valeur -->
-      <button type="submit" :disabled="options.length <= 0">Télécharger</button>
+      <button type="submit" class="basic" :disabled="options.length <= 0">
+        Télécharger
+      </button>
     </div>
     <p class="error" v-if="options.length <= 0">Une option doit être cochée</p>
   </form>

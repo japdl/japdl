@@ -16,20 +16,13 @@ import { defineComponent } from "vue";
 import { ipcRenderer } from "electron";
 import { MangaAttributes } from "japscandl/js/src/utils/types";
 import DownloadCategories from "@/components/footer/DownloadCategories.vue";
-const fakeData = {
-  "one-piece": [
-    { name: "volume 1", progress: 20 },
-    { name: "volume 2", progress: 5 },
-  ],
-  "my-hero-academia": [{ name: "volume 1", progress: 50 }],
-};
 export default defineComponent({
   components: {
     DownloadCategories,
   },
   data() {
     return {
-      currentDownloads: { ...fakeData } as Record<
+      currentDownloads: {} as Record<
         string,
         { name: string; progress: number }[]
       >,
@@ -82,7 +75,7 @@ export default defineComponent({
 #downloadBar {
   overflow: auto;
   width: 100%;
-  border: #1d2125 solid 2px;
+  border: var(--dark-background) solid 2px;
   position: fixed;
   bottom: 0;
   text-align: center;

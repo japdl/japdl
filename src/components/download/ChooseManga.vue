@@ -2,7 +2,7 @@
   <form class="center" @submit="submitManga">
     <label>Nom du manga: </label>
     <input type="search" v-model="mangaName" required />
-    <button type="submit">Rechercher</button>
+    <button type="submit" class="basic">Rechercher</button>
     <p
       class="error"
       v-show="errors.length > 0"
@@ -50,15 +50,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-button {
-  background-color: #880921;
-  border: none;
-  color: white;
-  padding: 7px;
-  text-align: center;
-  border-radius: 15px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-</style>
+<style scoped></style>

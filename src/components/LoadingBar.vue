@@ -21,7 +21,15 @@ export default defineComponent({
 }
 #fill {
   height: 100%;
-  background-image: linear-gradient(to right, red, #880921);
+  background-image: linear-gradient(
+    to right,
+    var(--dark-primary),
+    var(--primary)
+  );
   text-align: center;
+}
+
+div {
+  transition: all 1s ease;
 }
 </style>

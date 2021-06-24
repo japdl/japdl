@@ -4,7 +4,6 @@ import About from "../views/About.vue";
 import Download from "../views/Download.vue";
 import Infos from "../views/Infos.vue";
 
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",

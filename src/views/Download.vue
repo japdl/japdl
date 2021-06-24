@@ -1,6 +1,6 @@
 <template>
   <div class="telecharger">
-    <img class="icon" src="../assets/noun_torii.svg" />
+    <img class="icon" src="../assets/noun-torii.svg" />
     <div class="choose">
       <ChooseManga @manga="getMangaInfos" />
     </div>

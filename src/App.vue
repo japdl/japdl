@@ -5,8 +5,12 @@
     <router-link to="/infos">Informations sur un manga</router-link>
     <router-link to="/about">À propos</router-link>
   </div>
-  <router-view />
-  <DownloadBar />
+  <div id="main">
+    <router-view />
+  </div>
+  <div id="footer">
+    <DownloadBar />
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,6 +27,7 @@ export default defineComponent({
 
 <style scoped>
 #nav {
+  grid-area: header;
   display: flex;
   height: 80px;
   background-color: var(--dark-background);
@@ -52,5 +57,15 @@ export default defineComponent({
     var(--light-background),
     var(--dark-background)
   );
+}
+
+#main {
+  grid-area: main;
+  padding: 15px 5px 10px 5px;
+  overflow: auto;
+}
+
+#footer {
+  grid-area: footer;
 }
 </style>

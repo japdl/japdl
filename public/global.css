@@ -5,26 +5,30 @@
   --dark-background: #1d2125;
 }
 
-* {
-  transition: all 200ms ease;
-}
-
 body {
+  overflow-x: hidden;
   margin: 0;
   background-color: var(--light-background);
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
+    height: 100vh;
+    /* grid container settings */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+      'header'
+      'main'
+      'footer';
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  align-items: center;
   color: white;
 }
 
 button.basic {
+  transition: all 200ms ease;
   background-color: var(--dark-primary);
   border: none;
   color: white;
@@ -33,20 +37,28 @@ button.basic {
   border-radius: 15px;
   margin-left: 10px;
   cursor: pointer;
+  outline: none;
 }
 
-button.basic:hover {
+button.basic:enabled:hover {
   background-color: var(--primary);
   transform: translateX(2px);
 }
 
-button.basic:active {
-    outline: none;
+button.basic:disabled {
+    background-color: darkgrey;
+    color: grey;
+    cursor: not-allowed;
 }
 
 input {
-    outline-color: var(--dark-primary);
+  outline-color: var(--dark-primary);
 }
+
+legend {
+    margin: 0 auto;
+  }
+
 
 .icon {
   width: 40px;

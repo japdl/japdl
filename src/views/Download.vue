@@ -1,11 +1,10 @@
 <template>
   <div class="telecharger">
     <img class="icon" src="../assets/noun-torii.svg" />
-    <div class="choose">
-      <ChooseManga @manga="getMangaInfos" />
-    </div>
+    <ChooseManga @manga="getMangaInfos" />
+    <Loading v-if="loading" />
     <ChooseDownloadType
-      v-if="mangaName"
+      v-if="mangaName && !loading"
       :mangaName="mangaName"
       @type="getType"
       :volumes="mangaVolumes"
@@ -13,12 +12,11 @@
     />
     <ChooseRangeAndDownload
       @download="sendDownloadToBackground"
-      v-if="mangaType"
+      v-if="mangaType && !loading"
       :type="mangaType"
       :max="selectMax"
     />
   </div>
-  <Loading v-if="loading" />
 </template>
 
 <script lang="ts">
@@ -54,6 +52,9 @@ export default defineComponent({
   },
   methods: {
     getMangaInfos(name: string) {
+      // reset last manga's infos
+      this.mangaType = "";
+      this.mangaVolumes = this.mangaChapters = null;
       console.log("Nom du manga: ", name);
       this.loading = true;
       ipcRenderer.send("getMangaInfos", name);
@@ -93,11 +94,5 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10%;
-  margin-bottom: 5%;
-}
-
-.choose {
-  align-self: flex-start;
 }
 </style>

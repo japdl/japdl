@@ -73,12 +73,10 @@ export default defineComponent({
 
 <style scoped>
 #downloadBar {
-  overflow: auto;
   width: 100%;
-  border: var(--dark-background) solid 2px;
-  position: fixed;
-  bottom: 0;
+  border: black solid 1px;
   text-align: center;
+  background-color: var(--dark-background);
 }
 
 summary {

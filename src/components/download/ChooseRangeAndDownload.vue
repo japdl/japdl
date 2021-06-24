@@ -18,8 +18,8 @@
       :max="max"
       placeholder="Ce champ n'est pas obligatoire"
     />
-    <div class="downloadOptions">
-      <p>options de téléchargement:</p>
+    <fieldset class="downloadOptions">
+      <legend>Options de téléchargement</legend>
       <div class="downloadOption">
         <input type="checkbox" v-model="options" value="cbr" />
         <label>Créer un fichier CBR</label>
@@ -29,14 +29,16 @@
         <input type="checkbox" v-model="options" value="images" />
         <label>Télécharger les images en .jpg</label>
       </div>
-    </div>
+    </fieldset>
     <div class="downloadButtons">
       <!-- Grisés temps que start n'a pas de valeur -->
       <button type="submit" class="basic" :disabled="options.length <= 0">
         Télécharger
       </button>
     </div>
-    <p class="error" v-if="options.length <= 0">Une option doit être cochée</p>
+    <p class="error" v-if="options.length <= 0">
+      Une option de téléchargement doit être cochée
+    </p>
   </form>
 </template>
 
@@ -79,7 +81,7 @@ form {
   align-items: center;
 }
 
-div.downloadOptions {
+.downloadOptions {
   margin: 20px;
   display: flex;
   flex-direction: column;

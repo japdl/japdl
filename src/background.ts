@@ -149,14 +149,15 @@ async function createWindow() {
           if (deleteAfter) removeDownloadLocations(downloadLocation);
           ipcMain.emit("downloadFinish", downloadLocation);
         }
-      )
+      );
 
       ipcMain.on("openMangaFolder", (event, data) => {
         shell.openPath(
           path.resolve(path.join(downloader.outputDirectory, data))
         );
       });
-    }).catch((error) => console.log("ERROR DURING PUPPETEER INIT:", error));
+    })
+    .catch((error) => console.log("ERROR DURING PUPPETEER INIT:", error));
 }
 
 // Quit when all windows are closed.

@@ -1,9 +1,4 @@
 <template>
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
-    rel="stylesheet"
-  />
   <div class="chooser">
     <h1>{{ mangaName }}</h1>
     <div class="informations">
@@ -12,7 +7,8 @@
         Dernier chapitre: {{ chapters }}
       </p>
     </div>
-    <div @change="submitType">
+    <fieldset @change="submitType" class="chooseType">
+      <legend>Type de téléchargement</legend>
       <div class="choice">
         <input type="radio" v-model="type" value="chapitre" />
         <label>Chapitres(s)</label>
@@ -21,7 +17,7 @@
         <input type="radio" v-model="type" value="volume" />
         <label>Volume(s)</label>
       </div>
-    </div>
+    </fieldset>
   </div>
 </template>
 
@@ -62,6 +58,6 @@ h1 {
 }
 
 .choice {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 </style>

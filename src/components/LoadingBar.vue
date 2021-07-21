@@ -27,9 +27,17 @@ export default defineComponent({
     var(--primary)
   );
   text-align: center;
+  color: white;
 }
 
 div {
-  transition: all 1s ease;
+  transition: ease 2s;
+  border-radius: 20px;
+}
+
+div#id {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

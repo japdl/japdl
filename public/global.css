@@ -1,30 +1,40 @@
-:root {
-  --dark-primary: #880921;
-  --primary: red;
-  --light-background: #24292e;
-  --dark-background: #1d2125;
-}
-
 body {
   overflow-x: hidden;
   margin: 0;
   background-color: var(--light-background);
 }
 
+#app.dark {
+  --dark-primary: #880921;
+  --primary: #ff0000;
+  --light-background: #24292e;
+  --dark-background: #1d2125;
+  --text-color: white;
+  color: var(--text-color);
+}
+
+#app.light {
+  --dark-primary: #880921;
+  --primary: red;
+  --light-background: #faf0e2;
+  --dark-background: #ffffff;
+  --text-color: black;
+  color: var(--text-color);
+}
+
 #app {
-    height: 100vh;
-    /* grid container settings */
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas: 
-      'header'
-      'main'
-      'footer';
+  height: 100vh;
+  /* grid container settings */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: white;
 }
 
 button.basic {
@@ -46,19 +56,14 @@ button.basic:enabled:hover {
 }
 
 button.basic:disabled {
-    background-color: darkgrey;
-    color: grey;
-    cursor: not-allowed;
+  background-color: darkgrey;
+  color: grey;
+  cursor: not-allowed;
 }
 
 input {
   outline-color: var(--dark-primary);
 }
-
-legend {
-    margin: 0 auto;
-  }
-
 
 .icon {
   width: 40px;

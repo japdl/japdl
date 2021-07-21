@@ -1,90 +1,170 @@
 <template>
   <div class="telecharger">
     <img class="icon" src="../assets/noun-torii.svg" />
+    <Container title="variables">
+      <div v-for="(variable, name) in state" :key="name">
+        <strong>{{ name }}</strong>
+        {{ typeof variable === "string" ? '"' + variable + '"' : variable }}
+      </div>
+    </Container>
     <ChooseManga @manga="getMangaInfos" />
-    <Loading v-if="loading" />
-    <ChooseDownloadType
-      v-if="mangaName && !loading"
-      :mangaName="mangaName"
-      @type="getType"
-      :volumes="mangaVolumes"
-      :chapters="mangaChapters"
-    />
-    <ChooseRangeAndDownload
+    <Loading v-if="state.loading" />
+    <div id="afterMangaChoosen" v-if="state.mangaName && !state.loading">
+      <h1>{{ state.mangaName }}</h1>
+      <div class="informations">
+        <p>
+          Dernier volume: {{ state.mangaVolumes }} <br />
+          Dernier chapitre: {{ state.mangaChapters }}
+        </p>
+      </div>
+      <ChooseDownloadType @type="getType" />
+      <form
+        v-if="state.mangaType && !state.loading"
+        @submit.prevent="downloadSelected"
+      >
+        <ChooseRange
+          v-model:range="state.range"
+          :max="selectMax"
+          :type="state.mangaType"
+        />
+        <p class="error" v-if="!isRangeValid">
+          Veuillez entrer un numéro de {{ state.mangaType }}
+        </p>
+        <ChooseOptions v-model:options="state.options" />
+        <p class="error" v-if="areOptionsInvalid">
+          Une option de type fichier ou l'option de téléchargement des images
+          doit être cochée pour procéder au téléchargement.
+        </p>
+        <!-- Grisés temps que start n'a pas de valeur -->
+        <div id="buttonWrapper">
+          <button
+            id="downloadButton"
+            type="submit"
+            class="basic"
+            :disabled="!isRangeValid || areOptionsInvalid"
+          >
+            Télécharger
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!--ChooseRangeAndDownload
       @download="sendDownloadToBackground"
-      v-if="mangaType && !loading"
       :type="mangaType"
       :max="selectMax"
-    />
+    /-->
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import ChooseManga from "@/components/download/ChooseManga.vue";
-import ChooseDownloadType from "@/components/download/ChooseDownloadType.vue";
-import ChooseRangeAndDownload from "@/components/download/ChooseRangeAndDownload.vue";
+import { computed, defineComponent, reactive } from "vue";
+import ChooseManga from "@/components/Download/ChooseManga.vue";
+import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import { ipcRenderer } from "electron";
 import Loading from "@/components/Loading.vue";
+import Container from "@/components/Container.vue";
+import ChooseRange from "@/components/Download/ChooseRange.vue";
+import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 export default defineComponent({
-  name: "Telecharger",
+  name: "Download",
   components: {
     ChooseManga,
     ChooseDownloadType,
-    ChooseRangeAndDownload,
+    ChooseRange,
+    ChooseOptions,
     Loading,
+    Container,
   },
-  data() {
-    return {
+  emits: ["download"],
+  setup() {
+    const state = reactive({
+      range: {} as { start?: number; end?: number },
+      options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
+      error: "" as string,
       mangaName: "" as string,
       mangaVolumes: null as null | number,
       mangaChapters: null as null | number,
       mangaType: "" as string,
       loading: false as boolean,
+    });
+
+    const comput = {
+      isRangeValid: computed(() => {
+        return state.range.start !== undefined;
+      }),
+      selectMax: computed(() => {
+        return state.mangaType === "volume"
+          ? (state.mangaVolumes as number)
+          : (state.mangaChapters as number);
+      }),
+      areOptionsInvalid: computed(() => {
+        return state.options.compression === "" && !state.options.images;
+      }),
     };
-  },
-  computed: {
-    selectMax(): number {
-      return this.mangaType === "volume"
-        ? (this.mangaVolumes as number)
-        : (this.mangaChapters as number);
-    },
-  },
-  methods: {
-    getMangaInfos(name: string) {
-      // reset last manga's infos
-      this.mangaType = "";
-      this.mangaVolumes = this.mangaChapters = null;
-      console.log("Nom du manga: ", name);
-      this.loading = true;
-      ipcRenderer.send("getMangaInfos", name);
-      ipcRenderer.once("replyMangaInfos", (event, infos) => {
-        this.loading = false;
-        this.mangaVolumes = infos.volumes;
-        this.mangaChapters = infos.chapters;
-        this.mangaName = infos.name;
-      });
-    },
-    getType(type: string) {
-      this.mangaType = type;
-      console.log("type: ", type);
-    },
-    sendDownloadToBackground(options: {
-      options: ("cbr" | "images")[];
-      start: number;
-      end: number;
-    }) {
-      const emitOptions = {
-        start: options.start,
-        end: options.end,
-        type: this.mangaType,
-        manga: this.mangaName,
-        compression: options.options.includes("cbr"),
-        deleteAfter: !options.options.includes("images"),
-      };
-      console.log(emitOptions);
-      ipcRenderer.send("download", emitOptions);
-    },
+
+    const methods = {
+      downloadSelected(): void {
+        const toSend = {
+          type: state.mangaType,
+          manga: state.mangaName,
+          start: state.range.start,
+          end: state.range.end,
+          compression: state.options.compression
+            ? state.options.compression
+            : undefined,
+          keepImages: state.options.images,
+        };
+        console.log("Sending", toSend);
+        ipcRenderer.send("download", toSend);
+      },
+      getMangaInfos(name: string) {
+        // reset last manga's infos
+        state.mangaType = "";
+        state.mangaVolumes = state.mangaChapters = null;
+        console.log("Nom du manga: ", name);
+        state.loading = true;
+        ipcRenderer.send("getMangaInfos", name);
+        ipcRenderer.once("replyMangaInfos", (event, infos) => {
+          state.loading = false;
+          if (infos) {
+            state.mangaVolumes = infos.volumes;
+            state.mangaChapters = infos.chapters;
+            state.mangaName = infos.name;
+          }
+        });
+      },
+      getType(type: string) {
+        state.mangaType = type;
+        console.log("type: ", type);
+      },
+      sendDownloadToBackground(options: {
+        options: ("pdf" | "cbr" | "images")[];
+        start: number;
+        end: number;
+      }) {
+        const compression = Array.from(options.options)
+          .filter((element) => element !== "images")
+          .pop();
+        console.log(compression);
+        const emitOptions = {
+          start: options.start,
+          end: options.end,
+          type: state.mangaType,
+          manga: state.mangaName,
+          compression,
+          deleteAfter: !options.options.includes("images"),
+        };
+        console.log(emitOptions);
+        ipcRenderer.send("download", emitOptions);
+      },
+    };
+
+    return {
+      state,
+      ...methods,
+      ...comput,
+    };
   },
 });
 </script>
@@ -94,5 +174,24 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#buttonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+#afterMangaChoosen {
+  width: 50vw;
+}
+
+.error {
+  text-align: center;
+}
+
+h1 {
+  font-family: "Staatliches", cursive;
 }
 </style>

@@ -2,6 +2,8 @@
   "name": "japdl-vue",
   "version": "0.1.0",
   "private": true,
+  "author": "Seysa",
+  "description": "Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons.",
   "scripts": {
     "start": "npm run electron:serve",
     "serve": "vue-cli-service serve",
@@ -16,14 +18,13 @@
   "main": "background.js",
   "dependencies": {
     "axios": "^0.21.1",
-    "japscandl": "^1.2.1",
+    "japscandl": "^2.3.0",
     "unlazy-loader": "^0.1.3",
     "vue": "^3.0.0",
-    "vue-ellipse-progress": "^2.0.0",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
+    "@types/chai": "^4.2.21",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/mocha": "^5.2.4",
     "@types/node-fetch": "^2.5.10",

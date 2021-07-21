@@ -1,27 +1,27 @@
-import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from "electron";
+import { app, protocol, BrowserWindow, ipcMain, dialog } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
-import { Downloader } from "japscandl";
-import fs from "fs";
-import path from "path";
-
+import setupJapscandlListeners from "@/utils/setupJapscandlListeners";
+import Config from "@/utils/handleConfig";
 ipcMain.on("directory-question", async (event, data) => {
-  const options: (
-    | "openFile"
-    | "openDirectory"
-    | "multiSelections"
-    | "showHiddenFiles"
-    | "createDirectory"
-    | "promptToCreate"
-    | "noResolveAliases"
-    | "treatPackageAsDirectory"
-    | "dontAddToRecent"
-  )[] = ["openFile", "openDirectory", "multiSelections"];
+  const properties = ["openFile", "openDirectory", "multiSelections"];
   if (!data) {
     // remove multiselections
-    options.pop();
+    properties.pop();
   }
-  const fileChooser = await dialog.showOpenDialog({ properties: options });
+  const fileChooser = await dialog.showOpenDialog({
+    properties: properties as (
+      | "openFile"
+      | "openDirectory"
+      | "multiSelections"
+      | "showHiddenFiles"
+      | "createDirectory"
+      | "promptToCreate"
+      | "noResolveAliases"
+      | "treatPackageAsDirectory"
+      | "dontAddToRecent"
+    )[],
+  });
   event.returnValue = fileChooser.filePaths;
 });
 
@@ -35,8 +35,8 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 1000,
-    height: 750,
+    width: 1920,
+    height: 1080,
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
@@ -47,7 +47,25 @@ async function createWindow() {
         .ELECTRON_NODE_INTEGRATION as unknown as boolean,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
     },
+    // hide window during initialization
+    show: false,
   });
+  try {
+    const config = new Config();
+    console.log(config.getData());
+    const { imageFormat, chromePath, outputDirectory } = config.getData();
+    config.setupListeners(win);
+    setupJapscandlListeners(
+      {
+        imageFormat,
+        chromePath,
+        outputDirectory,
+      },
+      win
+    );
+  } catch (e) {
+    console.error("Error in config:", e);
+  }
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -57,107 +75,10 @@ async function createWindow() {
     createProtocol("app");
     // Load the index.html when not in development
     win.loadURL("app://./index.html");
+    console.log("Done loading");
   }
-  Downloader.launch({
-    flags: {
-      visible: false,
-    },
-    chromePath:
-      "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-    onEvent: {
-      onPage: (attributes, total) => {
-        console.log(attributes, total);
-        const progress = ((+attributes.page / total) * 100).toFixed(2);
-        win.webContents.send("downloadUpdatePage", {
-          attributes,
-          total,
-          progress,
-        });
-      },
-      onChapter: (attributes, current, total) =>
-        win.webContents.send("downloadUpdateChapter", {
-          attributes,
-          current,
-          total,
-        }),
-      onVolume: (manga, current, total) =>
-        win.webContents.send("downloadUpdateVolume", { manga, current, total }),
-    },
-  })
-    .then((downloader) => {
-      function removeDownloadLocations(
-        locations: string | string[] | string[][]
-      ): void {
-        if (typeof locations === "string") {
-          return fs.rmSync(locations, { force: true, recursive: true });
-        } else {
-          locations.forEach((location) => removeDownloadLocations(location));
-        }
-      }
-      ipcMain.on("getMangaInfos", async (event, data) => {
-        const stats = await downloader.fetchStats(data);
-        event.reply("replyMangaInfos", stats);
-      });
-      ipcMain.on(
-        "download",
-        async (
-          event,
-          args: {
-            type: "volume" | "chapter";
-            manga: string;
-            start: number;
-            end?: number;
-            compression: boolean;
-            deleteAfter: boolean;
-          }
-        ) => {
-          const { type, manga, start, end, compression, deleteAfter } = args;
-          console.log("Starting...", args);
-          let downloadLocation = null;
-          if (type === "volume") {
-            if (end) {
-              downloadLocation = await downloader.downloadVolumes(
-                manga,
-                start,
-                end,
-                compression
-              );
-            } else {
-              downloadLocation = await downloader.downloadVolume(
-                manga,
-                start,
-                compression
-              );
-            }
-          } /* chapter */ else {
-            if (end) {
-              downloadLocation = await downloader.downloadChapters(
-                manga,
-                start,
-                end,
-                compression
-              );
-            } else {
-              downloadLocation = await downloader.downloadChapter(
-                manga,
-                start,
-                compression
-              );
-            }
-          }
-          console.log("Done!");
-          if (deleteAfter) removeDownloadLocations(downloadLocation);
-          ipcMain.emit("downloadFinish", downloadLocation);
-        }
-      );
-
-      ipcMain.on("openMangaFolder", (event, data) => {
-        shell.openPath(
-          path.resolve(path.join(downloader.outputDirectory, data))
-        );
-      });
-    })
-    .catch((error) => console.log("ERROR DURING PUPPETEER INIT:", error));
+  // show window after everything is set up
+  win.show();
 }
 
 // Quit when all windows are closed.

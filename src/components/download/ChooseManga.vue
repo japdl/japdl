@@ -1,6 +1,6 @@
 <template>
   <div id="chooseManga">
-    <form @submit="submitManga">
+    <form @submit.prevent="submitManga">
       <label>Nom du manga: </label>
       <input type="search" v-model="mangaName" required />
       <button type="submit" class="basic">Rechercher</button>
@@ -31,14 +31,13 @@ export default defineComponent({
     };
   },
   methods: {
-    submitManga(e: Event) {
+    submitManga() {
       this.errors.length = 0;
-      e.preventDefault();
       if (this.mangaName !== "") {
         const matched = this.mangaName.match(/[^a-zA-Z-]/);
         if (matched) {
           if (matched[0] === " ")
-            this.errors.push("Le nom du manga ne peut pas contenir d'espaces.");
+            this.errors.push("Le nom du manga ne peut pas contenir d'espaces");
           else
             this.errors.push(
               "Le nom du manga ne peut pas contenir de caractères spéciaux"

@@ -29,7 +29,8 @@ export default defineComponent({
       })
       .catch((e) => {
         this.info =
-          "Une erreur s'est produite pendant la récupération du message d'accueil. Veuillez vérifier votre connexion internet. Erreur complète: " +
+          "Une erreur s'est produite pendant la récupération du message d'accueil." +
+          " Veuillez vérifier votre connexion internet. Erreur complète:" +
           e;
       });
   },

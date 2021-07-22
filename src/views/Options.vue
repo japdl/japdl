@@ -1,94 +1,176 @@
 <template>
   <div id="options">
-    <div id="summary" v-for="(option, name) in options" :key="option">
+    <div id="summary" v-for="(option, name) in state.options" :key="option">
       <b>{{ name }}: </b>{{ option }}
     </div>
     <div id="theme">
       Thème:
       <div
+        v-for="theme in state.themes"
+        :key="theme.theme"
         class="colorBox"
-        id="dark"
-        :class="{ selected: options.theme === 'dark' }"
-        @click="selectTheme('dark')"
+        :id="theme.theme"
+        :class="{ selected: state.options.theme === theme.theme }"
+        @click="selectTheme(theme.theme)"
       >
-        <span v-if="options.theme === 'dark'">sombre</span>
-      </div>
-      <div
-        class="colorBox"
-        id="light"
-        :class="{ selected: options.theme === 'light' }"
-        @click="selectTheme('light')"
-      >
-        <span v-if="options.theme === 'light'">lumineux</span>
+        <span v-if="state.options.theme === theme.theme">{{ theme.text }}</span>
       </div>
     </div>
 
     <div id="imageFormat">
       <label for="imageSelect"> Format des images: </label>
-      <select id="imageSelect" v-model="options.imageFormat">
-        <option v-for="format in possibleOptions.imageFormat" :key="format">
+      <select id="imageSelect" v-model="state.options.imageFormat">
+        <option
+          v-for="format in state.possibleOptions.imageFormat"
+          :key="format"
+        >
           {{ format }}
         </option>
       </select>
     </div>
+    <div id="chromePath">
+      Chemin de chrome:
+      <input
+        type="text"
+        v-model="state.options.chromePath"
+        :placeholder="
+          state.options.chromePath === '' ? 'Veuillez entrer un chemin' : ''
+        "
+      /><button @click="chooseChromePath">Choisir un fichier</button>
+      <button @click="checkPath(state.options.chromePath)">
+        Vérifier le chemin
+      </button>
+      <div class="message">{{ state.pathMessage }}</div>
+      <div class="error">{{ state.pathError }}</div>
+    </div>
+    <div>
+      Dossier de téléchargement:
+      <input type="text" v-model="state.options.outputDirectory" />
+      <button @click="chooseOutPath">Choisir un dossier</button>
+      <button @click="defaultOutPath">Par défaut</button>
+    </div>
     <div id="save">
       <button @click="setData">Sauvegarder les modifications</button>
     </div>
-    <div id="saveMessage"></div>
+    <div id="message" v-if="state.message">{{ state.message }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { ipcRenderer } from "electron";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 import { configData } from "@/utils/handleConfig";
+import fs from "fs";
 
 export default defineComponent({
-  data() {
-    return {
+  setup() {
+    const state = reactive({
+      themes: [
+        {
+          theme: "dark",
+          text: "sombre",
+        },
+        {
+          theme: "light",
+          text: "lumineux",
+        },
+      ],
       options: {} as configData,
       possibleOptions: {} as { [key: string]: string[] },
       message: "" as string,
-    };
-  },
-  mounted() {
-    console.log("Options mounted");
-    ipcRenderer.send("getConfigData");
-    ipcRenderer.once("returnConfigData", (event, data: configData) => {
-      this.options = data;
-      console.log("Data received", data);
+      pathMessage: "" as string,
+      pathError: "" as string,
+      //@ts-expect-error doesn't understand Timeout type
+      // eslint-disable-next-line no-undef
+      timeout: null as null | Timeout,
+      //@ts-expect-error doesn't understand Timeout type
+      // eslint-disable-next-line no-undef
+      pathTimeout: null as null | Timeout,
     });
-    ipcRenderer.send("getPossibleOptions");
-    ipcRenderer.once("returnPossibleOptions", (event, data) => {
-      this.possibleOptions = data;
-      console.log("Possible options received", data);
+
+    onMounted(() => {
+      console.log("Options mounted");
+      ipcRenderer.send("getConfigData");
+      ipcRenderer.once("returnConfigData", (event, data: configData) => {
+        state.options = data;
+        console.log("Data received", data);
+      });
+      ipcRenderer.send("getPossibleOptions");
+      ipcRenderer.once("returnPossibleOptions", (event, data) => {
+        state.possibleOptions = data;
+        console.log("Possible options received", data);
+      });
     });
-  },
-  methods: {
-    selectTheme(theme: string) {
-      if (!this.possibleOptions.theme.includes(theme)) return;
-      this.options.theme = theme as "dark" | "light";
-    },
-    setData() {
-      console.log("Sending set data", this.options);
-      ipcRenderer.send("setData", {
-        theme: this.options.theme,
-        outputDirectory: this.options.outputDirectory,
-        imageFormat: this.options.imageFormat,
-        chromePath: this.options.chromePath,
-      } as configData);
-      ipcRenderer.on("dataSet", (event, data) => {
+
+    const methods = {
+      selectTheme(theme: string) {
+        if (!state.possibleOptions.theme.includes(theme)) return;
+        state.options.theme = theme as "dark" | "light";
+      },
+      setData() {
+        console.log("Sending set data", state.options);
+        const data = ipcRenderer.sendSync("setDataSync", {
+          theme: state.options.theme,
+          outputDirectory: state.options.outputDirectory,
+          imageFormat: state.options.imageFormat,
+          chromePath: state.options.chromePath,
+        } as configData);
+        if (state.timeout) clearTimeout(state.timeout);
         if (data === "ok") {
-          this.message = "Les options ont été enregistrées avec succès";
+          state.message = "Les options ont été enregistrées avec succès";
         } else {
           const objectEntries = Object.entries(data);
           const errorMessage = objectEntries
             .map(([key, value]) => `${key}: ${value}`)
             .join(", ");
-          this.message = `Erreur lors de l'enregistrement des options: ${errorMessage}`;
+          state.message = `Erreur lors de l'enregistrement des options: ${errorMessage}`;
         }
-      });
-    },
+        state.timeout = setTimeout(() => {
+          state.message = "";
+          state.timeout = null;
+        }, 2000);
+      },
+      chooseChromePath() {
+        const [newPath] = ipcRenderer.sendSync("file-question");
+        console.log(newPath);
+        if (newPath) {
+          state.options.chromePath = newPath;
+          // verif path
+          this.checkPath(newPath);
+        }
+      },
+      chooseOutPath() {
+        const [newPath] = ipcRenderer.sendSync("directory-question");
+        console.log(newPath);
+        if (newPath) state.options.outputDirectory = newPath;
+      },
+      checkPath(path: string) {
+        if (fs.existsSync(path)) {
+          const data = ipcRenderer.sendSync("checkChromePath", path);
+          if (data.good) {
+            state.pathMessage = "Le chemin est bon";
+          } else {
+            state.pathMessage = "Le fichier n'est pas chrome";
+            state.pathError = data.msg;
+          }
+        } else {
+          state.pathError = "Le chemin n'existe pas";
+          state.pathTimeout = setTimeout(() => {
+            state.pathMessage = "";
+            state.pathError = "";
+            state.pathTimeout = null;
+          }, 2000);
+        }
+      },
+      defaultOutPath() {
+        const data = ipcRenderer.sendSync("getDefaultDataSync");
+        state.options.outputDirectory = data.outputDirectory;
+      },
+    };
+    return {
+      state,
+      ...methods,
+    };
   },
 });
 </script>

@@ -197,7 +197,6 @@ export default defineComponent({
   text-align: center;
 }
 
-
 h1 {
   font-family: "Staatliches", cursive;
 }

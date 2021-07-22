@@ -4,7 +4,29 @@ import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import setupJapscandlListeners from "@/utils/setupJapscandlListeners";
 import Config from "@/utils/handleConfig";
 ipcMain.on("directory-question", async (event, data) => {
-  const properties = ["openFile", "openDirectory", "multiSelections"];
+  const properties = ["openDirectory", "multiSelections"];
+  if (!data) {
+    // remove multiselections
+    properties.pop();
+  }
+  const fileChooser = await dialog.showOpenDialog({
+    properties: properties as (
+      | "openFile"
+      | "openDirectory"
+      | "multiSelections"
+      | "showHiddenFiles"
+      | "createDirectory"
+      | "promptToCreate"
+      | "noResolveAliases"
+      | "treatPackageAsDirectory"
+      | "dontAddToRecent"
+    )[],
+  });
+  event.returnValue = fileChooser.filePaths;
+});
+
+ipcMain.on("file-question", async (event, data) => {
+  const properties = ["openFile", "multiSelections"];
   if (!data) {
     // remove multiselections
     properties.pop();

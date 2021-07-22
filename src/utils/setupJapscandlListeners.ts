@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { BrowserWindow, ipcMain, shell } from "electron";
 import { ComponentFlags, MangaAttributes } from "japscandl/js/src/utils/types";
+import puppeteer from "puppeteer-core";
 
 async function setupJapscandl(
   options: {
@@ -22,6 +23,20 @@ async function setupJapscandl(
   },
   win: BrowserWindow
 ): Promise<Downloader> {
+  ipcMain.on("checkChromePath", (event, arg) => {
+    console.log("Checking chrome path with path: " + arg);
+    puppeteer
+      .launch({
+        executablePath: arg,
+      })
+      .then(async (browser) => {
+        await browser.close();
+        event.returnValue = { good: true };
+      })
+      .catch((e) => {
+        event.returnValue = { msg: e };
+      });
+  });
   return new Promise((resolve, reject) => {
     Downloader.launch(options)
       .then((downloader) => {
@@ -48,6 +63,7 @@ async function setupJapscandl(
             event.reply("replyMangaInfos", false);
           }
         });
+
         ipcMain.on(
           "download",
           async (
@@ -177,12 +193,13 @@ async function setupJapscandl(
             path.resolve(path.join(downloader.outputDirectory, data))
           );
         });
-        resolve(downloader);
 
         ipcMain.on("search", (_, data) => {
           const results = downloader.searchManga(data);
           _.reply("searchResult", results);
         });
+
+        resolve(downloader);
       })
       .catch((error) => reject(error));
   });

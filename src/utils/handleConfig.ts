@@ -116,6 +116,11 @@ class Config {
     this.data = data;
   }
 
+  setField(fieldName: string, value: string): void {
+    this.data[fieldName] = value;
+    this.save();
+  }
+
   setupListeners(win: BrowserWindow): void {
     ipcMain.on("getConfigData", (event) => {
       event.reply("returnConfigData", this.data);
@@ -124,6 +129,9 @@ class Config {
     ipcMain.on("getConfigDataSync", (event) => {
       event.returnValue = this.data;
     });
+    ipcMain.on("getDefaultDataSync", (event) => {
+      event.returnValue = this.BASIC_CONFIG_DATA;
+    })
     ipcMain.on("getPossibleOptions", (event) => {
       event.reply("returnPossibleOptions", constraints);
     });
@@ -146,8 +154,31 @@ class Config {
       }
     });
 
+    ipcMain.on("setDataSync", (event, arg) => {
+      console.log("Receiving setDataSync", arg);
+      // if changing theme, we need to send changeTheme to the app
+      if (this.data.theme !== arg.theme) {
+        win.webContents.send("changeTheme", arg.theme);
+      }
+      const wrongFields = this.detectDataProblems(arg);
+      const valid = Object.keys(wrongFields).length === 0;
+      if (valid) {
+        this.setData(arg);
+        console.log("setting data");
+        this.save();
+        event.returnValue = "ok";
+      } else {
+        console.log("Data is not valid");
+        event.returnValue = wrongFields;
+      }
+    });
+
     ipcMain.on("getTheme", (event) => {
       event.reply("changeTheme", this.data.theme);
+    });
+
+    ipcMain.on("setField", (event, arg) => {
+      this.setField(arg[0], arg[1]);
     });
   }
 }

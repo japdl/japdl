@@ -23,7 +23,7 @@ class Config {
   private BASIC_CONFIG_DATA: configData = {
     theme: "dark",
     outputDirectory: path.join(app.getPath("documents"), "Japdl", "manga"),
-    chromePath: japscandl.utils.chrome.getChromePath(),
+    chromePath: "",
     imageFormat: "png",
   };
 
@@ -75,6 +75,7 @@ class Config {
     if (!data.outputDirectory) {
       wrongFields.outputDirectory = data.outputDirectory;
     }
+    /*
     if (
       !data.chromePath ||
       !fs.existsSync(data.chromePath) ||
@@ -82,6 +83,7 @@ class Config {
     ) {
       wrongFields.chromePath = data.chromePath;
     }
+    */
     if (
       !data.imageFormat ||
       !constraints.imageFormat.includes(data.imageFormat)

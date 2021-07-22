@@ -1,5 +1,6 @@
 <template>
-  <div class="telecharger">
+  <div class="telecharger" v-if="state.japscanInitiated">
+    {{ state.japscanInitiated }}
     <img class="icon" src="../assets/noun-torii.svg" />
     <Container title="variables">
       <div v-for="(variable, name) in state" :key="name">
@@ -55,6 +56,10 @@
       :max="selectMax"
     /-->
   </div>
+  <div v-else class="error">
+    Le chemin de chrome n'est pas valide: L'application n'a pas pu se lancer
+    correctement
+  </div>
 </template>
 
 <script lang="ts">
@@ -87,6 +92,7 @@ export default defineComponent({
       mangaChapters: null as null | number,
       mangaType: "" as string,
       loading: false as boolean,
+      japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
     });
 
     const comput = {
@@ -190,6 +196,7 @@ export default defineComponent({
 .error {
   text-align: center;
 }
+
 
 h1 {
   font-family: "Staatliches", cursive;

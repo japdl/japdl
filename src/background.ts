@@ -35,8 +35,8 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 1920,
-    height: 1080,
+    width: 720,
+    height: 500,
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
@@ -52,16 +52,26 @@ async function createWindow() {
   });
   try {
     const config = new Config();
-    console.log(config.getData());
+    console.log("Config data:", config.getData());
     const { imageFormat, chromePath, outputDirectory } = config.getData();
     config.setupListeners(win);
-    setupJapscandlListeners(
-      {
-        imageFormat,
-        chromePath,
-        outputDirectory,
-      },
-      win
+    let japscandlInitiated = false;
+    try {
+      await setupJapscandlListeners(
+        {
+          imageFormat,
+          chromePath,
+          outputDirectory,
+        },
+        win
+      );
+      japscandlInitiated = true;
+    } catch (e) {
+      console.log("Error in japscandl:", e);
+    }
+    ipcMain.on(
+      "japscandlStatus",
+      (event) => (event.returnValue = japscandlInitiated)
     );
   } catch (e) {
     console.error("Error in config:", e);
@@ -104,7 +114,7 @@ app.on("ready", async () => {
     // Install Vue Devtools
     try {
       await installExtension(VUEJS_DEVTOOLS);
-    } catch (e: any) {
+    } catch (e) {
       console.error("Vue Devtools failed to install:", e.toString());
     }
   }

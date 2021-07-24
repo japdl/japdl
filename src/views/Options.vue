@@ -36,8 +36,10 @@
         :placeholder="
           state.options.chromePath === '' ? 'Veuillez entrer un chemin' : ''
         "
-      /><button @click="chooseChromePath">Choisir un fichier</button>
-      <button @click="checkPath(state.options.chromePath)">
+      /><button class="basic" @click="chooseChromePath">
+        Choisir un fichier
+      </button>
+      <button class="basic" @click="checkPath(state.options.chromePath)">
         Vérifier le chemin
       </button>
       <div class="message">{{ state.pathMessage }}</div>
@@ -46,11 +48,13 @@
     <div>
       Dossier de téléchargement:
       <input type="text" v-model="state.options.outputDirectory" />
-      <button @click="chooseOutPath">Choisir un dossier</button>
-      <button @click="defaultOutPath">Par défaut</button>
+      <button class="basic" @click="chooseOutPath">Choisir un dossier</button>
+      <button class="basic" @click="defaultOutPath">Par défaut</button>
     </div>
     <div id="save">
-      <button @click="setData">Sauvegarder les modifications</button>
+      <button class="basic" @click="setData">
+        Sauvegarder les modifications
+      </button>
     </div>
     <div id="message" v-if="state.message">{{ state.message }}</div>
   </div>

@@ -131,7 +131,7 @@ class Config {
     });
     ipcMain.on("getDefaultDataSync", (event) => {
       event.returnValue = this.BASIC_CONFIG_DATA;
-    })
+    });
     ipcMain.on("getPossibleOptions", (event) => {
       event.reply("returnPossibleOptions", constraints);
     });

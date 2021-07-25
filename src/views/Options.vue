@@ -204,6 +204,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border: 2px solid var(--text-color);
 }
 #dark {
   background-color: black;
@@ -214,6 +215,7 @@ export default defineComponent({
   background-color: white;
   color: black;
 }
+
 .colorBox.selected {
   width: 80px;
   outline: 3px solid var(--primary);

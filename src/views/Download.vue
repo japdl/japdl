@@ -1,8 +1,7 @@
 <template>
   <div class="telecharger" v-if="state.japscanInitiated">
-    {{ state.japscanInitiated }}
     <img class="icon" src="../assets/noun-torii.svg" />
-    <Container title="variables">
+    <Container title="variables" v-if="debug">
       <div v-for="(variable, name) in state" :key="name">
         <strong>{{ name }}</strong>
         {{ typeof variable === "string" ? '"' + variable + '"' : variable }}
@@ -95,6 +94,7 @@ export default defineComponent({
       japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
     });
 
+    const debug = true;
     const comput = {
       isRangeValid: computed(() => {
         return state.range.start !== undefined;
@@ -168,6 +168,7 @@ export default defineComponent({
 
     return {
       state,
+      debug,
       ...methods,
       ...comput,
     };

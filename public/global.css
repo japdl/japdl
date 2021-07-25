@@ -15,8 +15,8 @@ body {
 
 #app.light {
   --dark-primary: #880921;
-  --primary: red;
-  --light-background: #faf0e2;
+  --primary: #ff0000;
+  --light-background: #fff;
   --dark-background: #ffffff;
   --text-color: black;
   color: var(--text-color);
@@ -24,6 +24,9 @@ body {
 
 #app {
   height: 100vh;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   /* grid container settings */
   display: grid;
   grid-template-columns: 1fr;
@@ -32,9 +35,6 @@ body {
     "header"
     "main"
     "footer";
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 button.basic {

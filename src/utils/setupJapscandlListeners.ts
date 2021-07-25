@@ -194,9 +194,16 @@ async function setupJapscandl(
           );
         });
 
-        ipcMain.on("search", (_, data) => {
-          const results = downloader.searchManga(data);
-          _.reply("searchResult", results);
+        ipcMain.on("search", async (event, data) => {
+          console.log(data);
+          const results = await downloader.searchManga(data.value);
+          if (data.sync) {
+            console.log("Sync");
+            event.returnValue = results;
+          } else {
+            console.log("Not sync", data.value);
+            event.reply("searchResult", { results, value: data.value });
+          }
         });
 
         resolve(downloader);

@@ -13,8 +13,9 @@
       <h1>{{ state.mangaName }}</h1>
       <div class="informations">
         <p>
-          Dernier volume: {{ state.mangaVolumes }} <br />
-          Dernier chapitre: {{ state.mangaChapters }}
+          <strong>Dernier volume:</strong> {{ state.mangaVolumes }} <br />
+          <strong>Dernier chapitre:</strong> {{ state.mangaChapters }} <br />
+          <strong>Synopsis:</strong> {{ state.mangaSynopsis }}
         </p>
       </div>
       <ChooseDownloadType @type="getType" />
@@ -90,6 +91,7 @@ export default defineComponent({
       mangaVolumes: null as null | number,
       mangaChapters: null as null | number,
       mangaType: "" as string,
+      mangaSynopsis: "" as string,
       loading: false as boolean,
       japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
     });
@@ -137,6 +139,7 @@ export default defineComponent({
             state.mangaVolumes = infos.volumes;
             state.mangaChapters = infos.chapters;
             state.mangaName = infos.name;
+            state.mangaSynopsis = infos.synopsis;
           }
         });
       },

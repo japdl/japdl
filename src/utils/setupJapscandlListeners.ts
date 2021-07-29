@@ -55,6 +55,10 @@ async function setupJapscandl(
             );
           }
         }
+        ipcMain.on("getMangaContent", async (event, data) => {
+          const content = await downloader.fetchMangaContent(data);
+          event.reply("returnMangaContent", content);
+        });
         ipcMain.on("getMangaInfos", async (event, data) => {
           try {
             const stats = await downloader.fetchStats(data);

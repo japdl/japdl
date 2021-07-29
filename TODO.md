@@ -9,3 +9,5 @@
 - faire une erreur quand le nom est pas trouvé sur japscan
 
 - faire une catégorie 'en cours' et une catégorie 'terminé', ajouter un button 'cacher' pour les terminés
+
+- dynamique event au nom du lien de download

@@ -127,9 +127,8 @@ export default defineComponent({
   max-width: 30vw;
   cursor: pointer;
 }
-
 .result:hover {
-  background-color: lightgrey;
+  background-color: rgba(211, 211, 211, 0.404);
   transition: 0.2s;
 }
 </style>

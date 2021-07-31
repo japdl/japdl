@@ -68,6 +68,14 @@ input.inputText {
   width: 200px;
 }
 
+input:invalid {
+  color: red;
+}
+
+input:valid {
+  color: blue;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;

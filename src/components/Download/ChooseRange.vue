@@ -4,6 +4,7 @@
       <input
         class="inputText"
         type="number"
+        step="any"
         @input="setRange($event.target.value, range.end)"
         min="0"
         :max="max"
@@ -14,6 +15,7 @@
       <input
         class="inputText"
         type="number"
+        step="any"
         @input="setRange(range.start, $event.target.value)"
         :min="range.start"
         :max="max"

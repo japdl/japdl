@@ -55,6 +55,7 @@ class Config {
         this.setData(this.BASIC_CONFIG_DATA);
         this.save();
       }
+      console.log("Output directory:", this.data.outputDirectory);
     }
   }
   detectDataProblems(data: configData): {

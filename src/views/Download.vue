@@ -49,12 +49,6 @@
         </div>
       </form>
     </div>
-
-    <!--ChooseRangeAndDownload
-      @download="sendDownloadToBackground"
-      :type="mangaType"
-      :max="selectMax"
-    /-->
   </div>
   <div v-else class="error">
     Le chemin de chrome n'est pas valide: L'application n'a pas pu se lancer

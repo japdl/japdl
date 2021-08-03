@@ -77,6 +77,7 @@ export default defineComponent({
   },
   emits: ["download"],
   setup() {
+    const debug = false;
     const state = reactive({
       range: {} as { start?: number; end?: number },
       options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
@@ -90,7 +91,6 @@ export default defineComponent({
       japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
     });
 
-    const debug = true;
     const comput = {
       isRangeValid: computed(() => {
         return state.range.start !== undefined;

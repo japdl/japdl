@@ -4,14 +4,16 @@
     <div v-for="(el, name) in state.content" :key="el">
       <div v-if="name === 'volumes'" class="volumes">
         <div v-for="volume in el" :key="volume.number">
-          <strong>{{ volume.name }}</strong>
+          <h1>{{ volume.name }}</h1>
+          <img src="../assets/download.svg" alt="downloadIcon" />
           <ul class="chapters">
             <li
               class="chapter"
               v-for="chapter in volume.chapters"
               :key="chapter"
             >
-              {{ chapter.name }}
+              <span>{{ chapter.name }}</span>
+              <button v-if="volume.chapters.length > 1">Télécharger</button>
             </li>
           </ul>
         </div>

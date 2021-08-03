@@ -3,6 +3,7 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import setupJapscandlListeners from "@/utils/setupJapscandlListeners";
 import Config from "@/utils/handleConfig";
+import MockDownloader from "./utils/fakeJapscandl";
 ipcMain.on("directory-question", async (event, data) => {
   const properties = ["openDirectory", "multiSelections"];
   if (!data) {
@@ -47,6 +48,13 @@ ipcMain.on("file-question", async (event, data) => {
   event.returnValue = fileChooser.filePaths;
 });
 
+ipcMain.on("mockDownloadChapter", (event, data) => {
+  MockDownloader.downloadChapter(data.name, data.number, {
+    onPage: (attributes, total) => {
+      console.log(attributes, total);
+    },
+  });
+});
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Scheme must be registered before the app is ready

@@ -1,22 +1,25 @@
 <template>
-  <div>
-    <Test v-model:options="options" />
-    In parent: {{ options }}
-  </div>
+  <input v-model="state.name" type="text" /> chapter
+  <input v-model="state.number" type="number" />
+  <button @click="downloadManga">Download</button>
 </template>
 
 <script lang="ts">
-import Test from "@/components/Test.vue";
-import { defineComponent } from "vue";
+import { ipcRenderer } from "electron";
+import { defineComponent, reactive } from "vue";
 export default defineComponent({
-  components: { Test },
-  data() {
-    return {
-      options: {} as {
-        compression: "pdf" | "cbr" | undefined;
-        deleteAfter: boolean;
-      },
-    };
+  setup() {
+    const state = reactive({
+      name: "" as string,
+      number: 0 as number,
+    });
+    function downloadManga() {
+      ipcRenderer.send("mockDownloadChapter", {
+        name: state.name,
+        number: state.number,
+      });
+    }
+    return { downloadManga, state };
   },
 });
 </script>

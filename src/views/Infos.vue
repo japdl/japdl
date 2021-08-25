@@ -3,9 +3,9 @@
     <ChooseManga @manga="getMangaContent" />
     <div v-for="(el, name) in state.content" :key="el">
       <div v-if="name === 'volumes'" class="volumes">
-        <div v-for="volume in el" :key="volume.number">
-          <h1>{{ volume.name }}</h1>
-          <img src="../assets/download.svg" alt="downloadIcon" />
+        <div v-for="volume in el" :key="volume.number" class="volume">
+          <span>{{ volume.name }}</span>
+          <img src="../assets/download.svg" class="icon" alt="downloadIcon" />
           <ul class="chapters">
             <li
               class="chapter"
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import ChooseManga from "@/components/Download/ChooseManga.vue";
+import ChooseManga from "@/components/ChooseManga.vue";
 import { ipcRenderer } from "electron";
 import { defineComponent, reactive } from "vue";
 

@@ -28,21 +28,20 @@
           :max="selectMax"
           :type="state.mangaType"
         />
-        <p class="error" v-if="!isRangeValid">
+        <p class="error" v-if="isRangeInvalid">
           Veuillez entrer un numéro de {{ state.mangaType }}
         </p>
         <ChooseOptions v-model:options="state.options" />
         <p class="error" v-if="areOptionsInvalid">
           Une option de type fichier ou l'option de téléchargement des images
-          doit être cochée pour procéder au téléchargement.
+          doit être cochée pour procéder au téléchargement
         </p>
-        <!-- Grisés temps que start n'a pas de valeur -->
         <div id="buttonWrapper">
           <button
             id="downloadButton"
             type="submit"
             class="basic"
-            :disabled="!isRangeValid || areOptionsInvalid"
+            :disabled="isRangeInvalid || areOptionsInvalid"
           >
             Télécharger
           </button>
@@ -58,7 +57,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
-import ChooseManga from "@/components/Download/ChooseManga.vue";
+import ChooseManga from "@/components/ChooseManga.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import { ipcRenderer } from "electron";
 import Loading from "@/components/Loading.vue";
@@ -92,8 +91,8 @@ export default defineComponent({
     });
 
     const comput = {
-      isRangeValid: computed(() => {
-        return state.range.start !== undefined;
+      isRangeInvalid: computed(() => {
+        return state.range.start === undefined;
       }),
       selectMax: computed(() => {
         return state.mangaType === "volume"

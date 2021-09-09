@@ -2,60 +2,39 @@
   <div id="chooseManga">
     <form @submit.prevent="search">
       <label>Nom du manga: </label>
-      <input type="search" v-model="mangaName.value" required />
+      <input
+        type="search"
+        class="rounded-md bg-gray-100 p-1"
+        v-model="mangaName.value"
+        required
+      />
       <button class="basic">Rechercher</button>
     </form>
-    <div id="suggestion" v-if="state.results.length > 0">
+    <div id="suggestion">
       <Manga
         v-for="result in state.results"
         :key="result.name"
         :infos="result"
-        @click="submitResult(result.url)"
+        @click="submitResult(result)"
         class="cursor-pointer"
       />
-
-      <!--div
-        v-for="result in state.results"
-        :key="result"
-        class="result"
-        @click="submitResult(result.url)"
-      >
-        <h3 v-if="result.name">Nom: {{ result.name }}</h3>
-        <p v-if="result.original_name">
-          Nom original: {{ result.original_name }}
-        </p>
-        <p v-if="result.alternate_names">
-          Nom(s) alternatifs: {{ result.alternate_names }}
-        </p>
-        <p v-if="result.mangakas">mangaka(s): {{ result.mangakas }}</p>
-      </div-->
     </div>
-    <p
-      class="error"
-      v-show="state.errors.length > 0"
-      v-for="error in state.errors"
-      :key="error"
-    >
-      {{ error }}
+    <p class="error" v-if="state.errors.length > 0">
+      <span v-for="error in state.errors" :key="error">{{ error }}</span>
     </p>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ipcRenderer } from "electron";
+import { SearchInfos } from "japscandl/js/src/utils/types";
 import { defineEmit, reactive } from "vue";
 import Manga from "./Manga.vue";
 
 const state = reactive({
   errors: [] as string[],
   loading: false as boolean,
-  results: [] as {
-    mangakas: string;
-    original_name: string | null;
-    name: string;
-    url: string;
-    alternate_names: string;
-  }[],
+  results: [] as SearchInfos[],
 });
 
 const mangaName = reactive({
@@ -82,12 +61,13 @@ function submitManga() {
     }
   }
 }
-function submitResult(mangaLink: string) {
-  const japscanMangaName = mangaLink.split("/manga/")[1].replace("/", "");
+function submitResult(result: SearchInfos) {
+  // reset values
   state.results = [];
   mangaName.value = "";
-  emits("manga", japscanMangaName);
+  emits("manga", result);
 }
+
 function search() {
   console.log('"' + mangaName.value + '"');
   if (mangaName.value === "") {

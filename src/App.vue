@@ -8,6 +8,9 @@
     </router-link>
   </div>
   <main>
+    <div id="image-container" class="flex justify-center">
+      <img class="w-20" src="./assets/noun-torii.svg" />
+    </div>
     <router-view />
   </main>
   <div id="footer">footer</div>

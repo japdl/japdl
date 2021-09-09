@@ -20,7 +20,7 @@
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9",
     "axios": "^0.21.1",
-    "japscandl": "^2.3.1",
+    "japscandl": "^2.4.0",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "unlazy-loader": "^0.1.3",

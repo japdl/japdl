@@ -1,6 +1,5 @@
 <template>
   <div class="telecharger" v-if="state.japscanInitiated">
-    <img class="icon" src="../assets/noun-torii.svg" />
     <Container title="variables" v-if="debug">
       <div v-for="(variable, name) in state" :key="name">
         <strong>{{ name }}</strong>
@@ -10,7 +9,7 @@
     <ChooseManga @manga="getMangaInfos" />
     <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" v-if="state.mangaName && !state.loading">
-      <h1>{{ state.mangaName }}</h1>
+      <h1 class="text-6xl m-6 bg-gray">{{ state.mangaName }}</h1>
       <div class="informations">
         <p>
           <strong>Dernier volume:</strong> {{ state.mangaVolumes }} <br />
@@ -64,6 +63,7 @@ import Loading from "@/components/Loading.vue";
 import Container from "@/components/Container.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
+import { SearchInfos } from "japscandl/js/src/utils/types";
 export default defineComponent({
   name: "Download",
   components: {
@@ -119,13 +119,13 @@ export default defineComponent({
         console.log("Sending", toSend);
         ipcRenderer.send("download", toSend);
       },
-      getMangaInfos(name: string) {
+      getMangaInfos(result: SearchInfos) {
         // reset last manga's infos
         state.mangaType = "";
         state.mangaVolumes = state.mangaChapters = null;
-        console.log("Nom du manga: ", name);
+        console.log("Nom du manga: ", result.name);
         state.loading = true;
-        ipcRenderer.send("getMangaInfos", name);
+        ipcRenderer.send("getMangaInfos", result.name);
         ipcRenderer.once("replyMangaInfos", (event, infos) => {
           state.loading = false;
           if (infos) {

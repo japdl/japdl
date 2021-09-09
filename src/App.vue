@@ -7,9 +7,9 @@
       >{{ route.name }}
     </router-link>
   </div>
-  <div id="main">
+  <main>
     <router-view />
-  </div>
+  </main>
   <div id="footer">footer</div>
 </template>
 
@@ -84,7 +84,7 @@ export default defineComponent({
   );
 }
 
-#main {
+main {
   grid-area: main;
   padding: 15px 5px 10px 5px;
   background-color: var(--light-background);

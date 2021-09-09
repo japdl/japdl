@@ -2,11 +2,19 @@
   <div id="chooseManga">
     <form @submit.prevent="search">
       <label>Nom du manga: </label>
-      <input type="search" v-model="state.mangaName" required />
+      <input type="search" v-model="mangaName.value" required />
       <button class="basic">Rechercher</button>
     </form>
-    <div id="suggestion">
-      <div
+    <div id="suggestion" v-if="state.results.length > 0">
+      <Manga
+        v-for="result in state.results"
+        :key="result.name"
+        :infos="result"
+        @click="submitResult(result.url)"
+        class="cursor-pointer"
+      />
+
+      <!--div
         v-for="result in state.results"
         :key="result"
         class="result"
@@ -19,8 +27,8 @@
         <p v-if="result.alternate_names">
           Nom(s) alternatifs: {{ result.alternate_names }}
         </p>
-        <p v-if="result.mangaka">mangaka(s): {{ result.mangaka }}</p>
-      </div>
+        <p v-if="result.mangakas">mangaka(s): {{ result.mangakas }}</p>
+      </div-->
     </div>
     <p
       class="error"
@@ -33,79 +41,76 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ipcRenderer } from "electron";
-import { defineComponent, reactive } from "vue";
+import { defineEmit, reactive } from "vue";
+import Manga from "./Manga.vue";
 
-export default defineComponent({
-  name: "ChooseManga",
-  emits: ["manga"],
-  setup(props, context) {
-    const state = reactive({
-      mangaName: "" as string,
-      mangaNameValidated: false,
-      mangaNameErrors: [] as string[],
-      errors: [] as string[],
-      loading: false as boolean,
-      results: [],
-    });
-
-    const methods = {
-      submitManga() {
-        state.errors.length = 0;
-        if (state.mangaName !== "") {
-          const matched = state.mangaName.match(/[^a-zA-Z-]/);
-          if (matched) {
-            if (matched[0] === " ")
-              state.errors.push(
-                "Le nom du manga ne peut pas contenir d'espaces"
-              );
-            else
-              state.errors.push(
-                "Le nom du manga ne peut pas contenir de caractères spéciaux"
-              );
-          } else {
-            context.emit("manga", state.mangaName);
-          }
-        }
-      },
-      submitResult(mangaLink: string) {
-        const japscanMangaName = mangaLink.split("/manga/")[1].replace("/", "");
-        state.results = [];
-        state.mangaName = "";
-        context.emit("manga", japscanMangaName);
-      },
-      search() {
-        console.log('"' + state.mangaName + '"');
-        if (state.mangaName === "") {
-          state.results = [];
-          return;
-        }
-        state.loading = true;
-
-        ipcRenderer.send("search", {
-          sync: false,
-          value: state.mangaName,
-        });
-
-        ipcRenderer.once("searchResult", (event, arg) => {
-          if (arg.value === state.mangaName) {
-            state.loading = false;
-            state.results = arg.results;
-            console.log("Recu ", arg);
-          } else {
-            console.log(arg.value, "!==", state.mangaName);
-          }
-        });
-      },
-    };
-
-    return {
-      state,
-      ...methods,
-    };
-  },
+const state = reactive({
+  errors: [] as string[],
+  loading: false as boolean,
+  results: [] as {
+    mangakas: string;
+    original_name: string | null;
+    name: string;
+    url: string;
+    alternate_names: string;
+  }[],
 });
+
+const mangaName = reactive({
+  value: "" as string,
+  validated: false as boolean,
+  errors: [] as string[],
+});
+
+const emits = defineEmit(["manga"]);
+
+function submitManga() {
+  state.errors.length = 0;
+  if (mangaName.value !== "") {
+    const matched = mangaName.value.match(/[^a-zA-Z-]/);
+    if (matched) {
+      if (matched[0] === " ")
+        state.errors.push("Le nom du manga ne peut pas contenir d'espaces");
+      else
+        state.errors.push(
+          "Le nom du manga ne peut pas contenir de caractères spéciaux"
+        );
+    } else {
+      emits("manga", mangaName.value);
+    }
+  }
+}
+function submitResult(mangaLink: string) {
+  const japscanMangaName = mangaLink.split("/manga/")[1].replace("/", "");
+  state.results = [];
+  mangaName.value = "";
+  emits("manga", japscanMangaName);
+}
+function search() {
+  console.log('"' + mangaName.value + '"');
+  if (mangaName.value === "") {
+    state.results = [];
+    return;
+  }
+  state.loading = true;
+
+  ipcRenderer.send("search", {
+    sync: false,
+    value: mangaName.value,
+  });
+
+  ipcRenderer.once("searchResult", (event, arg) => {
+    if (arg.value === mangaName.value) {
+      state.loading = false;
+      state.results = arg.results;
+      console.log("Recu ", arg);
+    } else {
+      console.log(arg.value, "!==", mangaName.value);
+    }
+  });
+}
 </script>
 
 <style scoped>
@@ -130,5 +135,9 @@ export default defineComponent({
 .result:hover {
   background-color: rgba(211, 211, 211, 0.404);
   transition: 0.2s;
+}
+
+input {
+  color: black;
 }
 </style>

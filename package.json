@@ -2,10 +2,9 @@
   "name": "japdl-vue",
   "version": "0.1.0",
   "private": true,
-  "author": "Seysa",
   "description": "Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons.",
+  "author": "Seysa",
   "scripts": {
-    "start": "npm run electron:serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
@@ -13,12 +12,17 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "start": "npm run electron:serve"
   },
   "main": "background.js",
   "dependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "autoprefixer": "^9",
     "axios": "^0.21.1",
     "japscandl": "^2.3.1",
+    "postcss": "^7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "unlazy-loader": "^0.1.3",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
@@ -49,6 +53,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "prettier": "^2.2.1",
     "typescript": "~4.1.5",
-    "vue-cli-plugin-electron-builder": "~2.0.0"
+    "vue-cli-plugin-electron-builder": "~2.0.0",
+    "vue-cli-plugin-tailwind": "~2.0.6"
   }
 }

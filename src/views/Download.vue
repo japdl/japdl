@@ -123,9 +123,9 @@ export default defineComponent({
         // reset last manga's infos
         state.mangaType = "";
         state.mangaVolumes = state.mangaChapters = null;
-        console.log("Nom du manga: ", result.name);
+        console.log("Nom du manga: ", result.japscan);
         state.loading = true;
-        ipcRenderer.send("getMangaInfos", result.name);
+        ipcRenderer.send("getMangaInfos", result.japscan);
         ipcRenderer.once("replyMangaInfos", (event, infos) => {
           state.loading = false;
           if (infos) {

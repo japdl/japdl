@@ -19,6 +19,7 @@
             py-2
             text-xl text-gray-100
             transition
+            duration-1000
             bg-blue-600
             rounded-md
             h-14
@@ -35,23 +36,23 @@
         </button>
       </div>
       <div class="flex items-center justify-center transition">
-        <svg class="transform -rotate-90 w-72 h-72">
+        <svg class="transform -rotate-90 w-full h-full">
           <circle
-            cx="145"
-            cy="145"
+            cx="50%"
+            cy="50%"
             :r="circleRadius"
             stroke="currentColor"
-            stroke-width="30"
+            :stroke-width="circleRadius / 4"
             fill="transparent"
             class="text-gray-700 transition-all duration-500"
           ></circle>
 
           <circle
-            cx="145"
-            cy="145"
+            cx="50%"
+            cy="50%"
             :r="circleRadius"
             stroke="currentColor"
-            stroke-width="30"
+            :stroke-width="circleRadius / 4"
             fill="transparent"
             :stroke-dasharray="circumference"
             :stroke-dashoffset="
@@ -71,12 +72,15 @@
       <div>
         <div class="chevron-right" />
       </div>
+      <p>{{ circleRadius }}</p>
+      <input type="range" step="10" max="500" v-model="circleRadius" />
     </section>
   </main>
 </template>
 
+
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const skills = [
   { name: "HTML", percent: 70 },
@@ -87,11 +91,12 @@ const skills = [
   { name: "Vue", percent: 95 },
   { name: "Test", percent: 100 },
 ];
+
 let selected = ref(skills[0]);
 function selectLanguage(skill: { name: string; percent: number }) {
   selected.value = skill;
 }
 
-const circumference = 754.2857142857142;
 const circleRadius = ref(120);
+const circumference = computed(() => 2 * Math.PI * circleRadius.value);
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <fieldset>
-    <legend :style="'font-size:' + titleSize + 'px;'">
+  <fieldset class="p-2">
+    <legend>
       {{ title }}
       <slot name="title"></slot>
     </legend>
@@ -16,10 +16,6 @@ export default defineComponent({
     title: {
       type: String,
       default: "Catégorie",
-    },
-    titleSize: {
-      type: Number,
-      default: 16,
     },
   },
 });

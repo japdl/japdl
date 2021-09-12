@@ -1,14 +1,15 @@
 <template>
-  <div id="chooseManga">
+  <div class="flex justify-center items-center flex-col w-full">
     <form @submit.prevent="search">
-      <label>Nom du manga: </label>
+      <label>Chercher un manga: </label>
       <input
         type="search"
         class="rounded-md bg-gray-100 p-1"
+        placeholder="Nom du manga"
         v-model="mangaName.value"
         required
       />
-      <button class="basic">Rechercher</button>
+      <button class="basic uppercase">Rechercher</button>
     </form>
     <div id="suggestion">
       <Manga
@@ -45,22 +46,6 @@ const mangaName = reactive({
 
 const emits = defineEmit(["manga"]);
 
-function submitManga() {
-  state.errors.length = 0;
-  if (mangaName.value !== "") {
-    const matched = mangaName.value.match(/[^a-zA-Z-]/);
-    if (matched) {
-      if (matched[0] === " ")
-        state.errors.push("Le nom du manga ne peut pas contenir d'espaces");
-      else
-        state.errors.push(
-          "Le nom du manga ne peut pas contenir de caractères spéciaux"
-        );
-    } else {
-      emits("manga", mangaName.value);
-    }
-  }
-}
 function submitResult(result: SearchInfos) {
   // reset values
   state.results = [];
@@ -94,14 +79,6 @@ function search() {
 </script>
 
 <style scoped>
-#chooseManga {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
 .result {
   border: solid 1px white;
   display: flex;

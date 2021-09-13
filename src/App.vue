@@ -1,19 +1,19 @@
 <template>
-  <div id="nav">
+  <nav>
     <router-link
       v-for="route in clickableRoutes"
       :key="route.name"
       :to="route.path"
       >{{ route.name }}
     </router-link>
-  </div>
+  </nav>
   <main>
     <div id="image-container" class="flex justify-center">
       <img class="w-32" src="./assets/noun-torii.svg" />
     </div>
     <router-view />
   </main>
-  <div id="footer">footer</div>
+  <footer>footer</footer>
 </template>
 
 <script lang="ts">
@@ -54,17 +54,17 @@ export default defineComponent({
 <style src="../public/global.css"></style>
 
 <style scoped>
-#nav {
+nav {
   grid-area: header;
   display: flex;
   height: 80px;
   background-color: var(--dark-background);
-  width: 100vw;
+  width: 100%;
   justify-content: space-evenly;
   align-items: unset;
 }
 
-#nav a {
+nav a {
   text-decoration: none;
   display: flex;
   font-weight: bold;
@@ -75,10 +75,10 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
 }
-#nav a.router-link-exact-active {
+nav a.router-link-exact-active {
   color: var(--dark-primary);
 }
-#nav a:hover {
+nav a:hover {
   color: var(--primary);
   background-image: linear-gradient(
     to bottom left,
@@ -93,7 +93,7 @@ main {
   background-color: var(--light-background);
 }
 
-#footer {
+footer {
   grid-area: footer;
   overflow-y: scroll;
   max-height: 200px;

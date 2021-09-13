@@ -43,12 +43,13 @@ button.basic {
   background-color: var(--dark-primary);
   border: none;
   color: white;
-  padding: 7px;
+  padding: 8px;
   text-align: center;
   border-radius: 15px;
   margin-left: 10px;
   cursor: pointer;
   outline: none;
+  text-transform: uppercase;
 }
 
 button.basic:enabled:hover {

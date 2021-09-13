@@ -1,35 +1,31 @@
 <template>
-  <fieldset class="p-2">
-    <legend>
-      {{ title }}
-      <slot name="title"></slot>
-    </legend>
+  <div
+    class="
+      flex
+      justify-center
+      items-center
+      flex-col
+      bg-gray-900
+      px-6
+      py-8
+      rounded-2xl
+      shadow-xl
+    "
+  >
+    <h1 v-if="props.title" class="text-2xl mb-6 font-bold">
+      {{ props.title }}
+    </h1>
     <slot></slot>
-  </fieldset>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { defineProps } from "@vue/runtime-core";
 
-export default defineComponent({
-  props: {
-    title: {
-      type: String,
-      default: "Catégorie",
-    },
+const props = defineProps({
+  title: {
+    type: String,
+    required: false,
   },
 });
 </script>
-
-<style scoped>
-fieldset {
-  border-radius: 6px;
-  border-color: var(--text-color);
-  border-width: 2px;
-}
-legend {
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
-}
-</style>

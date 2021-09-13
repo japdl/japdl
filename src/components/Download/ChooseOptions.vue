@@ -1,20 +1,28 @@
 <template>
   <Container title="Options de téléchargement">
     <div class="downloadOption">
-      <input type="checkbox" v-model="state.images" value="images" />
-      <label>Télécharger les images</label>
+      <label>
+        <input type="checkbox" v-model="state.images" value="images" />
+        Télécharger les images</label
+      >
     </div>
     <div class="downloadOption">
-      <input type="radio" v-model="state.compression" value="pdf" />
-      <label>Créer un fichier PDF</label>
+      <label>
+        <input type="radio" v-model="state.compression" value="pdf" />
+        Créer un fichier PDF</label
+      >
     </div>
     <div class="downloadOption">
-      <input type="radio" v-model="state.compression" value="cbr" />
-      <label>Créer un fichier CBR</label>
+      <label>
+        <input type="radio" v-model="state.compression" value="cbr" />
+        Créer un fichier CBR</label
+      >
     </div>
     <div class="downloadOption">
-      <input type="radio" v-model="state.compression" value="" />
-      <label>Ne pas créer de fichier</label>
+      <label>
+        <input type="radio" v-model="state.compression" value="" />
+        Ne pas créer de fichier</label
+      >
     </div>
   </Container>
 </template>

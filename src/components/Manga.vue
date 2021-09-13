@@ -5,6 +5,8 @@
       max-w-md
       mx-auto
       bg-white
+      hover:opacity-75
+      transition-all
       rounded-xl
       shadow-xl
       overflow-hidden
@@ -23,7 +25,7 @@
           {{ props.infos.name }}
         </span>
         <span
-          @click.prevent="openExternalLink(mangaLink)"
+          @click.prevent.stop="openExternalLink(mangaLink)"
           class="
             block
             mt-1

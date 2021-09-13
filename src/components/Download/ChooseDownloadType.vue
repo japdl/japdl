@@ -1,17 +1,21 @@
 <template>
-  <div class="chooser">
+  <div class="flex flex-col items-start">
     <Container
       @change="submitType"
-      class="chooseType"
+      class="mb-5 w-full p-3 flex items-center flex-col"
       title="Type de téléchargement"
     >
       <div class="choice">
-        <input type="radio" v-model="type" value="chapitre" />
-        <label>Chapitres(s)</label>
+        <label>
+          <input type="radio" v-model="type" value="chapitre" />
+          Chapitres(s)</label
+        >
       </div>
       <div class="choice">
-        <input type="radio" v-model="type" value="volume" />
-        <label>Volume(s)</label>
+        <label>
+          <input type="radio" v-model="type" value="volume" />
+          Volume(s)</label
+        >
       </div>
     </Container>
   </div>
@@ -39,19 +43,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.chooseType {
-  margin-bottom: 20px;
-}
-
-.chooser {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
-
-.choice {
-  margin-bottom: 5px;
-}
-</style>

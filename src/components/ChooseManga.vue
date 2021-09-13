@@ -1,16 +1,16 @@
 <template>
-  <div class="flex justify-center items-center flex-col w-full">
-    <form @submit.prevent="search">
-      <label>Chercher un manga: </label>
+  <Container>
+    <form @submit.prevent="search" class="p-4">
       <input
         type="search"
-        class="rounded-md bg-gray-100 p-1"
+        class="rounded-md bg-gray-100 p-2"
         placeholder="Nom du manga"
         v-model="mangaName.value"
         required
       />
-      <button class="basic uppercase">Rechercher</button>
+      <button class="basic" type="submit">Rechercher</button>
     </form>
+    <Loading v-if="state.loading" />
     <div id="suggestion">
       <Manga
         v-for="result in state.results"
@@ -23,7 +23,7 @@
     <p class="error" v-if="state.errors.length > 0">
       <span v-for="error in state.errors" :key="error">{{ error }}</span>
     </p>
-  </div>
+  </Container>
 </template>
 
 <script lang="ts" setup>
@@ -31,6 +31,8 @@ import { ipcRenderer } from "electron";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 import { defineEmit, reactive } from "vue";
 import Manga from "./Manga.vue";
+import Loading from "./Loading.vue";
+import Container from "./Container.vue";
 
 const state = reactive({
   errors: [] as string[],
@@ -54,6 +56,7 @@ function submitResult(result: SearchInfos) {
 }
 
 function search() {
+  state.errors.length = 0;
   console.log('"' + mangaName.value + '"');
   if (mangaName.value === "") {
     state.results = [];
@@ -67,12 +70,10 @@ function search() {
   });
 
   ipcRenderer.once("searchResult", (event, arg) => {
-    if (arg.value === mangaName.value) {
-      state.loading = false;
-      state.results = arg.results;
-      console.log("Recu ", arg);
-    } else {
-      console.log(arg.value, "!==", mangaName.value);
+    state.loading = false;
+    state.results = arg.results;
+    if (state.results.length === 0) {
+      state.errors.push("La recherche n'a donné aucun résultat");
     }
   });
 }

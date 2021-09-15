@@ -12,9 +12,15 @@
       <h1 class="text-6xl m-6 bg-gray">{{ state.mangaName }}</h1>
       <div class="informations">
         <p>
-          <strong>Dernier volume:</strong> {{ state.mangaVolumes }} <br />
-          <strong>Dernier chapitre:</strong> {{ state.mangaChapters }} <br />
-          <strong>Synopsis:</strong> {{ state.mangaSynopsis }}
+          <span v-if="state.mangaVolumes">
+            <strong>Dernier volume:</strong> {{ state.mangaVolumes }} <br />
+          </span>
+          <span v-if="state.mangaChapters"
+            ><strong>Dernier chapitre:</strong> {{ state.mangaChapters }} <br
+          /></span>
+          <span v-if="state.mangaSynopsis">
+            <strong>Synopsis:</strong> {{ state.mangaSynopsis }}
+          </span>
         </p>
       </div>
       <ChooseDownloadType @type="getType" />
@@ -82,6 +88,7 @@ export default defineComponent({
       options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
       error: "" as string,
       mangaName: "" as string,
+      mangaJName: "" as string,
       mangaVolumes: null as null | number,
       mangaChapters: null as null | number,
       mangaType: "" as string,
@@ -108,7 +115,7 @@ export default defineComponent({
       downloadSelected(): void {
         const toSend = {
           type: state.mangaType,
-          manga: state.mangaName,
+          manga: state.mangaJName,
           start: state.range.start,
           end: state.range.end,
           compression: state.options.compression
@@ -129,9 +136,10 @@ export default defineComponent({
         ipcRenderer.once("replyMangaInfos", (event, infos) => {
           state.loading = false;
           if (infos) {
+            state.mangaName = result.name;
+            state.mangaJName = infos.name;
             state.mangaVolumes = infos.volumes;
             state.mangaChapters = infos.chapters;
-            state.mangaName = infos.name;
             state.mangaSynopsis = infos.synopsis;
           }
         });

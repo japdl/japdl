@@ -13,42 +13,30 @@
     </div>
     <router-view />
   </main>
-  <footer>footer</footer>
+  <StatusFooter />
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
 import route from "@/router";
 import { ipcRenderer } from "electron";
+import StatusFooter from "./components/Footer/StatusFooter.vue";
+const routes = ref(
+  route.getRoutes().map(({ name, path }) => ({ name: name as string, path }))
+);
 
-export default defineComponent({
-  name: "App",
-  components: {},
-  data() {
-    return {
-      routes: [] as { name: string; path: string }[],
-    };
-  },
-  mounted() {
-    this.routes = route
-      .getRoutes()
-      .map(({ name, path }) => ({ name: name as string, path }));
-    const appElement = document.getElementById("app") as HTMLDivElement;
-    console.log("Sending set theme");
-    ipcRenderer.send("getTheme");
-    ipcRenderer.on("changeTheme", (event, data) => {
-      console.log("Changing theme to " + data);
-      appElement.classList.remove("light", "dark");
-      appElement.classList.add(data);
-    });
-  },
-  computed: {
-    clickableRoutes() {
-      //@ts-expect-error route is ok
-      return this.routes.filter((route) => route.name);
-    },
-  },
+const appElement = document.getElementById("app") as HTMLDivElement;
+console.log("Sending set theme");
+ipcRenderer.send("getTheme");
+ipcRenderer.on("changeTheme", (event, data) => {
+  console.log("Changing theme to " + data);
+  appElement.classList.remove("light", "dark");
+  appElement.classList.add(data);
 });
+
+const clickableRoutes = computed(() =>
+  routes.value.filter((route) => route.name)
+);
 </script>
 
 <style src="../public/global.css"></style>

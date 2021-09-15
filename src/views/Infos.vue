@@ -5,7 +5,11 @@
       <div v-if="name === 'volumes'" class="volumes">
         <div v-for="volume in el" :key="volume.number" class="volume">
           <span>{{ volume.name }}</span>
-          <img src="../assets/download.svg" class="icon" alt="downloadIcon" />
+          <img
+            src="../assets/svg/download.svg"
+            class="icon"
+            alt="downloadIcon"
+          />
           <ul class="chapters">
             <li
               class="chapter"

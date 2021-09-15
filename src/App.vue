@@ -39,8 +39,6 @@ const clickableRoutes = computed(() =>
 );
 </script>
 
-<style src="../public/global.css"></style>
-
 <style scoped>
 nav {
   grid-area: header;

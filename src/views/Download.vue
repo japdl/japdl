@@ -8,33 +8,33 @@
     </Container>
     <ChooseManga @manga="getMangaInfos" />
     <Loading v-if="state.loading" />
-    <div id="afterMangaChoosen" v-if="state.mangaName && !state.loading">
-      <h1 class="text-6xl m-6 bg-gray">{{ state.mangaName }}</h1>
+    <div id="afterMangaChoosen" v-if="manga.name && !state.loading">
+      <h1 class="text-6xl m-6 bg-gray">{{ manga.name }}</h1>
       <div class="informations">
         <p>
-          <span v-if="state.mangaVolumes">
-            <strong>Dernier volume:</strong> {{ state.mangaVolumes }} <br />
+          <span v-if="manga.volumes">
+            <strong>Dernier volume:</strong> {{ manga.volumes }} <br />
           </span>
-          <span v-if="state.mangaChapters"
-            ><strong>Dernier chapitre:</strong> {{ state.mangaChapters }} <br
+          <span v-if="manga.chapters"
+            ><strong>Dernier chapitre:</strong> {{ manga.chapters }} <br
           /></span>
-          <span v-if="state.mangaSynopsis">
-            <strong>Synopsis:</strong> {{ state.mangaSynopsis }}
+          <span v-if="manga.synopsis">
+            <strong>Synopsis:</strong> {{ manga.synopsis }}
           </span>
         </p>
       </div>
       <ChooseDownloadType @type="getType" />
       <form
-        v-if="state.mangaType && !state.loading"
+        v-if="manga.type && !state.loading"
         @submit.prevent="downloadSelected"
       >
         <ChooseRange
           v-model:range="state.range"
           :max="selectMax"
-          :type="state.mangaType"
+          :type="manga.type"
         />
         <p class="error" v-if="isRangeInvalid">
-          Veuillez entrer un numéro de {{ state.mangaType }}
+          Veuillez entrer un numéro de {{ manga.type }}
         </p>
         <ChooseOptions v-model:options="state.options" />
         <p class="error" v-if="areOptionsInvalid">
@@ -60,8 +60,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, reactive } from "vue";
+<script lang="ts" setup>
+import { computed, defineEmit, reactive } from "vue";
 import ChooseManga from "@/components/ChooseManga.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import { ipcRenderer } from "electron";
@@ -70,114 +70,96 @@ import Container from "@/components/Container.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import { SearchInfos } from "japscandl/js/src/utils/types";
-export default defineComponent({
-  name: "Download",
-  components: {
-    ChooseManga,
-    ChooseDownloadType,
-    ChooseRange,
-    ChooseOptions,
-    Loading,
-    Container,
-  },
-  emits: ["download"],
-  setup() {
-    const debug = false;
-    const state = reactive({
-      range: {} as { start?: number; end?: number },
-      options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
-      error: "" as string,
-      mangaName: "" as string,
-      mangaJName: "" as string,
-      mangaVolumes: null as null | number,
-      mangaChapters: null as null | number,
-      mangaType: "" as string,
-      mangaSynopsis: "" as string,
-      loading: false as boolean,
-      japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
-    });
 
-    const comput = {
-      isRangeInvalid: computed(() => {
-        return state.range.start === undefined;
-      }),
-      selectMax: computed(() => {
-        return state.mangaType === "volume"
-          ? (state.mangaVolumes as number)
-          : (state.mangaChapters as number);
-      }),
-      areOptionsInvalid: computed(() => {
-        return state.options.compression === "" && !state.options.images;
-      }),
-    };
+defineEmit(["download"]);
 
-    const methods = {
-      downloadSelected(): void {
-        const toSend = {
-          type: state.mangaType,
-          manga: state.mangaJName,
-          start: state.range.start,
-          end: state.range.end,
-          compression: state.options.compression
-            ? state.options.compression
-            : undefined,
-          keepImages: state.options.images,
-        };
-        console.log("Sending", toSend);
-        ipcRenderer.send("download", toSend);
-      },
-      getMangaInfos(result: SearchInfos) {
-        // reset last manga's infos
-        state.mangaType = "";
-        state.mangaVolumes = state.mangaChapters = null;
-        console.log("Nom du manga: ", result.japscan);
-        state.loading = true;
-        ipcRenderer.send("getMangaInfos", result.japscan);
-        ipcRenderer.once("replyMangaInfos", (event, infos) => {
-          state.loading = false;
-          if (infos) {
-            state.mangaName = result.name;
-            state.mangaJName = infos.name;
-            state.mangaVolumes = infos.volumes;
-            state.mangaChapters = infos.chapters;
-            state.mangaSynopsis = infos.synopsis;
-          }
-        });
-      },
-      getType(type: string) {
-        state.mangaType = type;
-        console.log("type: ", type);
-      },
-      sendDownloadToBackground(options: {
-        options: ("pdf" | "cbr" | "images")[];
-        start: number;
-        end: number;
-      }) {
-        const compression = Array.from(options.options)
-          .filter((element) => element !== "images")
-          .pop();
-        console.log(compression);
-        const emitOptions = {
-          start: options.start,
-          end: options.end,
-          type: state.mangaType,
-          manga: state.mangaName,
-          compression,
-          deleteAfter: !options.options.includes("images"),
-        };
-        console.log(emitOptions);
-        ipcRenderer.send("download", emitOptions);
-      },
-    };
+const debug = false;
 
-    return {
-      state,
-      debug,
-      ...methods,
-      ...comput,
-    };
-  },
+const state = reactive({
+  range: {} as { start?: number; end?: number },
+  options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
+  error: "" as string,
+  loading: false as boolean,
+  japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
 });
+
+const manga = reactive({
+  name: "" as string,
+  japscanName: "" as string,
+  volumes: null as null | number,
+  chapters: null as null | number,
+  type: "" as string,
+  synopsis: "" as string,
+});
+
+const isRangeInvalid = computed(() => {
+  return state.range.start === undefined;
+});
+const selectMax = computed(() => {
+  return manga.type === "volume"
+    ? (manga.volumes as number)
+    : (manga.chapters as number);
+});
+const areOptionsInvalid = computed(() => {
+  return state.options.compression === "" && !state.options.images;
+});
+
+function downloadSelected(): void {
+  const toSend = {
+    type: manga.type,
+    manga: manga.japscanName,
+    start: state.range.start,
+    end: state.range.end,
+    compression: state.options.compression
+      ? state.options.compression
+      : undefined,
+    keepImages: state.options.images,
+  };
+  console.log("Sending", toSend);
+  ipcRenderer.send("download", toSend);
+}
+function getMangaInfos(result: SearchInfos) {
+  // reset last manga's infos
+  manga.type = "";
+  manga.volumes = manga.chapters = null;
+  console.log("Nom du manga: ", result.japscan);
+  state.loading = true;
+  ipcRenderer.send("getMangaInfos", result.japscan);
+  ipcRenderer.once("replyMangaInfos", (event, infos) => {
+    state.loading = false;
+    if (infos) {
+      manga.name = result.name;
+      manga.japscanName = infos.name;
+      manga.volumes = infos.volumes;
+      manga.chapters = infos.chapters;
+      manga.synopsis = infos.synopsis;
+    }
+  });
+}
+function getType(type: string) {
+  manga.type = type;
+  console.log("type: ", type);
+}
+function sendDownloadToBackground(options: {
+  options: ("pdf" | "cbr" | "images")[];
+  start: number;
+  end: number;
+}) {
+  const compression = Array.from(options.options)
+    .filter((element) => element !== "images")
+    .pop();
+  console.log(compression);
+  const emitOptions = {
+    start: options.start,
+    end: options.end,
+    type: manga.type,
+    manga: manga.japscanName,
+    compression,
+    deleteAfter: !options.options.includes("images"),
+  };
+  console.log(emitOptions);
+  ipcRenderer.send("download", emitOptions);
+}
 </script>
 
 <style scoped>

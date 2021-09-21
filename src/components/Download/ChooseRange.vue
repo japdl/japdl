@@ -11,7 +11,7 @@
         :placeholder="'Numéro de ' + type"
         required
       />
-      à
+      <span class="ml-2 mr-2">à</span>
       <input
         class="inputText"
         type="number"

@@ -2,7 +2,6 @@ body {
   overflow-x: hidden;
   margin: 0;
   background-color: var(--light-background);
-  font-size: 1.10rem;
 }
 
 #app.dark {

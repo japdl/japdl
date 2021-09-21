@@ -1,25 +1,20 @@
 <template>
   <div class="telecharger" v-if="state.japscanInitiated">
-    <Container title="variables" v-if="debug">
-      <div v-for="(variable, name) in state" :key="name">
-        <strong>{{ name }}</strong>
-        {{ typeof variable === "string" ? '"' + variable + '"' : variable }}
-      </div>
-    </Container>
+    <DebugVariables v-if="debug" :state="state" />
     <ChooseManga @manga="getMangaInfos" />
     <Loading v-if="state.loading" />
-    <div id="afterMangaChoosen" v-if="manga.name && !state.loading">
-      <h1 class="text-6xl m-6 bg-gray">{{ manga.name }}</h1>
-      <div class="informations">
+    <div id="afterMangaChoosen" class="m-6" v-if="manga.name && !state.loading">
+      <h1 class="text-6xl bg-gray">{{ manga.name }}</h1>
+      <div class="informations m-5">
         <p>
-          <span v-if="manga.volumes">
-            <strong>Dernier volume:</strong> {{ manga.volumes }} <br />
+          <span class="text-xl m-2" v-if="manga.volumes">
+            <strong>Volumes:</strong> {{ manga.volumes }} <br />
           </span>
-          <span v-if="manga.chapters"
-            ><strong>Dernier chapitre:</strong> {{ manga.chapters }} <br
+          <span class="text-xl m-2" v-if="manga.chapters"
+            ><strong>Chapitres:</strong> {{ manga.chapters }} <br
           /></span>
-          <span v-if="manga.synopsis">
-            <strong>Synopsis:</strong> {{ manga.synopsis }}
+          <span class="text-gray-400" v-if="manga.synopsis">
+            {{ manga.synopsis }}
           </span>
         </p>
       </div>
@@ -70,6 +65,7 @@ import Container from "@/components/Container.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import { SearchInfos } from "japscandl/js/src/utils/types";
+import DebugVariables from "@/components/DebugVariables.vue";
 
 defineEmit(["download"]);
 

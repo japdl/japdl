@@ -1,6 +1,7 @@
 <template>
   <Container>
-    <form @submit.prevent="search" class="p-4">
+    <!-- Make a form containing an input, a submit button and a close button to clear results-->
+    <form @submit.prevent="search" class="p-4 flex">
       <input
         type="search"
         class="rounded-md bg-gray-100 p-2"

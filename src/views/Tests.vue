@@ -35,40 +35,7 @@
           <span>{{ skill.name }}</span>
         </button>
       </div>
-      <div class="flex items-center justify-center transition">
-        <svg class="transform -rotate-90 w-full h-full">
-          <circle
-            cx="50%"
-            cy="50%"
-            :r="circleRadius"
-            stroke="currentColor"
-            :stroke-width="circleRadius / 4"
-            fill="transparent"
-            class="text-gray-700 transition-all duration-500"
-          ></circle>
-
-          <circle
-            cx="50%"
-            cy="50%"
-            :r="circleRadius"
-            stroke="currentColor"
-            :stroke-width="circleRadius / 4"
-            fill="transparent"
-            :stroke-dasharray="circumference"
-            :stroke-dashoffset="
-              circumference - (selected.percent / 100) * circumference
-            "
-            class="
-              text-blue-500
-              hover:text-blue-600
-              cursor-pointer
-              transition-all
-              duration-500
-            "
-          ></circle>
-        </svg>
-        <span class="absolute text-6xl">{{ selected.percent }}% </span>
-      </div>
+      <LoadingCircle :radius="circleRadius" :percent="selected.percent" />
       <div>
         <div class="chevron-right" />
       </div>
@@ -79,7 +46,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
+import LoadingCircle from "@/components/LoadingCircle.vue";
 
 const skills = [
   { name: "HTML", percent: 70 },
@@ -97,5 +65,18 @@ function selectLanguage(skill: { name: string; percent: number }) {
 }
 
 const circleRadius = ref(120);
-const circumference = computed(() => 2 * Math.PI * circleRadius.value);
 </script>
+
+<style scoped>
+
+.custom {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.child {
+
+}
+  </style>

@@ -1,6 +1,12 @@
 <template>
-  <div id="loadingBar">
-    <div id="fill" :style="'width:' + done + '%'">{{ done }} %</div>
+  <div id="loadingBar" class="w-full">
+    <div
+      id="fill"
+      :style="'width:' + done + '%'"
+      class="flex items-center justify-center"
+    >
+      <span>{{ done }} %</span>
+    </div>
   </div>
 </template>
 
@@ -33,11 +39,5 @@ export default defineComponent({
 div {
   transition: ease 2s;
   border-radius: 20px;
-}
-
-div#id {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>

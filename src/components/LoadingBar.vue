@@ -2,21 +2,27 @@
   <div id="loadingBar" class="w-full">
     <div
       id="fill"
-      :style="'width:' + done + '%'"
+      :style="widthStyle"
       class="flex items-center justify-center"
     >
-      <span>{{ done }} %</span>
+      <span>{{ computedWidth }} %</span>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  props: {
-    done: Number,
+<script lang="ts" setup>
+import { computed, defineProps } from "vue";
+const props = defineProps({
+  done: {
+    type: Number,
+    default: 0,
   },
+});
+const computedWidth = computed(() => {
+  return props.done <= 100 ? props.done : 100;
+});
+const widthStyle = computed(() => {
+  return `width: ${computedWidth.value}%`;
 });
 </script>
 

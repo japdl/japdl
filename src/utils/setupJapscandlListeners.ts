@@ -163,9 +163,11 @@ async function setupJapscandl(
                 });
               } else {
                 // if it's a single chapter
+                const downloadName = manga + " " + start;
                 win.webContents.send("downloadChapterSetup", {
                   manga,
                   chapter: start,
+                  downloadName,
                 });
                 downloadLocation = await downloader.downloadChapter(
                   manga,
@@ -177,6 +179,7 @@ async function setupJapscandl(
                       win.webContents.send("downloadChapterUpdatePage", {
                         attributes,
                         total,
+                        downloadName,
                       });
                     },
                   }
@@ -184,6 +187,7 @@ async function setupJapscandl(
                 win.webContents.send("downloadChapterEnd", {
                   manga,
                   chapter: start,
+                  downloadName,
                 });
               }
             }

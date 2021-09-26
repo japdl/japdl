@@ -17,6 +17,9 @@
 </template>
 
 <script lang="ts" setup>
+import progress from "@/utils/progress";
+import { ipcRenderer } from "electron";
+import { MangaAttributes } from "japscandl/js/src/utils/types";
 import { ref } from "vue";
 import LoadingBar from "../LoadingBar.vue";
 
@@ -25,16 +28,55 @@ type Download = {
   percent: number;
 };
 
-const mockData: Download[] = [
-  {
-    name: "One Piece volume 1",
-    percent: 50,
-  },
-  {
-    name: "One Punch Man chapitre 122",
-    percent: 20,
-  },
-];
+const downloads = ref([] as Download[]);
 
-const downloads = ref(mockData);
+ipcRenderer.on(
+  "downloadChapterSetup",
+  (
+    event,
+    arg: {
+      manga: string;
+      chapter: number;
+      downloadName: string;
+    }
+  ) => {
+    const download: Download = {
+      name: arg.downloadName,
+      percent: 0,
+    };
+    downloads.value.push(download);
+  }
+);
+
+ipcRenderer.on(
+  "downloadChapterUpdatePage",
+  (
+    _,
+    arg: {
+      attributes: MangaAttributes;
+      total: number;
+      downloadName: string;
+    }
+  ) => {
+    const percent = Math.round(progress(+arg.attributes.page, arg.total));
+    console.log(arg.downloadName, percent);
+    const currentDownload = downloads.value.find(
+      (value) => value.name === arg.downloadName
+    );
+    if (!currentDownload) {
+      downloads.value.push({ name: arg.downloadName, percent: percent });
+    } else {
+      currentDownload.percent = percent;
+    }
+  }
+);
+
+ipcRenderer.on("downloadChapterEnd", (event, arg) => {
+  // after 2 seconds, remove download from list
+  setTimeout(() => {
+    downloads.value = downloads.value.filter(
+      (el) => el.name !== arg.downloadName
+    );
+  }, 2000);
+});
 </script>

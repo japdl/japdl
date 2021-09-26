@@ -1,5 +1,5 @@
 <template>
-  <Container title="variables">
+  <Container :title="title">
     <div v-for="(variable, name) in props.state" :key="name">
       <strong>{{ name }}</strong>
       {{ typeof variable === "string" ? '"' + variable + '"' : variable }}
@@ -16,5 +16,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  title: {
+    type: String,
+    required: false,
+    default: "variables",
+  }
 });
 </script>

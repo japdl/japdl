@@ -1,6 +1,9 @@
 <template>
   <div class="telecharger" v-if="state.japscanInitiated">
-    <DebugVariables v-if="debug" :state="state" />
+    <div v-if="debug" class="flex space-x-1">
+      <DebugVariables title="state variables" :state="state" />
+      <DebugVariables title="manga" :state="manga" />
+    </div>
     <ChooseManga @manga="getMangaInfos" />
     <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" class="m-6" v-if="manga.name && !state.loading">

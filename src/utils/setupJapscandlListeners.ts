@@ -123,14 +123,20 @@ async function setupJapscandl(
               }
             } /* chapter */ else {
               // if it's multiple chapters
+              const parentName = manga + " " + start + "-" + end;
               if (end) {
-                win.webContents.send("downloadChaptersSetup", {
-                  attributes: {
+                {
+                  const attributes = {
                     manga,
                     current: start,
                     total: end,
-                  },
-                });
+                  };
+                  console.log("downloadChaptersSetup", attributes);
+                  win.webContents.send("downloadChaptersSetup", {
+                    attributes,
+                    parentName,
+                  });
+                }
                 downloadLocation = await downloader.downloadChapters(
                   manga,
                   start,
@@ -138,17 +144,33 @@ async function setupJapscandl(
                   {
                     compression,
                     onChapter: (attributes, current, total) => {
-                      win.webContents.send("downloadUpdateChapter", {
+                      const downloadName =
+                        attributes.manga + " " + attributes.chapter;
+                      console.log("downloadChapter", {
                         attributes,
                         current,
                         total,
+                        downloadName,
+                        parentName,
+                      });
+                      win.webContents.send("downloadChaptersUpdateChapter", {
+                        attributes,
+                        current,
+                        total,
+                        downloadName,
+                        parentName,
                       });
                     },
                     onPage: (attributes, total) => {
                       console.log(attributes, total);
+                      const downloadName =
+                        attributes.manga + " " + attributes.chapter;
+                      console.log(downloadName, attributes.page);
                       win.webContents.send("downloadChaptersUpdatePage", {
                         attributes,
                         total,
+                        downloadName,
+                        parentName,
                       });
                     },
                   }
@@ -160,6 +182,7 @@ async function setupJapscandl(
                     current: start,
                     total: end,
                   },
+                  parentName,
                 });
               } else {
                 // if it's a single chapter

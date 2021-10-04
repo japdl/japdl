@@ -146,7 +146,7 @@ ipcRenderer.on("downloadChaptersUpdateChapter", (event, arg) => {
       type: "chapters",
     });
   } else {
-    currentDownload.currentName = arg.chapterName;
+    currentDownload.currentName = arg.downloadName;
   }
 });
 
@@ -155,9 +155,12 @@ ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
   console.log(arg);
   const currentDownload = downloads.value.find(
     (value) => value.name === arg.parentName
-  );
+  ) as ChaptersDownload;
   console.log(currentDownload);
-  if (currentDownload) currentDownload.percent = percent;
+  if (currentDownload) {
+    currentDownload.percent = percent;
+    currentDownload.currentName = arg.downloadName;
+  }
 });
 
 ipcRenderer.on("downloadChaptersEnd", (event, arg) => {

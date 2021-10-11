@@ -88,11 +88,13 @@ async function setupJapscandl(
             if (type === "volume") {
               // if it's multiple volumes
               if (end) {
+                const parentName = manga + "volume" + start;
                 // send a start download volumes to main process
                 win.webContents.send("downloadVolumesSetup", {
                   manga,
                   start,
                   end,
+                  parentName,
                 });
                 downloadLocation = await downloader.downloadVolumes(
                   manga,
@@ -106,19 +108,36 @@ async function setupJapscandl(
                   end,
                 });
               } else {
+                const parentName = manga + " volume " + start;
                 // send a start download volume to main process
                 win.webContents.send("downloadVolumeSetup", {
                   manga,
                   volume: start,
+                  name: parentName,
                 });
                 downloadLocation = await downloader.downloadVolume(
                   manga,
                   start,
-                  { compression }
+                  {
+                    compression,
+                    onPage: (attributes, total) => {
+                      console.log(attributes, total);
+                      const downloadName =
+                        attributes.manga + " " + attributes.chapter;
+                      console.log(downloadName, attributes.page);
+                      win.webContents.send("downloadVolumeUpdatePage", {
+                        attributes,
+                        total,
+                        downloadName,
+                        parentName,
+                      });
+                    },
+                  },
                 );
                 win.webContents.send("downloadVolumeEnd", {
                   manga,
                   volume: start,
+                  name: manga + " " + start,
                 });
               }
             } /* chapter */ else {
@@ -146,13 +165,6 @@ async function setupJapscandl(
                     onChapter: (attributes, current, total) => {
                       const downloadName =
                         attributes.manga + " " + attributes.chapter;
-                      console.log("downloadChapter", {
-                        attributes,
-                        current,
-                        total,
-                        downloadName,
-                        parentName,
-                      });
                       win.webContents.send("downloadChaptersUpdateChapter", {
                         attributes,
                         current,

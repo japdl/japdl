@@ -1,19 +1,21 @@
 <template>
-  <nav>
-    <router-link
-      v-for="route in clickableRoutes"
-      :key="route.name"
-      :to="route.path"
-      >{{ route.name }}
-    </router-link>
-  </nav>
-  <main>
-    <div id="image-container" class="flex justify-center">
-      <img class="w-32" src="./assets/svg/noun-torii.svg" />
-    </div>
-    <router-view />
-  </main>
-  <StatusFooter />
+  <div id="gridWrapper">
+    <nav>
+      <router-link
+        v-for="route in clickableRoutes"
+        :key="route.name"
+        :to="route.path"
+        >{{ route.name }}
+      </router-link>
+    </nav>
+    <main>
+      <div id="image-container" class="flex justify-center">
+        <img class="w-32" src="./assets/svg/noun-torii.svg" />
+      </div>
+      <router-view />
+    </main>
+    <StatusFooter />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -48,6 +50,8 @@ nav {
   width: 100%;
   justify-content: space-evenly;
   align-items: unset;
+  text-align: center;
+  grid-area: "header";
 }
 
 nav a {
@@ -74,14 +78,23 @@ nav a:hover {
 }
 
 main {
-  grid-area: main;
   padding: 15px 5px 10px 5px;
   background-color: var(--light-background);
+  grid-area: "main";
 }
 
 footer {
-  grid-area: footer;
-  overflow-y: scroll;
-  max-height: 200px;
+  grid-area: "footer";
+  min-height: 10rem;
+}
+
+#gridWrapper {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto 1fr auto;
+  grid-template: 'header'
+    'main'
+    'footer';
 }
 </style>

@@ -2,7 +2,9 @@
   <footer
     class="bg-gray-900 w-full h-full overflow-y-hidden flex justify-center"
   >
-    <h1 v-if="!downloads.length">No Downloads yet</h1>
+    <h1 class="flex justify-center" v-if="!downloads.length">
+      <span>No Downloads yet</span>
+    </h1>
     <div v-else class="w-3/4">
       <div
         v-for="(download, index) in downloads"
@@ -152,11 +154,9 @@ ipcRenderer.on("downloadChaptersUpdateChapter", (event, arg) => {
 
 ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
   const percent = Math.round(progress(+arg.attributes.page, arg.total));
-  console.log(arg);
   const currentDownload = downloads.value.find(
     (value) => value.name === arg.parentName
   ) as ChaptersDownload;
-  console.log(currentDownload);
   if (currentDownload) {
     currentDownload.percent = percent;
     currentDownload.currentName = arg.downloadName;
@@ -173,4 +173,33 @@ ipcRenderer.on("downloadChaptersEnd", (event, arg) => {
 });
 
 // end chapters
+
+// volume
+ipcRenderer.on("downloadVolumeSetup", (event, arg) => {
+  const download: VolumeDownload = {
+    name: arg.name,
+    currentName: "",
+    percent: 0,
+    type: "volume",
+  };
+  downloads.value.push(download);
+});
+
+ipcRenderer.on("downloadVolumeUpdatePage", (event, arg) => {
+  const percent = Math.round(progress(+arg.attributes.page, arg.total));
+  const currentDownload = downloads.value.find(
+    (value) => value.name === arg.parentName
+  ) as VolumeDownload;
+  if (currentDownload) {
+    currentDownload.percent = percent;
+    currentDownload.currentName = arg.downloadName;
+  }
+});
+
+ipcRenderer.on("downloadVolumeEnd", (event, arg) => {
+  setTimeout(() => {
+    downloads.value = downloads.value.filter((el) => el.name !== arg.name);
+  }, 2000);
+});
+// end volume
 </script>

@@ -1,16 +1,14 @@
 <template>
   <div id="options">
-    <div id="summary" v-for="(option, name) in state.options" :key="option">
-      <b>{{ name }}: </b>{{ option }}
-    </div>
+    <DebugVariables :state="state.options" title="options" />
     <div id="theme">
       Thème:
       <div
         v-for="theme in state.themes"
         :key="theme.theme"
-        class="colorBox"
         :id="theme.theme"
         :class="{ selected: state.options.theme === theme.theme }"
+        class="colorBox p-2 rounded-md"
         @click="selectTheme(theme.theme)"
       >
         <span v-if="state.options.theme === theme.theme">{{ theme.text }}</span>
@@ -19,7 +17,11 @@
 
     <div id="imageFormat">
       <label for="imageSelect"> Format des images: </label>
-      <select id="imageSelect" v-model="state.options.imageFormat">
+      <select
+        id="imageSelect"
+        v-model="state.options.imageFormat"
+        class="text-black rounded-md p-2"
+      >
         <option
           v-for="format in state.possibleOptions.imageFormat"
           :key="format"
@@ -36,6 +38,7 @@
         :placeholder="
           state.options.chromePath === '' ? 'Veuillez entrer un chemin' : ''
         "
+        class="rounded-md bg-gray-100 p-2 text-black"
       /><button class="basic" @click="chooseChromePath">
         Choisir un fichier
       </button>
@@ -45,11 +48,16 @@
       <div class="message">{{ state.pathMessage }}</div>
       <div class="error">{{ state.pathError }}</div>
     </div>
-    <div>
+    <div id="downloadDirectory">
       Dossier de téléchargement:
-      <input type="text" v-model="state.options.outputDirectory" />
+      <input
+        type="text"
+        v-model="state.options.outputDirectory"
+        class="rounded-md bg-gray-100 p-2 text-black"
+      />
       <button class="basic" @click="chooseOutPath">Choisir un dossier</button>
       <button class="basic" @click="defaultOutPath">Par défaut</button>
+      <button class="basic" @click="openOutPath">Ouvrir le dossier</button>
     </div>
     <div id="save">
       <button class="basic" @click="setData">
@@ -61,12 +69,14 @@
 </template>
 
 <script lang="ts">
-import { ipcRenderer } from "electron";
+import { ipcRenderer, shell } from "electron";
 import { defineComponent, onMounted, reactive } from "vue";
 import { configData } from "@/utils/handleConfig";
 import fs from "fs";
+import DebugVariables from "@/components/DebugVariables.vue";
 
 export default defineComponent({
+  components: { DebugVariables },
   setup() {
     const state = reactive({
       themes: [
@@ -170,6 +180,9 @@ export default defineComponent({
         const data = ipcRenderer.sendSync("getDefaultDataSync");
         state.options.outputDirectory = data.outputDirectory;
       },
+      openOutPath() {
+        shell.showItemInFolder(state.options.outputDirectory);
+      },
     };
     return {
       state,
@@ -197,7 +210,7 @@ export default defineComponent({
   align-items: center;
 }
 .colorBox {
-  transition: width ease 1s;
+  transition: all ease 0.8s;
   width: 40px;
   height: 40px;
   display: flex;
@@ -209,16 +222,18 @@ export default defineComponent({
 #dark {
   background-color: black;
   color: white;
+  border-radius: 15px 0px 0px 15px;
 }
 
 #light {
   background-color: white;
   color: black;
+  border-radius: 0px 15px 15px 0px;
 }
 
 .colorBox.selected {
-  width: 80px;
-  outline: 3px solid var(--primary);
-  outline-offset: -3px;
+  width: 100px;
+  border-color: var(--primary);
+  border-radius: 0.5rem;
 }
 </style>

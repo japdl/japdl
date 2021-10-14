@@ -64,7 +64,6 @@ button.basic:disabled {
 
 input {
   outline-color: var(--dark-primary);
-  color: var(--text-color);
 }
 
 .icon {

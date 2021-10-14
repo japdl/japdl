@@ -4,7 +4,7 @@
     <form @submit.prevent="search" class="p-4 flex">
       <input
         type="search"
-        class="rounded-md bg-gray-100 p-2"
+        class="rounded-md bg-gray-100 p-2 text-black"
         placeholder="Nom du manga"
         v-model="mangaName.value"
         required
@@ -94,9 +94,5 @@ function search() {
 .result:hover {
   background-color: rgba(211, 211, 211, 0.404);
   transition: 0.2s;
-}
-
-input {
-  color: black;
 }
 </style>

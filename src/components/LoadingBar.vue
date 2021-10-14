@@ -1,11 +1,7 @@
 <template>
   <div id="loadingBar" class="w-full">
-    <div
-      id="fill"
-      :style="widthStyle"
-      class="flex items-center justify-center"
-    >
-      <span>{{ computedWidth }} %</span>
+    <div id="fill" :style="widthStyle" class="flex items-center justify-center">
+      <span>{{ roundedPercent }}%</span>
     </div>
   </div>
 </template>
@@ -18,6 +14,8 @@ const props = defineProps({
     default: 0,
   },
 });
+const roundedPercent = computed(() => Math.round(props.done));
+
 const computedWidth = computed(() => {
   return props.done <= 100 ? props.done : 100;
 });

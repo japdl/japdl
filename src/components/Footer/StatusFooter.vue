@@ -16,16 +16,17 @@
           :download="download"
         />
         <FooterChaptersDownload
-          v-if="download.type === 'chapters'"
+          v-else-if="download.type === 'chapters' || download.type === 'volume'"
           :download="download"
         />
+        <h1 v-else>Le téléchargement {{ download }} n'est pas reconnu</h1>
       </div>
     </div>
   </footer>
 </template>
 
 <script lang="ts" setup>
-import progress from "@/utils/progress";
+import { progress } from "@/utils/progress";
 import { ipcRenderer } from "electron";
 import { ref } from "vue";
 import FooterChapterDownload from "./FooterChapterDownload.vue";
@@ -96,8 +97,7 @@ ipcRenderer.on(
 );
 
 ipcRenderer.on("downloadChapterUpdatePage", (_, arg) => {
-  const percent = Math.round(progress(+arg.attributes.page, arg.total));
-  console.log("downloadChapterEvent:", arg.downloadName, percent);
+  const percent = progress(+arg.attributes.page, arg.total);
   const currentDownload = downloads.value.find(
     (value) => value.name === arg.downloadName
   );
@@ -153,7 +153,7 @@ ipcRenderer.on("downloadChaptersUpdateChapter", (event, arg) => {
 });
 
 ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
-  const percent = Math.round(progress(+arg.attributes.page, arg.total));
+  const percent = progress(+arg.attributes.page, arg.total);
   const currentDownload = downloads.value.find(
     (value) => value.name === arg.parentName
   ) as ChaptersDownload;
@@ -186,14 +186,23 @@ ipcRenderer.on("downloadVolumeSetup", (event, arg) => {
 });
 
 ipcRenderer.on("downloadVolumeUpdatePage", (event, arg) => {
-  const percent = Math.round(progress(+arg.attributes.page, arg.total));
+  const percent = progress(+arg.attributes.page, arg.total);
   const currentDownload = downloads.value.find(
     (value) => value.name === arg.parentName
   ) as VolumeDownload;
   if (currentDownload) {
     currentDownload.percent = percent;
     currentDownload.currentName = arg.downloadName;
+  } else {
+    downloads.value.push({
+      name: arg.parentName,
+      currentName: arg.downloadName,
+      percent: percent,
+      type: "volume",
+    });
   }
+  console.log("downloadVolumeUpdatePage", arg);
+  console.log("current", currentDownload);
 });
 
 ipcRenderer.on("downloadVolumeEnd", (event, arg) => {

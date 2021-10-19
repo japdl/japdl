@@ -1,7 +1,7 @@
 <template>
   <div class="h-full w-full flex flex-col justify-between">
     <NavBar />
-    <main>
+    <main class="overflow-y-scroll h-full">
       <div id="image-container" class="flex justify-center">
         <img class="w-32" src="./assets/svg/noun-torii.svg" />
       </div>

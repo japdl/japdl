@@ -3,11 +3,11 @@
     <h1 class="flex justify-center" v-if="!downloads.length">
       <span>No Downloads yet</span>
     </h1>
-    <div v-else class="w-3/4">
+    <div v-else class="w-full">
       <div
         v-for="(download, index) in downloads"
         :key="index"
-        class="w-full flex items-center"
+        class="w-full flex items-center border-b-2 border-black"
       >
         <FooterChapterDownload
           v-if="download.type === 'chapter'"
@@ -15,6 +15,10 @@
         />
         <FooterChaptersDownload
           v-else-if="download.type === 'chapters'"
+          :download="download"
+        />
+        <FooterVolumesDownload
+          v-else-if="download.type === 'volumes'"
           :download="download"
         />
         <h1 v-else>Le téléchargement {{ download }} n'est pas reconnu</h1>
@@ -29,25 +33,27 @@ import { ipcRenderer } from "electron";
 import { ref } from "vue";
 import FooterChapterDownload from "./FooterChapterDownload.vue";
 import FooterChaptersDownload from "./FooterChaptersDownload.vue";
+import FooterVolumesDownload from "./FooterVolumesDownload.vue";
 
-type Download = ChapterDownload | ChaptersDownload | VolumesDownload;
+export type Download = ChapterDownload | ChaptersDownload | VolumesDownload;
 
-type ChapterDownload = {
+export type ChapterDownload = {
   name: string;
   percent: number;
   type: "chapter";
 };
 
-type ChaptersDownload = {
+export type ChaptersDownload = {
   name: string;
   currentName: string;
   percent: number;
   type: "chapters";
 };
 
-type VolumesDownload = {
+export type VolumesDownload = {
   name: string;
-  currentName: string;
+  currentVolumeName: string;
+  currentDownloadName: string,
   percent: number;
   type: "volumes";
 };
@@ -70,9 +76,16 @@ const mockData: Download[] = [
     percent: 20,
     type: "chapters",
   },
+  {
+    name: "one-piece volume 1-2",
+    currentVolumeName: "one-piece volume 1",
+    currentDownloadName: "one-piece volume-1",
+    percent: 20,
+    type: "volumes",
+  },
 ];
 
-const downloads = ref([] as Download[]);
+const downloads = ref(mockData as Download[]);
 
 // chapter
 ipcRenderer.on(
@@ -158,6 +171,13 @@ ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
   if (currentDownload) {
     currentDownload.percent = percent;
     currentDownload.currentName = arg.downloadName;
+  } else {
+    downloads.value.push({
+      name: arg.parentName,
+      currentName: arg.downloadName,
+      percent,
+      type: "chapters",
+    } as ChaptersDownload);
   }
 });
 
@@ -171,44 +191,6 @@ ipcRenderer.on("downloadChaptersEnd", (event, arg) => {
 });
 
 // end chapters
-
-// volume
-ipcRenderer.on("downloadVolumeSetup", (event, arg) => {
-  const download: ChaptersDownload = {
-    name: arg.name,
-    currentName: "",
-    percent: 0,
-    type: "chapters",
-  };
-  downloads.value.push(download);
-});
-
-ipcRenderer.on("downloadVolumeUpdatePage", (event, arg) => {
-  const percent = progress(+arg.attributes.page, arg.total);
-  const currentDownload = downloads.value.find(
-    (value) => value.name === arg.parentName
-  ) as ChaptersDownload;
-  if (currentDownload) {
-    currentDownload.percent = percent;
-    currentDownload.currentName = arg.downloadName;
-  } else {
-    downloads.value.push({
-      name: arg.parentName,
-      currentName: arg.downloadName,
-      percent: percent,
-      type: "chapters",
-    });
-  }
-  console.log("downloadVolumeUpdatePage", arg);
-  console.log("current", currentDownload);
-});
-
-ipcRenderer.on("downloadVolumeEnd", (event, arg) => {
-  setTimeout(() => {
-    downloads.value = downloads.value.filter((el) => el.name !== arg.name);
-  }, 2000);
-});
-// end volume
 </script>
 
 <style scoped>

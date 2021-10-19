@@ -1,5 +1,5 @@
 <template>
-  <div id="gridWrapper">
+  <div class="h-full w-full flex flex-col justify-between">
     <NavBar />
     <main>
       <div id="image-container" class="flex justify-center">
@@ -30,23 +30,5 @@ ipcRenderer.on("changeTheme", (event, data) => {
 main {
   padding: 15px 5px 10px 5px;
   background-color: var(--light-background);
-  grid-area: "main";
-}
-
-footer {
-  grid-area: "footer";
-  min-height: 2rem;
-  max-height: 5rem;
-  background-color: black;
-}
-
-#gridWrapper {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: auto 1fr auto;
-  grid-template: 'header'
-    'main'
-    'footer';
 }
 </style>

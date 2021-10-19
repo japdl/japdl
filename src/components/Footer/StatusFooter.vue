@@ -1,7 +1,5 @@
 <template>
-  <footer
-    class="bg-gray-900 w-full h-full overflow-y-hidden flex justify-center"
-  >
+  <footer class="bg-gray-900 flex justify-center items-center min-h-screen">
     <h1 class="flex justify-center" v-if="!downloads.length">
       <span>No Downloads yet</span>
     </h1>
@@ -212,3 +210,9 @@ ipcRenderer.on("downloadVolumeEnd", (event, arg) => {
 });
 // end volume
 </script>
+
+<style scoped>
+footer {
+  min-height: fit-content;
+}
+</style>

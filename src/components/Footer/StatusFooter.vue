@@ -1,7 +1,7 @@
 <template>
   <footer class="bg-gray-900 flex justify-center items-center min-h-screen">
-    <h1 class="flex justify-center" v-if="!downloads.length">
-      <span>No Downloads yet</span>
+    <h1 class="flex justify-center items-center" v-if="!downloads.length">
+      <span>Aucun téléchargement en cours</span>
     </h1>
     <div v-else class="w-full">
       <div
@@ -53,7 +53,7 @@ export type ChaptersDownload = {
 export type VolumesDownload = {
   name: string;
   currentVolumeName: string;
-  currentDownloadName: string,
+  currentDownloadName: string;
   percent: number;
   type: "volumes";
 };
@@ -85,7 +85,7 @@ const mockData: Download[] = [
   },
 ];
 
-const downloads = ref(mockData as Download[]);
+const downloads = ref([] as Download[]);
 
 // chapter
 ipcRenderer.on(
@@ -98,12 +98,19 @@ ipcRenderer.on(
       downloadName: string;
     }
   ) => {
-    const download: ChapterDownload = {
-      name: arg.downloadName,
-      percent: 0,
-      type: "chapter",
-    };
-    downloads.value.push(download);
+    const alreadyExists = downloads.value.find(
+      (value) => value.name === arg.downloadName
+    );
+    if (alreadyExists) {
+      alreadyExists.percent = 0;
+    } else {
+      const download: ChapterDownload = {
+        name: arg.downloadName,
+        percent: 0,
+        type: "chapter",
+      };
+      downloads.value.push(download);
+    }
   }
 );
 
@@ -137,13 +144,21 @@ ipcRenderer.on("downloadChapterEnd", (event, arg) => {
 // chapters
 
 ipcRenderer.on("downloadChaptersSetup", (event, arg) => {
-  const download: ChaptersDownload = {
-    name: arg.parentName,
-    currentName: "",
-    percent: 0,
-    type: "chapters",
-  };
-  downloads.value.push(download);
+  const alreadyExists = downloads.value.find(
+    (value) => value.name === arg.downloadName
+  ) as ChaptersDownload;
+  if (alreadyExists) {
+    alreadyExists.percent = 0;
+    alreadyExists.currentName = "";
+  } else {
+    const download: ChaptersDownload = {
+      name: arg.parentName,
+      currentName: "",
+      percent: 0,
+      type: "chapters",
+    };
+    downloads.value.push(download);
+  }
 });
 
 ipcRenderer.on("downloadChaptersUpdateChapter", (event, arg) => {

@@ -21,13 +21,22 @@
         />
       </div>
       <div class="p-8">
-        <span class="uppercase tracking-wide text-indigo-500 font-semibold">
+        <span
+          class="
+            font-manga
+            uppercase
+            tracking-wide
+            text-primary
+            font-semibold
+            text-2xl
+          "
+        >
           {{ props.infos.name }}
         </span>
+        <br />
         <span
           @click.prevent.stop="openExternalLink(mangaLink)"
           class="
-            block
             mt-1
             text-lg
             leading-tight
@@ -39,7 +48,6 @@
           >Voir sur Japscan</span
         >
         <div class="mt-2 text-gray-800">
-          <h3 v-if="props.infos.name">Nom: {{ props.infos.name }}</h3>
           <div class="mt-2 text-gray-500">
             <div v-if="props.infos.original_name">
               <i>Nom original:</i> {{ props.infos.original_name }}

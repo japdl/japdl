@@ -1,13 +1,13 @@
 <template>
   <div class="telecharger" v-if="state.japscanInitiated">
     <div v-if="debug" class="flex space-x-1">
-      <DebugVariables title="state variables" :state="state" />
+      <DebugVariables title="state" :state="state" />
       <DebugVariables title="manga" :state="manga" />
     </div>
     <ChooseManga @manga="getMangaInfos" />
     <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" class="m-6" v-if="manga.name && !state.loading">
-      <h1 class="text-6xl bg-gray">{{ manga.name }}</h1>
+      <h1 class="font-manga text-6xl bg-gray">{{ manga.name }}</h1>
       <div class="informations m-5">
         <p>
           <span class="text-xl m-2" v-if="manga.volumes">
@@ -64,7 +64,6 @@ import ChooseManga from "@/components/ChooseManga.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import { ipcRenderer } from "electron";
 import Loading from "@/components/Loading.vue";
-import Container from "@/components/Container.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import { SearchInfos } from "japscandl/js/src/utils/types";
@@ -125,7 +124,6 @@ function getMangaInfos(result: SearchInfos) {
   state.loading = true;
   ipcRenderer.send("getMangaInfos", result.japscan);
   ipcRenderer.once("replyMangaInfos", (event, infos) => {
-    state.loading = false;
     if (infos) {
       manga.name = result.name;
       manga.japscanName = infos.name;
@@ -133,31 +131,12 @@ function getMangaInfos(result: SearchInfos) {
       manga.chapters = infos.chapters;
       manga.synopsis = infos.synopsis;
     }
+    state.loading = false;
   });
 }
 function getType(type: string) {
   manga.type = type;
   console.log("type: ", type);
-}
-function sendDownloadToBackground(options: {
-  options: ("pdf" | "cbr" | "images")[];
-  start: number;
-  end: number;
-}) {
-  const compression = Array.from(options.options)
-    .filter((element) => element !== "images")
-    .pop();
-  console.log(compression);
-  const emitOptions = {
-    start: options.start,
-    end: options.end,
-    type: manga.type,
-    manga: manga.japscanName,
-    compression,
-    deleteAfter: !options.options.includes("images"),
-  };
-  console.log(emitOptions);
-  ipcRenderer.send("download", emitOptions);
 }
 </script>
 
@@ -177,13 +156,5 @@ function sendDownloadToBackground(options: {
 
 #afterMangaChoosen {
   width: 50vw;
-}
-
-.error {
-  text-align: center;
-}
-
-h1 {
-  font-family: "Staatliches", cursive;
 }
 </style>

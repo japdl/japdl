@@ -98,7 +98,7 @@ function removeDownload(_event: any, arg: { parentName: string }) {
   }, 2000);
 }
 
-function handleFromType(type: DownloadType) {
+function handleSetupFromType(type: DownloadType) {
   // registers type and return a function that will be handled by ipcRenderer event
   // with pre-defined type
   return (_event: IpcRendererEvent, arg: { parentName: string }) => {
@@ -142,9 +142,9 @@ function getBasic(type: DownloadType, name: string): Download {
   }
 }
 
-ipcRenderer.on("downloadChapterSetup", handleFromType("chapter"));
-ipcRenderer.on("downloadChaptersSetup", handleFromType("chapters"));
-ipcRenderer.on("downloadVolumesSetup", handleFromType("volumes"));
+ipcRenderer.on("downloadChapterSetup", handleSetupFromType("chapter"));
+ipcRenderer.on("downloadChaptersSetup", handleSetupFromType("chapters"));
+ipcRenderer.on("downloadVolumesSetup", handleSetupFromType("volumes"));
 
 ipcRenderer.on("downloadChapterUpdatePage", (_, arg) => {
   const percent = progress(+arg.attributes.page, arg.total);

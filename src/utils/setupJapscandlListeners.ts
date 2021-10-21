@@ -88,7 +88,7 @@ async function setupJapscandl(
             if (type === "volume") {
               // if it's multiple volumes
               if (end) {
-                const parentName = manga + " volume " + start + "-" + end;
+                const parentName = manga + " volumes " + start + "-" + end;
                 const attributes = {
                   manga,
                   current: start,
@@ -110,7 +110,7 @@ async function setupJapscandl(
                       const downloadName =
                         attributes.manga + " " + attributes.chapter;
                       console.log(downloadName, attributes.page);
-                      win.webContents.send("downloaChaptersUpdatePage", {
+                      win.webContents.send("downloadChaptersUpdatePage", {
                         attributes,
                         total,
                         downloadName,

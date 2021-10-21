@@ -88,12 +88,15 @@ async function setupJapscandl(
             if (type === "volume") {
               // if it's multiple volumes
               if (end) {
-                const parentName = manga + "volume" + start;
+                const parentName = manga + " volume " + start + "-" + end;
+                const attributes = {
+                  manga,
+                  current: start,
+                  total: end,
+                };
                 // send a start download volumes to main process
                 win.webContents.send("downloadVolumesSetup", {
-                  manga,
-                  start,
-                  end,
+                  attributes,
                   parentName,
                 });
                 downloadLocation = await downloader.downloadVolumes(
@@ -103,9 +106,7 @@ async function setupJapscandl(
                   { compression }
                 );
                 win.webContents.send("downloadVolumesEnd", {
-                  manga,
-                  start,
-                  end,
+                  parentName,
                 });
               } else {
                 const parentName = manga + " volume " + start;
@@ -200,11 +201,15 @@ async function setupJapscandl(
                 });
               } else {
                 // if it's a single chapter
-                const downloadName = manga + " " + start;
-                win.webContents.send("downloadChapterSetup", {
+                const attributes = {
                   manga,
-                  chapter: start,
-                  downloadName,
+                  current: start,
+                  total: end,
+                };
+                const parentName = manga + " " + start;
+                win.webContents.send("downloadChapterSetup", {
+                  attributes,
+                  parentName,
                 });
                 downloadLocation = await downloader.downloadChapter(
                   manga,
@@ -216,15 +221,13 @@ async function setupJapscandl(
                       win.webContents.send("downloadChapterUpdatePage", {
                         attributes,
                         total,
-                        downloadName,
+                        parentName,
                       });
                     },
                   }
                 );
                 win.webContents.send("downloadChapterEnd", {
-                  manga,
-                  chapter: start,
-                  downloadName,
+                  parentName,
                 });
               }
             }

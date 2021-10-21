@@ -1,7 +1,7 @@
 <template>
-  <h1 class="text-center">{{ props.download.name }}</h1>
-  <h2 class="text-center">{{ props.download.currentVolumeName }}</h2>
-  <h3 class="text-center">{{ props.download.currentDownloadName }}</h3>
+  <h1 class="text-center mr-1">{{ props.download.name }}</h1>
+  <h2 class="text-center mr-1">{{ props.download.currentVolumeName }}</h2>
+  <h3 class="text-center mr-1">{{ props.download.currentDownloadName }}</h3>
   <LoadingBar :done="props.download.percent" />
 </template>
 

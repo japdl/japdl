@@ -29,13 +29,15 @@
 
 <script lang="ts" setup>
 import { progress } from "@/utils/progress";
-import { ipcRenderer } from "electron";
+import { ipcRenderer, IpcRendererEvent } from "electron";
 import { ref } from "vue";
 import FooterChapterDownload from "./FooterChapterDownload.vue";
 import FooterChaptersDownload from "./FooterChaptersDownload.vue";
 import FooterVolumesDownload from "./FooterVolumesDownload.vue";
 
 export type Download = ChapterDownload | ChaptersDownload | VolumesDownload;
+
+export type DownloadType = "chapter" | "chapters" | "volumes";
 
 export type ChapterDownload = {
   name: string;
@@ -87,94 +89,76 @@ const mockData: Download[] = [
 
 const downloads = ref([] as Download[]);
 
-// chapter
-ipcRenderer.on(
-  "downloadChapterSetup",
-  (
-    event,
-    arg: {
-      manga: string;
-      chapter: number;
-      downloadName: string;
-    }
-  ) => {
+function removeDownload(_event: any, arg: { parentName: string }) {
+  // after 2 seconds, remove download from list
+  setTimeout(() => {
+    downloads.value = downloads.value.filter(
+      (el) => el.name !== arg.parentName
+    );
+  }, 2000);
+}
+
+function handleFromType(type: DownloadType) {
+  // registers type and return a function that will be handled by ipcRenderer event
+  // with pre-defined type
+  return (_event: IpcRendererEvent, arg: { parentName: string }) => {
+    const defaultDownloadObject = getBasic(type, arg.parentName);
     const alreadyExists = downloads.value.find(
-      (value) => value.name === arg.downloadName
+      (value) => value.name === arg.parentName
     );
     if (alreadyExists) {
-      alreadyExists.percent = 0;
+      Object.assign(alreadyExists, defaultDownloadObject);
     } else {
-      const download: ChapterDownload = {
-        name: arg.downloadName,
-        percent: 0,
-        type: "chapter",
-      };
+      const download = defaultDownloadObject;
       downloads.value.push(download);
     }
+  };
+}
+
+function getBasic(type: DownloadType, name: string): Download {
+  if (type === "chapter") {
+    return {
+      name,
+      percent: 0,
+      type,
+    } as ChapterDownload;
+  } else if (type === "chapters") {
+    return {
+      name,
+      type,
+      currentName: "",
+      percent: 0,
+    } as ChaptersDownload;
+  } else if (type === "volumes") {
+    return {
+      name,
+      type,
+      currentDownloadName: "",
+      currentVolumeName: "",
+      percent: 0,
+    };
+  } else {
+    throw new Error("Type non reconnu, reçu " + type);
   }
-);
+}
+
+ipcRenderer.on("downloadChapterSetup", handleFromType("chapter"));
+ipcRenderer.on("downloadChaptersSetup", handleFromType("chapters"));
+ipcRenderer.on("downloadVolumesSetup", handleFromType("volumes"));
 
 ipcRenderer.on("downloadChapterUpdatePage", (_, arg) => {
   const percent = progress(+arg.attributes.page, arg.total);
   const currentDownload = downloads.value.find(
-    (value) => value.name === arg.downloadName
+    (value) => value.name === arg.parentName
   );
   if (!currentDownload) {
     downloads.value.push({
-      name: arg.downloadName,
+      name: arg.parentName,
       percent: percent,
       type: "chapter",
     });
   } else {
     currentDownload.percent = percent;
-  }
-});
-
-ipcRenderer.on("downloadChapterEnd", (event, arg) => {
-  // after 2 seconds, remove download from list
-  setTimeout(() => {
-    downloads.value = downloads.value.filter(
-      (el) => el.name !== arg.downloadName
-    );
-  }, 2000);
-});
-
-// end chapter
-
-// chapters
-
-ipcRenderer.on("downloadChaptersSetup", (event, arg) => {
-  const alreadyExists = downloads.value.find(
-    (value) => value.name === arg.downloadName
-  ) as ChaptersDownload;
-  if (alreadyExists) {
-    alreadyExists.percent = 0;
-    alreadyExists.currentName = "";
-  } else {
-    const download: ChaptersDownload = {
-      name: arg.parentName,
-      currentName: "",
-      percent: 0,
-      type: "chapters",
-    };
-    downloads.value.push(download);
-  }
-});
-
-ipcRenderer.on("downloadChaptersUpdateChapter", (event, arg) => {
-  console.log("received in updateChapter", arg);
-  const currentDownload = downloads.value.find(
-    (value) => value.name === arg.parentName
-  ) as ChaptersDownload;
-  if (!currentDownload) {
-    downloads.value.push({
-      name: arg.parentName,
-      currentName: arg.downloadName,
-      percent: 0,
-      type: "chapters",
-    });
-  } else {
-    currentDownload.currentName = arg.downloadName;
   }
 });
 
@@ -196,16 +180,9 @@ ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
   }
 });
 
-ipcRenderer.on("downloadChaptersEnd", (event, arg) => {
-  // after 2 seconds, remove download from list
-  setTimeout(() => {
-    downloads.value = downloads.value.filter(
-      (el) => el.name !== arg.parentName
-    );
-  }, 2000);
-});
-
-// end chapters
+ipcRenderer.on("downloadChapterEnd", removeDownload);
+ipcRenderer.on("downloadChaptersEnd", removeDownload);
+ipcRenderer.on("downloadVolumesEnd", removeDownload);
 </script>
 
 <style scoped>

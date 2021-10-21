@@ -29,7 +29,8 @@
 
 <script lang="ts" setup>
 import { progress } from "@/utils/progress";
-import { ipcRenderer, IpcRendererEvent } from "electron";
+import { DownloadItem, ipcRenderer, IpcRendererEvent } from "electron";
+import { MangaAttributes } from "japscandl/js/src/utils/types";
 import { ref } from "vue";
 import FooterChapterDownload from "./FooterChapterDownload.vue";
 import FooterChaptersDownload from "./FooterChaptersDownload.vue";
@@ -102,40 +103,40 @@ function handleSetupFromType(type: DownloadType) {
   // registers type and return a function that will be handled by ipcRenderer event
   // with pre-defined type
   return (_event: IpcRendererEvent, arg: { parentName: string }) => {
-    const defaultDownloadObject = getBasic(type, arg.parentName);
+    const defaultDownloadObject = getBasic(type);
+    defaultDownloadObject.name = arg.parentName;
     const alreadyExists = downloads.value.find(
       (value) => value.name === arg.parentName
     );
     if (alreadyExists) {
       Object.assign(alreadyExists, defaultDownloadObject);
     } else {
-      const download = defaultDownloadObject;
-      downloads.value.push(download);
+      downloads.value.push(defaultDownloadObject);
     }
   };
 }
 
-function getBasic(type: DownloadType, name: string): Download {
+function getBasic(type: DownloadType): Download {
   if (type === "chapter") {
     return {
-      name,
+      name: "",
       percent: 0,
       type,
     } as ChapterDownload;
   } else if (type === "chapters") {
     return {
-      name,
+      name: "",
+      percent: 0,
       type,
       currentName: "",
-      percent: 0,
     } as ChaptersDownload;
   } else if (type === "volumes") {
     return {
-      name,
+      name: "",
+      percent: 0,
       type,
       currentDownloadName: "",
       currentVolumeName: "",
-      percent: 0,
     };
   } else {
     throw new Error("Type non reconnu, reçu " + type);
@@ -146,6 +147,51 @@ ipcRenderer.on("downloadChapterSetup", handleSetupFromType("chapter"));
 ipcRenderer.on("downloadChaptersSetup", handleSetupFromType("chapters"));
 ipcRenderer.on("downloadVolumesSetup", handleSetupFromType("volumes"));
 
+function handlePageUpdateFromType(type: DownloadType) {
+  return (
+    _event: IpcRendererEvent,
+    arg: {
+      attributes: MangaAttributes;
+      total: number;
+      parentName: string;
+      downloadName: string;
+    }
+  ) => {
+    const percent = progress(+arg.attributes.page, arg.total);
+    const defaultDownloadObject = getBasic(type);
+    defaultDownloadObject.name = arg.parentName;
+    if (type === "chapters") {
+      (defaultDownloadObject as ChaptersDownload).currentName =
+        arg.downloadName;
+    }
+    defaultDownloadObject.percent = percent;
+    const currentDownload = downloads.value.find(
+      (value) => value.name === arg.parentName
+    );
+    if (currentDownload) {
+      console.log(
+        "Updated is before assignement",
+        JSON.stringify(currentDownload)
+      );
+      Object.assign(currentDownload, defaultDownloadObject);
+      console.log("Updated is now", JSON.stringify(currentDownload));
+    } else {
+      downloads.value.push(defaultDownloadObject);
+    }
+  };
+}
+
+ipcRenderer.on(
+  "downloadChapterUpdatePage",
+  handlePageUpdateFromType("chapter")
+);
+
+// doesn't work yet
+ipcRenderer.on(
+  "downloadChaptersUpdatePage",
+  handlePageUpdateFromType("chapters")
+);
+/*
 ipcRenderer.on("downloadChapterUpdatePage", (_, arg) => {
   const percent = progress(+arg.attributes.page, arg.total);
   const currentDownload = downloads.value.find(
@@ -179,6 +225,8 @@ ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
     } as ChaptersDownload);
   }
 });
+
+*/
 
 ipcRenderer.on("downloadChapterEnd", removeDownload);
 ipcRenderer.on("downloadChaptersEnd", removeDownload);

@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import { ipcRenderer } from "electron";
 import { SearchInfos } from "japscandl/js/src/utils/types";
-import { defineEmit, reactive } from "vue";
+import { defineEmits, reactive } from "vue";
 import Manga from "./Manga.vue";
 import Loading from "./Loading.vue";
 import Container from "./Container.vue";
@@ -47,7 +47,7 @@ const mangaName = reactive({
   errors: [] as string[],
 });
 
-const emits = defineEmit(["manga"]);
+const emits = defineEmits(["manga"]);
 
 function submitResult(result: SearchInfos) {
   // reset values

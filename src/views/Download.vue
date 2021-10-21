@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmit, reactive } from "vue";
+import { computed, reactive } from "vue";
 import ChooseManga from "@/components/ChooseManga.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import { ipcRenderer } from "electron";
@@ -68,8 +68,6 @@ import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 import DebugVariables from "@/components/DebugVariables.vue";
-
-defineEmit(["download"]);
 
 const debug = false;
 

@@ -17,10 +17,6 @@
           v-else-if="download.type === 'chapters'"
           :download="download"
         />
-        <FooterVolumesDownload
-          v-else-if="download.type === 'volumes'"
-          :download="download"
-        />
         <h1 v-else>Le téléchargement {{ download }} n'est pas reconnu</h1>
       </div>
     </div>
@@ -29,14 +25,14 @@
 
 <script lang="ts" setup>
 import { progress } from "@/utils/progress";
-import { DownloadItem, ipcRenderer, IpcRendererEvent } from "electron";
+import { ipcRenderer, IpcRendererEvent } from "electron";
 import { MangaAttributes } from "japscandl/js/src/utils/types";
 import { ref } from "vue";
 import FooterChapterDownload from "./FooterChapterDownload.vue";
 import FooterChaptersDownload from "./FooterChaptersDownload.vue";
 import FooterVolumesDownload from "./FooterVolumesDownload.vue";
 
-export type Download = ChapterDownload | ChaptersDownload | VolumesDownload;
+export type Download = ChapterDownload | ChaptersDownload;
 
 export type DownloadType = "chapter" | "chapters" | "volumes";
 
@@ -51,14 +47,6 @@ export type ChaptersDownload = {
   currentName: string;
   percent: number;
   type: "chapters";
-};
-
-export type VolumesDownload = {
-  name: string;
-  currentVolumeName: string;
-  currentDownloadName: string;
-  percent: number;
-  type: "volumes";
 };
 
 const mockData: Download[] = [
@@ -78,13 +66,6 @@ const mockData: Download[] = [
     currentName: "one-piece volume-1",
     percent: 20,
     type: "chapters",
-  },
-  {
-    name: "one-piece volume 1-2",
-    currentVolumeName: "one-piece volume 1",
-    currentDownloadName: "one-piece volume-1",
-    percent: 20,
-    type: "volumes",
   },
 ];
 
@@ -130,16 +111,8 @@ function getBasic(type: DownloadType): Download {
       type,
       currentName: "",
     } as ChaptersDownload;
-  } else if (type === "volumes") {
-    return {
-      name: "",
-      percent: 0,
-      type,
-      currentDownloadName: "",
-      currentVolumeName: "",
-    };
   } else {
-    throw new Error("Type non reconnu, reçu " + type);
+    throw new Error("Type not recognized, received: " + type);
   }
 }
 
@@ -169,12 +142,7 @@ function handlePageUpdateFromType(type: DownloadType) {
       (value) => value.name === arg.parentName
     );
     if (currentDownload) {
-      console.log(
-        "Updated is before assignement",
-        JSON.stringify(currentDownload)
-      );
       Object.assign(currentDownload, defaultDownloadObject);
-      console.log("Updated is now", JSON.stringify(currentDownload));
     } else {
       downloads.value.push(defaultDownloadObject);
     }
@@ -186,7 +154,6 @@ ipcRenderer.on(
   handlePageUpdateFromType("chapter")
 );
 
-// doesn't work yet
 ipcRenderer.on(
   "downloadChaptersUpdatePage",
   handlePageUpdateFromType("chapters")
@@ -230,7 +197,6 @@ ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
 
 ipcRenderer.on("downloadChapterEnd", removeDownload);
 ipcRenderer.on("downloadChaptersEnd", removeDownload);
-ipcRenderer.on("downloadVolumesEnd", removeDownload);
 </script>
 
 <style scoped>

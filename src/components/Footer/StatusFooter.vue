@@ -30,7 +30,6 @@ import { MangaAttributes } from "japscandl/js/src/utils/types";
 import { ref } from "vue";
 import FooterChapterDownload from "./FooterChapterDownload.vue";
 import FooterChaptersDownload from "./FooterChaptersDownload.vue";
-import FooterVolumesDownload from "./FooterVolumesDownload.vue";
 
 export type Download = ChapterDownload | ChaptersDownload;
 
@@ -71,7 +70,7 @@ const mockData: Download[] = [
 
 const downloads = ref([] as Download[]);
 
-function removeDownload(_event: any, arg: { parentName: string }) {
+function removeDownload(_event: IpcRendererEvent, arg: { parentName: string }) {
   // after 2 seconds, remove download from list
   setTimeout(() => {
     downloads.value = downloads.value.filter(
@@ -80,22 +79,6 @@ function removeDownload(_event: any, arg: { parentName: string }) {
   }, 2000);
 }
 
-function handleSetupFromType(type: DownloadType) {
-  // registers type and return a function that will be handled by ipcRenderer event
-  // with pre-defined type
-  return (_event: IpcRendererEvent, arg: { parentName: string }) => {
-    const defaultDownloadObject = getBasic(type);
-    defaultDownloadObject.name = arg.parentName;
-    const alreadyExists = downloads.value.find(
-      (value) => value.name === arg.parentName
-    );
-    if (alreadyExists) {
-      Object.assign(alreadyExists, defaultDownloadObject);
-    } else {
-      downloads.value.push(defaultDownloadObject);
-    }
-  };
-}
 
 function getBasic(type: DownloadType): Download {
   if (type === "chapter") {
@@ -116,9 +99,23 @@ function getBasic(type: DownloadType): Download {
   }
 }
 
-ipcRenderer.on("downloadChapterSetup", handleSetupFromType("chapter"));
-ipcRenderer.on("downloadChaptersSetup", handleSetupFromType("chapters"));
-ipcRenderer.on("downloadVolumesSetup", handleSetupFromType("volumes"));
+function handleSetupFromType(type: DownloadType) {
+  // registers type and return a function that will be handled by ipcRenderer event
+  // with pre-defined type
+  return (_event: IpcRendererEvent, arg: { parentName: string }) => {
+    const defaultDownloadObject = getBasic(type);
+    defaultDownloadObject.name = arg.parentName;
+    const alreadyExists = downloads.value.find(
+      (value) => value.name === arg.parentName
+    );
+    if (alreadyExists) {
+      Object.assign(alreadyExists, defaultDownloadObject);
+    } else {
+      downloads.value.push(defaultDownloadObject);
+    }
+  };
+}
+
 
 function handlePageUpdateFromType(type: DownloadType) {
   return (
@@ -149,6 +146,10 @@ function handlePageUpdateFromType(type: DownloadType) {
   };
 }
 
+ipcRenderer.on("downloadChapterSetup", handleSetupFromType("chapter"));
+ipcRenderer.on("downloadChaptersSetup", handleSetupFromType("chapters"));
+ipcRenderer.on("downloadVolumesSetup", handleSetupFromType("volumes"));
+
 ipcRenderer.on(
   "downloadChapterUpdatePage",
   handlePageUpdateFromType("chapter")
@@ -158,42 +159,6 @@ ipcRenderer.on(
   "downloadChaptersUpdatePage",
   handlePageUpdateFromType("chapters")
 );
-/*
-ipcRenderer.on("downloadChapterUpdatePage", (_, arg) => {
-  const percent = progress(+arg.attributes.page, arg.total);
-  const currentDownload = downloads.value.find(
-    (value) => value.name === arg.parentName
-  );
-  if (!currentDownload) {
-    downloads.value.push({
-      name: arg.parentName,
-      percent: percent,
-      type: "chapter",
-    });
-  } else {
-    currentDownload.percent = percent;
-  }
-});
-
-ipcRenderer.on("downloadChaptersUpdatePage", (event, arg) => {
-  const percent = progress(+arg.attributes.page, arg.total);
-  const currentDownload = downloads.value.find(
-    (value) => value.name === arg.parentName
-  ) as ChaptersDownload;
-  if (currentDownload) {
-    currentDownload.percent = percent;
-    currentDownload.currentName = arg.downloadName;
-  } else {
-    downloads.value.push({
-      name: arg.parentName,
-      currentName: arg.downloadName,
-      percent,
-      type: "chapters",
-    } as ChaptersDownload);
-  }
-});
-
-*/
 
 ipcRenderer.on("downloadChapterEnd", removeDownload);
 ipcRenderer.on("downloadChaptersEnd", removeDownload);

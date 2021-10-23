@@ -5,7 +5,6 @@
       justify-center
       items-center
       flex-col
-      bg-gray-900
       px-6
       py-8
       rounded-2xl
@@ -29,3 +28,9 @@ const props = defineProps({
   },
 });
 </script>
+
+<style scoped>
+div {
+  background-color: var(--container);
+}
+</style>

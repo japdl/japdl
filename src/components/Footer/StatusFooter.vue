@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-gray-900 flex justify-center items-center min-h-screen">
+  <footer class="flex justify-center items-center min-h-screen">
     <h1 class="flex justify-center items-center" v-if="!downloads.length">
       <span>Aucun téléchargement en cours</span>
     </h1>
@@ -79,7 +79,6 @@ function removeDownload(_event: IpcRendererEvent, arg: { parentName: string }) {
   }, 2000);
 }
 
-
 function getBasic(type: DownloadType): Download {
   if (type === "chapter") {
     return {
@@ -115,7 +114,6 @@ function handleSetupFromType(type: DownloadType) {
     }
   };
 }
-
 
 function handlePageUpdateFromType(type: DownloadType) {
   return (
@@ -167,5 +165,6 @@ ipcRenderer.on("downloadChaptersEnd", removeDownload);
 <style scoped>
 footer {
   min-height: fit-content;
+  background-color: var(--container);
 }
 </style>

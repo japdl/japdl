@@ -19,20 +19,24 @@ html, body, #app {
 }
 */
 
+:root {
+    --dark-primary: #880921;
+    --primary: #ff0000;
+}
+
 #app.dark {
-  --dark-primary: #880921;
-  --primary: #ff0000;
+
   --light-background: #24292e;
   --dark-background: #1d2125;
+  --container: #111827;
   --text-color: white;
   color: var(--text-color);
 }
 
 #app.light {
-  --dark-primary: #880921;
-  --primary: #ff0000;
-  --light-background: #e5e7eb;;
-  --dark-background: #d1d5db;
+  --light-background: white;
+  --dark-background: #c7af9c;
+  --container: #f4edde;
   --text-color: black;
   color: var(--text-color);
 }
@@ -73,4 +77,12 @@ input {
 .error {
   color: red;
   text-align: center;
+}
+
+input {
+    border: 2px solid var(--container);
+}
+
+path {
+    fill: var(--container);
 }

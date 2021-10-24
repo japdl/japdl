@@ -60,7 +60,7 @@
       <button class="basic" @click="openOutPath">Ouvrir le dossier</button>
     </div>
     <div id="save">
-      <button class="basic" @click="setData">
+      <button class="basic text-2xl mt-32" @click="setData">
         Sauvegarder les modifications
       </button>
     </div>

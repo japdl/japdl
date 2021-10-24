@@ -28,9 +28,9 @@
       </div>
     </div>
   </div>
-  <h1 v-else class="text-center text-2xl">
-    Vous n'avez rien téléchargé pour le moment
-  </h1>
+  <div v-else class="text-center text-2xl">
+    <h1>Vous n'avez rien téléchargé pour le moment</h1>
+  </div>
 </template>
 
 <script lang="ts" setup>

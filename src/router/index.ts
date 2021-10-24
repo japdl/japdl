@@ -24,9 +24,9 @@ const routes: Array<RouteRecordRaw> = [
   },
   makeRoute("download", "Télécharger un manga"),
   makeRoute("downloaded", "Mangas téléchargés"),
-  makeRoute("infos", "Informations sur un manga"),
-  makeRoute("about", "À propos"),
-  makeRoute("tests"),
+  //makeRoute("infos", "Informations sur un manga"),
+  //makeRoute("about", "À propos"),
+  //makeRoute("tests"),
   makeRoute("options"),
 ];
 

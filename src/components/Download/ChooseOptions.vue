@@ -6,12 +6,12 @@
         Télécharger les images</label
       >
     </div>
-    <div class="downloadOption">
+    <!--div class="downloadOption">
       <label>
         <input type="radio" v-model="state.compression" value="pdf" />
         Créer un fichier PDF</label
       >
-    </div>
+    </div-->
     <div class="downloadOption">
       <label>
         <input type="radio" v-model="state.compression" value="cbr" />

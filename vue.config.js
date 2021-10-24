@@ -9,7 +9,6 @@ module.exports = {
           .use("unlazy-loader")
           .loader("unlazy-loader")
           .end();
-        config.externals({ pdfkit: "commonjs2 pdfkit" });
       },
     },
   },

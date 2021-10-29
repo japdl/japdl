@@ -68,7 +68,6 @@ const circleRadius = ref(120);
 </script>
 
 <style scoped>
-
 .custom {
   border: 2px solid black;
   display: flex;
@@ -77,6 +76,5 @@ const circleRadius = ref(120);
 }
 
 .child {
-
 }
-  </style>
+</style>

@@ -1,8 +1,11 @@
 <template>
   <div v-if="valid">
-    <h1 class="text-center text-2xl">
-      Mangas téléchargés dans le dossier {{ config.outputDirectory }}
-    </h1>
+    <div class="flex justify-center items-center flex-col">
+      <h1 class="text-center text-2xl">
+        Mangas téléchargés dans le dossier {{ config.outputDirectory }}
+      </h1>
+      <button class="basic text-2xl my-3" @click="getFolders">Rafraîchir les fichiers</button>
+    </div>
     <div>
       <div id="directories" class="flex">
         <div v-for="(folder, ifolder) in folders" :key="ifolder" class="m-6">
@@ -54,10 +57,14 @@ function readdirSyncFullPath(folder: string) {
 }
 
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
-const folders = readdirSyncFullPath(config.outputDirectory).filter((file) =>
-  fs.lstatSync(file.path).isDirectory()
-);
+const folders = ref([] as { path: string; stat: fs.Stats }[]);
+function getFolders() {
+  folders.value = readdirSyncFullPath(config.outputDirectory).filter((file) =>
+    file.stat.isDirectory()
+  );
+}
 
 // valid if has files in it
-const valid = ref(!!folders.length);
+getFolders();
+const valid = ref(!!folders.value.length);
 </script>

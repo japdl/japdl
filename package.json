@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "description": "Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons.",
-  "author": "Seysa",
+  "author": "Seysa <garion.g@hotmail.fr>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

@@ -1,3 +1,22 @@
 publish:
     provider: 'github'
     releaseType: 'release'
+
+# Windows configuration
+win:
+  target:
+    - "zip"
+    - "nsis"
+
+# Config for the windows installer
+nsis:
+  oneClick: true
+  perMachine: true
+
+# Linux configuration
+linux:
+  category: Utility
+  target:
+    - "AppImage"
+    - "deb"
+    - "rpm"

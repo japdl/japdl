@@ -23,8 +23,8 @@ class Config {
   private BASIC_CONFIG_DATA: configData = {
     theme: "dark",
     outputDirectory: path.join(app.getPath("documents"), "Japdl", "manga"),
-    chromePath: "",
-    imageFormat: "png",
+    chromePath: japscandl.utils.chrome.getChromePath(),
+    imageFormat: "jpg",
   };
 
   constructor() {

@@ -17,53 +17,38 @@
               :key="chapter"
             >
               <span>{{ chapter.name }}</span>
-              <button v-if="volume.chapters.length > 1">Télécharger</button>
+              <button class="basic" v-if="volume.chapters.length > 1">
+                Télécharger
+              </button>
             </li>
           </ul>
         </div>
       </div>
-      <div v-else class="field">
+      <div v-else class="m-3">
         <strong>{{ name }}: </strong>{{ el }}
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import ChooseManga from "@/components/ChooseManga.vue";
 import { ipcRenderer } from "electron";
-import { defineComponent, reactive } from "vue";
+import { SearchInfos } from "japscandl/js/src/utils/types";
+import { reactive } from "vue";
 
-export default defineComponent({
-  components: { ChooseManga },
-  setup() {
-    const state = reactive({
-      name: "" as string,
-      content: {},
-    });
-
-    const methods = {
-      getMangaContent(manga: string) {
-        console.log("Manga:", manga);
-        state.name = manga;
-        ipcRenderer.send("getMangaContent", manga);
-        ipcRenderer.once("returnMangaContent", (event, arg) => {
-          state.content = arg;
-          console.log("content reçu:", arg);
-        });
-      },
-    };
-
-    return {
-      state,
-      ...methods,
-    };
-  },
+const state = reactive({
+  name: "" as string,
+  content: {},
 });
-</script>
 
-<style scoped>
-.field {
-  margin: 10px;
+function getMangaContent(manga: SearchInfos) {
+  console.log("Searching for", manga.japscan, "content");
+  state.name = manga.japscan;
+  ipcRenderer.send("getMangaContent", state.name);
+  ipcRenderer.once("returnMangaContent", (event, arg) => {
+    state.content = arg;
+    console.log("Search results are:", arg);
+  });
 }
-</style>
+</script>

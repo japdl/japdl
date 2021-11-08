@@ -6,40 +6,29 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, reactive } from "vue";
+<script lang="ts" setup>
 import axios from "axios";
+import { reactive } from "vue";
 
-export default defineComponent({
-  setup() {
-    const state = reactive({
-      info: "" as string,
-    });
-
-    onMounted(() => {
-      axios
-        .get("https://raw.githubusercontent.com/Seysa/japdl/main/README.md", {
-          responseType: "text",
-        })
-        .then((data) => {
-          const infos: string[] = data.data.split(/#+.*\n/);
-          infos.shift();
-          state.info = infos[0];
-        })
-        .catch((e) => {
-          state.info =
-            "Une erreur s'est produite pendant la récupération du message d'accueil." +
-            " Veuillez vérifier votre connexion internet. Erreur complète:" +
-            e;
-        });
-    });
-
-    return {
-      state,
-    };
-  },
-  name: "Home",
+const state = reactive({
+  info: "" as string,
 });
+
+axios
+  .get("https://raw.githubusercontent.com/Seysa/japdl/main/README.md", {
+    responseType: "text",
+  })
+  .then((data) => {
+    const infos: string[] = data.data.split(/#+.*\n/);
+    infos.shift();
+    state.info = infos[0];
+  })
+  .catch((e) => {
+    state.info =
+      "Une erreur s'est produite pendant la récupération du message d'accueil." +
+      " Veuillez vérifier votre connexion internet. Erreur complète:" +
+      e;
+  });
 </script>
 
 <style scoped>

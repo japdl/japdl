@@ -12,12 +12,11 @@ A l'intérieur de cette version se trouve une catégorie `Assets` où sont dispo
 ## Pour windows:
 - Une version `.exe` "setup" qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
 -  Une archive `.zip` qui contient tout le programme et qui n'a pas besoin d'être installée.
-- Version `.exe` setup qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
 
 ## Pour linux:
 - Une version `.AppImage` qui contient tout le programme en 1 fichier, facile à lancer (```./japdl-gui-<version>.appImage```)
-- Une version `.rpm` pour les distributions linux RedHat
-- Une version `.deb` pour les distributions linux basée sur Debian
+- Une version `.rpm` pour les distributions linux basées sur RedHat linux
+- Une version `.deb` pour les distributions linux basées sur Debian
 
 Toutes les versions sont générées automatiquement pour linux et windows.
 
@@ -27,8 +26,8 @@ Toutes les versions sont générées automatiquement pour linux et windows.
 ## Pour windows:
 - Si vous avez téléchargé la version `.exe`, lancez le programme. Il vous guidera dans son installation.
 ## Pour linux:
-- Si vous avez téléchargé la version `.appImage`, le fichier est le programme. Il suffit de l'exécuter.
-- Si vous avez téléchargé la version `.deb` ou `.rpm`, installez l'application comme n'importe quel programme de ce type.
+- Si vous avez téléchargé la version `.appImage`, il suffit de l'exécuter.
+- Si vous avez téléchargé la version `.deb` ou `.rpm`, installez l'application comme n'importe quel programme de ce type sur votre distribution linux.
 # Pour les développeurs
 ## Installer les dépendances
 ```

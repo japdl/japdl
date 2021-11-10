@@ -20,3 +20,4 @@ linux:
     - "AppImage"
     - "deb"
     - "rpm"
+    - "zip"

@@ -1,5 +1,5 @@
 # Japdl
-Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons où toutes les pages d'un chapitre sont sur la même page japscan.
+Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons quand toutes les pages d'un chapitre sont sur la même page japscan.
 
 Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl) ? Celui-ci est un programme avec une interface graphique <sup style="color: #000">(GUI en anglais)</sup> au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
 

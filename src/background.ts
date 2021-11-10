@@ -4,6 +4,12 @@ import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import setupJapscandlListeners from "@/utils/setupJapscandlListeners";
 import Config from "@/utils/handleConfig";
 import MockDownloader from "./utils/fakeJapscandl";
+
+ipcMain.on("restart", () => {
+  app.relaunch();
+  app.quit();
+});
+
 ipcMain.on("directory-question", async (event, data) => {
   const properties = ["openDirectory", "multiSelections"];
   if (!data) {

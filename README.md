@@ -1,16 +1,16 @@
 # Japdl
-Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons.
+Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons où toutes les pages d'un chapitre sont sur la même page japscan.
 
-Quelle est la différence avec l'autre programme `Japdl` ? Celui-ci est un programme avec une interface graphique au lieu d'une interface en ligne de commande.
+Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl) ? Celui-ci est un programme avec une interface graphique <sup style="color: #000">(GUI en anglais)</sup> au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
 
 # Téléchargement
 [Cliquez ici pour télécharger la dernière version](https://github.com/Seysa/japdl-gui/releases "Dernière version")
 
-Selectionnez la version de votre choix. La dernière version sera marquée `Latest` en ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) à droite de la version.
-A l'intérieur de cette version se trouve une catégorie `Assets`.
+Selectionnez la version de votre choix. La dernière version sera marquée `Latest` en ![#3fb950](https://via.placeholder.com/15/3fb950/000000?text=+) à droite de la version.
+A l'intérieur de cette version se trouve une catégorie `Assets` où sont disponibles au téléchargement les fichiers pour installer le programme.
 # Que télécharger ?
 ## Pour windows:
-- Une version "setup" qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
+- Une version `.exe` "setup" qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
 -  Une archive `.zip` qui contient tout le programme et qui n'a pas besoin d'être installée.
 - Version `.exe` setup qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
 

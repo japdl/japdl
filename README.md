@@ -1,29 +1,40 @@
-# japdl-vue
+# Japdl
+Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons.
 
-## Project setup
-```
-npm install
-```
+Quelle est la différence avec l'autre programme `Japdl` ? Celui-ci est un programme avec une interface graphique au lieu d'une interface en ligne de commande.
 
-### Compiles and hot-reloads for development
-```
-npm run start
-```
+# Téléchargement
+[Cliquez ici pour télécharger la dernière version](https://github.com/Seysa/japdl-gui/releases "Dernière version")
 
-### Compiles and minifies for production
-```
-npm run electron:build
-```
+Selectionnez la version de votre choix. La dernière version sera marquée `Latest` en ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) à droite de la version.
+A l'intérieur de cette version se trouve une catégorie `Assets`.
+# Que télécharger ?
+## Pour windows:
+- Une version "setup" qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
+-  Une archive `.zip` qui contient tout le programme et qui n'a pas besoin d'être installée.
+- Version `.exe` setup qui s'installe comme un programme windows simple. Windows signalera que l'éditeur du programme n'est pas reconnu: c'est normal, pas d'inquiétude. Le code source est accessible et la manière de créer les programmes est transparente.
 
-### Run your unit tests
-```
-npm run test:unit
-```
+## Pour linux:
+- Une version `.AppImage` qui contient tout le programme en 1 fichier, facile à lancer (```./japdl-gui-<version>.appImage```)
+- Une version `.rpm` pour les distributions linux RedHat
+- Une version `.deb` pour les distributions linux basée sur Debian
 
-### Lints and fixes files
-```
-npm run lint
-```
+Toutes les versions sont générées automatiquement pour linux et windows.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# Installation
+
+- Si vous avez téléchargé une archive `.zip`, il suffit d'extraire le contenu de l'archive puis de lancer l'exécutable dans les fichiers extraits.
+## Pour windows:
+- Si vous avez téléchargé la version `.exe`, lancez le programme. Il vous guidera dans son installation.
+## Pour linux:
+- Si vous avez téléchargé la version `.appImage`, le fichier est le programme. Il suffit de l'exécuter.
+- Si vous avez téléchargé la version `.deb` ou `.rpm`, installez l'application comme n'importe quel programme de ce type.
+# Pour les développeurs
+## Installer les dépendances
+```
+npm ci
+```
+## Le lancer
+```
+npm start
+```

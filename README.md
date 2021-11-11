@@ -1,5 +1,12 @@
 # Japdl
-Japdl est un programme pour télécharger les mangas de japscan. Pour l'instant, il n'est pas possible de télécharger les webtoons quand toutes les pages d'un chapitre sont sur la même page japscan.
+Japdl est un programme pour télécharger les mangas de japscan. Ce programme permet de créer des fichiers [`.cbr`](https://fr.wikipedia.org/wiki/CBR_(format_de_fichier)) pouvant contenir les images de:
+- Tout un volume
+- Plusieurs chapitres
+- Un chapitre
+
+Il est aussi possible de télécharger les images d'un chapitre ou d'un volume en format `.jpg` ou `.png`.
+
+Pour l'instant, il n'est pas possible de télécharger les webtoons quand toutes les pages d'un chapitre sont sur la même page japscan.
 
 Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl) ? Celui-ci est un programme avec une interface graphique <small><small>(GUI en anglais)</small></small> au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
 

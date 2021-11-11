@@ -1,0 +1,25 @@
+<template>
+  <svg
+    height="300px"
+    width="300px"
+    fill="#000000"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    x="0px"
+    y="0px"
+    viewBox="0 0 20 20"
+    enable-background="new 0 0 20 20"
+    xml:space="preserve"
+  >
+    <path
+      d="M12.5,15C8.4,15,5,11.6,5,7.5c0-3.7,2.7-6.8,6.3-7.4C10.9,0,10.5,0,10,0C4.5,0,0,4.5,0,10  c0,5.5,4.5,10,10,10s10-4.5,10-10c0-0.5,0-0.9-0.1-1.3C19.3,12.3,16.2,15,12.5,15z"
+    />
+  </svg>
+</template>
+
+<style scoped>
+path {
+  fill: var(--text-color);
+}
+</style>

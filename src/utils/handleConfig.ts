@@ -156,6 +156,11 @@ class Config {
       }
     });
 
+    setupLogListener("setTheme", (event, arg) => {
+      this.setField("theme", arg);
+      win.webContents.send("changeTheme", arg);
+    });
+
     setupLogListener("setDataSync", (event, arg) => {
       console.log("Receiving setDataSync", arg);
       // if changing theme, we need to send changeTheme to the app

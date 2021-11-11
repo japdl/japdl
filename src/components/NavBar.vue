@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="select-none">
     <router-link
       v-for="route in clickableRoutes"
       :key="route.name"

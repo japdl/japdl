@@ -4,20 +4,6 @@ html, body, #app {
   width: 100%;
   background-color: var(--light-background);
 }
-/*
-#app {
-  height: 100%;
-  width: 100%;
-  /* grid container settings */ /*
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 100%;
-  grid-template-areas:
-    "header"
-    "main"
-    "footer";
-}
-*/
 
 :root {
     --dark-primary: #880921;
@@ -53,6 +39,7 @@ button.basic {
   cursor: pointer;
   outline: none;
   text-transform: uppercase;
+  @apply select-none;
 }
 
 button.basic:enabled:hover {
@@ -77,6 +64,14 @@ input {
 .error {
   color: red;
   text-align: center;
+}
+
+.topbar-icon {
+    @apply cursor-pointer w-9 h-5 px-2 h-full;
+}
+
+img {
+    @apply select-none;
 }
 
 input {

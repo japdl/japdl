@@ -2,7 +2,6 @@
   <svg
     height="300px"
     width="300px"
-    fill="#000000"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     version="1.1"
@@ -37,13 +36,17 @@
       <path
         d="M3.6,5.1c0.4,0.4,1,0.4,1.4,0c0.4-0.4,0.4-1,0-1.4L4.3,2.9c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4L3.6,5.1z"
       />
-      <circle fill="#000000" cx="10" cy="10" r="5" />
+      <circle cx="10" cy="10" r="5" />
     </g>
   </svg>
 </template>
 
 <style scoped>
 path {
+  fill: var(--text-color);
+}
+
+circle {
   fill: var(--text-color);
 }
 </style>

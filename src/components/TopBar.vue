@@ -4,7 +4,7 @@
     <div class="flex">
       <ThemeSwitch />
       <div id="minimize" @click="minimizeWindow" title="Minimiser la fenêtre">
-        <Minimize class="topbar-icon hover:bg-gray-700" />
+        <Minimize class="topbar-icon hover:background" />
       </div>
       <div
         id="maximize"
@@ -12,7 +12,7 @@
         @click="maximizeWindow"
         title="Maximiser la fenêtre"
       >
-        <Maximize class="topbar-icon hover:bg-gray-700" />
+        <Maximize class="topbar-icon hover:background" />
       </div>
       <div
         id="restore"
@@ -20,7 +20,7 @@
         @click="restoreWindow"
         title="Réduire la fenêtre"
       >
-        <Restore class="topbar-icon hover:bg-gray-700" />
+        <Restore class="topbar-icon hover:background" />
       </div>
       <div id="close" @click="closeWindow" title="Fermer le programme">
         <Close class="topbar-icon hover:bg-red-600" />

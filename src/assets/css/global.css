@@ -70,6 +70,11 @@ input {
     @apply cursor-pointer w-9 h-5 px-2 h-full;
 }
 
+.hover\:background:hover {
+    background-color: var(--dark-background);
+
+}
+
 img {
     @apply select-none;
 }

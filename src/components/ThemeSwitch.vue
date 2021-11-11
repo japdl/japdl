@@ -1,10 +1,10 @@
 <template>
-  <div id="themeButton">
+  <div id="themeButton" class="hover:background">
     <div
       id="svgs"
       class="flex justify-center items-center relative py-1 mr-2 w-full h-full"
     >
-      <Moon
+      <Sun
         v-if="selectedTheme == 'dark'"
         ref="sun"
         src="../assets/svg/sun.svg"
@@ -12,7 +12,7 @@
         class="topbar-icon"
         @click="setTheme('light')"
       />
-      <Sun
+      <Moon
         v-if="selectedTheme == 'light'"
         ref="moon"
         src="../assets/svg/moon.svg"

@@ -1,6 +1,6 @@
 ## A faire
 
-- Faire en sorte que le bouton de changement de thème soit dans la TopBar avec les icones soleil/lune
+- Faire une largeur et hauteur fixe (quitte a scroller) pour les mangas téléchargés pour pouvoir en faire un flex wrap
 
 ## Idées
 

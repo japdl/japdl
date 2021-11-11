@@ -4,7 +4,9 @@
       <h1 class="text-center text-2xl">
         Mangas téléchargés dans le dossier {{ config.outputDirectory }}
       </h1>
-      <button class="basic text-2xl my-3" @click="getFolders">Rafraîchir les fichiers</button>
+      <button class="basic text-2xl my-3" @click="getFolders">
+        Rafraîchir la liste des fichiers
+      </button>
     </div>
     <div>
       <div id="directories" class="flex">

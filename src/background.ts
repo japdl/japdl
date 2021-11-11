@@ -18,6 +18,11 @@ setupLogListener("mockDownloadChapter", (event, data) => {
 });
 const isDevelopment = process.env.NODE_ENV !== "production";
 
+if (!isDevelopment) {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  console.log = () => {};
+}
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },

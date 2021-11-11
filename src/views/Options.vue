@@ -1,10 +1,10 @@
 <template>
   <div id="options">
-    <DebugVariables :state="state.options" title="options" />
+    <DebugVariables v-if="debug" :state="state.options" title="options" />
     <div id="theme">
       Thème:
       <div
-        v-for="theme in state.themes"
+        v-for="theme in themes"
         :key="theme.theme"
         :id="theme.theme"
         :class="{ selected: state.options.theme === theme.theme }"
@@ -68,128 +68,124 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ipcRenderer, shell } from "electron";
-import { defineComponent, onMounted, reactive } from "vue";
+import { reactive } from "vue";
 import { configData } from "@/utils/handleConfig";
+import { inject } from "@vue/runtime-core";
 import fs from "fs";
 import DebugVariables from "@/components/DebugVariables.vue";
 
-export default defineComponent({
-  components: { DebugVariables },
-  setup() {
-    const state = reactive({
-      themes: [
-        {
-          theme: "dark",
-          text: "sombre",
-        },
-        {
-          theme: "light",
-          text: "lumineux",
-        },
-      ],
-      options: {} as configData,
-      possibleOptions: {} as { [key: string]: string[] },
-      message: "" as string,
-      pathMessage: "" as string,
-      pathError: "" as string,
-      //@ts-expect-error doesn't understand Timeout type
-      // eslint-disable-next-line no-undef
-      timeout: null as null | Timeout,
-      //@ts-expect-error doesn't understand Timeout type
-      // eslint-disable-next-line no-undef
-      pathTimeout: null as null | Timeout,
-    });
+const debug = inject("dev");
 
-    onMounted(() => {
-      console.log("Options mounted");
-      ipcRenderer.send("getConfigData");
-      ipcRenderer.once("returnConfigData", (event, data: configData) => {
-        state.options = data;
-        console.log("Data received", data);
-      });
-      ipcRenderer.send("getPossibleOptions");
-      ipcRenderer.once("returnPossibleOptions", (event, data) => {
-        state.possibleOptions = data;
-        console.log("Possible options received", data);
-      });
-    });
-
-    const methods = {
-      selectTheme(theme: string) {
-        if (!state.possibleOptions.theme.includes(theme)) return;
-        state.options.theme = theme as "dark" | "light";
-      },
-      setData() {
-        console.log("Sending set data", state.options);
-        const data = ipcRenderer.sendSync("setDataSync", {
-          theme: state.options.theme,
-          outputDirectory: state.options.outputDirectory,
-          imageFormat: state.options.imageFormat,
-          chromePath: state.options.chromePath,
-        } as configData);
-        if (state.timeout) clearTimeout(state.timeout);
-        if (data === "ok") {
-          state.message = "Les options ont été enregistrées avec succès";
-        } else {
-          const objectEntries = Object.entries(data);
-          const errorMessage = objectEntries
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(", ");
-          state.message = `Erreur lors de l'enregistrement des options: ${errorMessage}`;
-        }
-        state.timeout = setTimeout(() => {
-          state.message = "";
-          state.timeout = null;
-        }, 2000);
-      },
-      chooseChromePath() {
-        const [newPath] = ipcRenderer.sendSync("file-question");
-        console.log(newPath);
-        if (newPath) {
-          state.options.chromePath = newPath;
-          // verif path
-          this.checkPath(newPath);
-        }
-      },
-      chooseOutPath() {
-        const [newPath] = ipcRenderer.sendSync("directory-question");
-        console.log(newPath);
-        if (newPath) state.options.outputDirectory = newPath;
-      },
-      checkPath(path: string) {
-        if (fs.existsSync(path)) {
-          const data = ipcRenderer.sendSync("checkChromePath", path);
-          if (data.good) {
-            state.pathMessage = "Le chemin est bon";
-          } else {
-            state.pathMessage = "Le fichier n'est pas chrome";
-            state.pathError = data.msg;
-          }
-        } else {
-          state.pathError = "Le chemin n'existe pas";
-          state.pathTimeout = setTimeout(() => {
-            state.pathMessage = "";
-            state.pathError = "";
-            state.pathTimeout = null;
-          }, 2000);
-        }
-      },
-      defaultOutPath() {
-        const data = ipcRenderer.sendSync("getDefaultDataSync");
-        state.options.outputDirectory = data.outputDirectory;
-      },
-      openOutPath() {
-        shell.showItemInFolder(state.options.outputDirectory);
-      },
-    };
-    return {
-      state,
-      ...methods,
-    };
+const themes = [
+  {
+    theme: "dark",
+    text: "sombre",
   },
+  {
+    theme: "light",
+    text: "lumineux",
+  },
+];
+
+const state = reactive({
+  options: {} as configData,
+  possibleOptions: {} as { [key: string]: string[] },
+  message: "" as string,
+  pathMessage: "" as string,
+  pathError: "" as string,
+  //@ts-expect-error doesn't understand Timeout type
+  // eslint-disable-next-line no-undef
+  timeout: null as null | Timeout,
+  //@ts-expect-error doesn't understand Timeout type
+  // eslint-disable-next-line no-undef
+  pathTimeout: null as null | Timeout,
 });
+
+console.log("Options mounted");
+ipcRenderer.send("getConfigData");
+ipcRenderer.once("returnConfigData", (event, data: configData) => {
+  state.options = data;
+  console.log("Data received", data);
+});
+ipcRenderer.send("getPossibleOptions");
+ipcRenderer.once("returnPossibleOptions", (event, data) => {
+  state.possibleOptions = data;
+  console.log("Possible options received", data);
+});
+
+function selectTheme(theme: string) {
+  if (!state.possibleOptions.theme.includes(theme)) return;
+  state.options.theme = theme as "dark" | "light";
+}
+
+function setData() {
+  console.log("Sending set data", state.options);
+  const data = ipcRenderer.sendSync("setDataSync", {
+    theme: state.options.theme,
+    outputDirectory: state.options.outputDirectory,
+    imageFormat: state.options.imageFormat,
+    chromePath: state.options.chromePath,
+  } as configData);
+  if (state.timeout) clearTimeout(state.timeout);
+  if (data === "ok") {
+    state.message = "Les options ont été enregistrées avec succès";
+  } else {
+    const objectEntries = Object.entries(data);
+    const errorMessage = objectEntries
+      .map(([key, value]) => `${key}: ${value}`)
+      .join(", ");
+    state.message = `Erreur lors de l'enregistrement des options: ${errorMessage}`;
+  }
+  state.timeout = setTimeout(() => {
+    state.message = "";
+    state.timeout = null;
+  }, 2000);
+}
+
+function chooseChromePath() {
+  const [newPath] = ipcRenderer.sendSync("file-question");
+  console.log(newPath);
+  if (newPath) {
+    state.options.chromePath = newPath;
+    // verif path
+    checkPath(newPath);
+  }
+}
+
+function chooseOutPath() {
+  const [newPath] = ipcRenderer.sendSync("directory-question");
+  console.log(newPath);
+  if (newPath) state.options.outputDirectory = newPath;
+}
+function checkPath(path: string) {
+  if (fs.existsSync(path)) {
+    const data = ipcRenderer.sendSync("checkChromePath", path);
+    if (data.good) {
+      state.pathMessage = "Le chemin est bon";
+    } else {
+      state.pathMessage = "Le fichier n'est pas chrome";
+      state.pathError = data.msg;
+    }
+  } else {
+    state.pathError = "Le chemin n'existe pas";
+    state.pathTimeout = setTimeout(() => {
+      state.pathMessage = "";
+      state.pathError = "";
+      state.pathTimeout = null;
+    }, 2000);
+  }
+}
+
+function defaultOutPath() {
+  const data = ipcRenderer.sendSync("getDefaultDataSync");
+  state.options.outputDirectory = data.outputDirectory;
+}
+
+function openOutPath() {
+  shell.showItemInFolder(state.options.outputDirectory);
+}
 </script>
 
 <style scoped>

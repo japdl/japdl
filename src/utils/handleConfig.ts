@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow } from "electron";
 import japscandl from "japscandl";
+import { setupLogListener } from "./listeners/handler";
 
 export type configData = {
   [key: string]: string;
@@ -123,20 +124,20 @@ class Config {
   }
 
   setupListeners(win: BrowserWindow): void {
-    ipcMain.on("getConfigData", (event) => {
+    setupLogListener("getConfigData", (event) => {
       event.reply("returnConfigData", this.data);
       console.log("Sending to renderer:", this.data);
     });
-    ipcMain.on("getConfigDataSync", (event) => {
+    setupLogListener("getConfigDataSync", (event) => {
       event.returnValue = this.data;
     });
-    ipcMain.on("getDefaultDataSync", (event) => {
+    setupLogListener("getDefaultDataSync", (event) => {
       event.returnValue = this.BASIC_CONFIG_DATA;
     });
-    ipcMain.on("getPossibleOptions", (event) => {
+    setupLogListener("getPossibleOptions", (event) => {
       event.reply("returnPossibleOptions", constraints);
     });
-    ipcMain.on("setData", (event, arg) => {
+    setupLogListener("setData", (event, arg) => {
       console.log("Receiving setData", arg);
       // if changing theme, we need to send changeTheme to the app
       if (this.data.theme !== arg.theme) {
@@ -155,7 +156,7 @@ class Config {
       }
     });
 
-    ipcMain.on("setDataSync", (event, arg) => {
+    setupLogListener("setDataSync", (event, arg) => {
       console.log("Receiving setDataSync", arg);
       // if changing theme, we need to send changeTheme to the app
       if (this.data.theme !== arg.theme) {
@@ -174,11 +175,11 @@ class Config {
       }
     });
 
-    ipcMain.on("getTheme", (event) => {
+    setupLogListener("getTheme", (event) => {
       event.reply("changeTheme", this.data.theme);
     });
 
-    ipcMain.on("setField", (event, arg) => {
+    setupLogListener("setField", (event, arg) => {
       this.setField(arg[0], arg[1]);
     });
   }

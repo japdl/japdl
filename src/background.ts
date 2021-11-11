@@ -1,60 +1,15 @@
-import { app, protocol, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
-import setupJapscandlListeners from "@/utils/setupJapscandlListeners";
+import { setupJapscandlListeners } from "@/utils/listeners/japscan";
 import Config from "@/utils/handleConfig";
 import MockDownloader from "./utils/fakeJapscandl";
+import listenersHandler, { setupLogListener } from "./utils/listeners/handler";
 
-ipcMain.on("restart", () => {
-  app.relaunch();
-  app.quit();
-});
+let ready = false;
+setupLogListener("readyStatus", (event) => (event.returnValue = ready));
 
-ipcMain.on("directory-question", async (event, data) => {
-  const properties = ["openDirectory", "multiSelections"];
-  if (!data) {
-    // remove multiselections
-    properties.pop();
-  }
-  const fileChooser = await dialog.showOpenDialog({
-    properties: properties as (
-      | "openFile"
-      | "openDirectory"
-      | "multiSelections"
-      | "showHiddenFiles"
-      | "createDirectory"
-      | "promptToCreate"
-      | "noResolveAliases"
-      | "treatPackageAsDirectory"
-      | "dontAddToRecent"
-    )[],
-  });
-  event.returnValue = fileChooser.filePaths;
-});
-
-ipcMain.on("file-question", async (event, data) => {
-  const properties = ["openFile", "multiSelections"];
-  if (!data) {
-    // remove multiselections
-    properties.pop();
-  }
-  const fileChooser = await dialog.showOpenDialog({
-    properties: properties as (
-      | "openFile"
-      | "openDirectory"
-      | "multiSelections"
-      | "showHiddenFiles"
-      | "createDirectory"
-      | "promptToCreate"
-      | "noResolveAliases"
-      | "treatPackageAsDirectory"
-      | "dontAddToRecent"
-    )[],
-  });
-  event.returnValue = fileChooser.filePaths;
-});
-
-ipcMain.on("mockDownloadChapter", (event, data) => {
+setupLogListener("mockDownloadChapter", (event, data) => {
   MockDownloader.downloadChapter(data.name, data.number, {
     onPage: (attributes, total) => {
       console.log(attributes, total);
@@ -85,15 +40,14 @@ async function createWindow() {
     },
     // hide window during initialization
     show: false,
+    frame: false,
   });
   try {
     const config = new Config();
     console.log("Config data:", config.getData());
     const { imageFormat, chromePath, outputDirectory } = config.getData();
-    config.setupListeners(win);
-    let japscandlInitiated = false;
-    try {
-      await setupJapscandlListeners(
+    await listenersHandler(win, config, async () => {
+      setupJapscandlListeners(
         {
           imageFormat,
           chromePath,
@@ -101,14 +55,8 @@ async function createWindow() {
         },
         win
       );
-      japscandlInitiated = true;
-    } catch (e) {
-      console.log("Error in japscandl:", e);
-    }
-    ipcMain.on(
-      "japscandlStatus",
-      (event) => (event.returnValue = japscandlInitiated)
-    );
+    });
+    ready = true;
   } catch (e) {
     console.error("Error in config:", e);
   }

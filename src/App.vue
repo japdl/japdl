@@ -1,5 +1,12 @@
 <template>
-  <div class="h-full w-full flex flex-col justify-between">
+  <div v-if="notReady">
+    <TopBar />
+    <div>
+      {{ notReady }}
+    </div>
+  </div>
+  <div v-else class="w-full h-full flex flex-col justify-between">
+    <TopBar />
     <NavBar />
     <main class="overflow-y-scroll h-full">
       <div id="image-container" class="flex justify-center">
@@ -13,8 +20,18 @@
 
 <script lang="ts" setup>
 import { ipcRenderer } from "electron";
+import { ref } from "vue";
+import { provide } from "@vue/runtime-core";
 import StatusFooter from "./components/Footer/StatusFooter.vue";
 import NavBar from "./components/NavBar.vue";
+import TopBar from "./components/TopBar.vue";
+
+const notReady = ref(false);
+ipcRenderer.send("readyStatus");
+ipcRenderer.on("readyStatusResponse", (event, arg) => (notReady.value = arg));
+
+// if japscan initialisation takes time, it may be used
+ipcRenderer.on("ready", () => (notReady.value = false));
 
 const appElement = document.getElementById("app") as HTMLDivElement;
 console.log("Sending set theme");
@@ -24,6 +41,9 @@ ipcRenderer.on("changeTheme", (event, data) => {
   appElement.classList.remove("light", "dark");
   appElement.classList.add(data);
 });
+
+const dev = process.env.NODE_ENV !== "production";
+provide("dev", dev);
 </script>
 
 <style scoped>

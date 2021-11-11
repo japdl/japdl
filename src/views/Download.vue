@@ -68,15 +68,16 @@ import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 import DebugVariables from "@/components/DebugVariables.vue";
+import { inject } from "@vue/runtime-core";
 
-const debug = false;
+const debug = inject("dev");
 
 const state = reactive({
   range: {} as { start?: number; end?: number },
   options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
   error: "" as string,
   loading: false as boolean,
-  japscanInitiated: ipcRenderer.sendSync("japscandlStatus") as boolean,
+  japscanInitiated: ipcRenderer.sendSync("readyStatus") as boolean,
 });
 
 const manga = reactive({

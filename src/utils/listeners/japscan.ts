@@ -5,7 +5,7 @@ import { BrowserWindow, ipcMain, shell } from "electron";
 import { ComponentFlags, MangaAttributes } from "japscandl/js/src/utils/types";
 import puppeteer from "puppeteer-core";
 
-async function setupJapscandl(
+export async function setupJapscandlListeners(
   options: {
     chromePath?: string;
     onEvent?: {
@@ -77,7 +77,7 @@ async function setupJapscandl(
               manga: string;
               start: number;
               end?: number;
-              compression?: "pdf" | "cbr";
+              compression?: "cbr";
               keepImages: boolean;
             }
           ) => {
@@ -273,5 +273,3 @@ async function setupJapscandl(
       .catch((error) => reject(error));
   });
 }
-
-export default setupJapscandl;

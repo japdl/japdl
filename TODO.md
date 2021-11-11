@@ -2,6 +2,8 @@
 
 - Faire une largeur et hauteur fixe (quitte a scroller) pour les mangas téléchargés pour pouvoir en faire un flex wrap
 
+- Gerer le chemin chrome quand il est invalide et quand il est valide proposer le bouton de restart
+
 ## Idées
 
 - Ajouter une taskbar progress bar (https://www.electronjs.org/docs/latest/tutorial/progress-bar)

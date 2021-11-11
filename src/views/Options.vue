@@ -1,19 +1,6 @@
 <template>
   <div id="options">
     <DebugVariables v-if="debug" :state="state.options" title="options" />
-    <div id="theme">
-      Thème:
-      <div
-        v-for="theme in themes"
-        :key="theme.theme"
-        :id="theme.theme"
-        :class="{ selected: state.options.theme === theme.theme }"
-        class="colorBox p-2 rounded-md"
-        @click="selectTheme(theme.theme)"
-      >
-        <span v-if="state.options.theme === theme.theme">{{ theme.text }}</span>
-      </div>
-    </div>
 
     <div id="imageFormat">
       <label for="imageSelect"> Format des images: </label>
@@ -78,17 +65,6 @@ import DebugVariables from "@/components/DebugVariables.vue";
 
 const debug = inject("dev");
 
-const themes = [
-  {
-    theme: "dark",
-    text: "sombre",
-  },
-  {
-    theme: "light",
-    text: "lumineux",
-  },
-];
-
 const state = reactive({
   options: {} as configData,
   possibleOptions: {} as { [key: string]: string[] },
@@ -114,11 +90,6 @@ ipcRenderer.once("returnPossibleOptions", (event, data) => {
   state.possibleOptions = data;
   console.log("Possible options received", data);
 });
-
-function selectTheme(theme: string) {
-  if (!state.possibleOptions.theme.includes(theme)) return;
-  state.options.theme = theme as "dark" | "light";
-}
 
 function setData() {
   console.log("Sending set data", state.options);
@@ -199,11 +170,6 @@ function openOutPath() {
 #options div {
   margin-top: 10px;
   margin-bottom: 10px;
-}
-#theme {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .colorBox {
   transition: all ease 0.8s;

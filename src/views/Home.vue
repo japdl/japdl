@@ -1,8 +1,10 @@
 <template>
-  <div class="home">
-    <h1>Bienvenue sur japdl!</h1>
-    <p v-if="state.info">{{ state.info }}</p>
-    <p v-else>Chargement...</p>
+  <div class="flex justify-center items-center h-1/2">
+    <div class="text-xl text-center">
+      <h1 class="mb-4">Bienvenue sur japdl!</h1>
+      <p v-if="state.info">{{ state.info }}</p>
+      <p v-else>Chargement...</p>
+    </div>
   </div>
 </template>
 
@@ -30,11 +32,3 @@ axios
       e;
   });
 </script>
-
-<style scoped>
-.home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-</style>

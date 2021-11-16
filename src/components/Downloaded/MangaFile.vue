@@ -8,16 +8,21 @@
       transition-opacity
       duration-75
       hover:opacity-80
+      h-0
+      w-full
     "
     :title="hoverMessage"
     @click="handleOpenPath()"
   >
-    <ImageFolder v-if="file.stat.isDirectory()" class="icon mr-2" />
-    <Read class="icon mr-2" v-if="file.stat.isFile()" />
+    <ImageFolder v-if="file.stat.isDirectory()" class="w-20 mr-2" />
+    <Read v-if="file.stat.isFile()" class="w-10 mr-2" />
     <span :class="{ error: file.stat.isFile() }" class="w-full">{{
       baseName
     }}</span>
-    <span v-if="file.stat.isDirectory()" id="nbOfPages" class="text-xs"
+    <span
+      v-if="file.stat.isDirectory()"
+      id="nbOfPages"
+      class="text-xs w-full text-right"
       >{{ numberOfImages() }} pages</span
     >
   </Container>

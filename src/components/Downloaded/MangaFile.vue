@@ -1,6 +1,14 @@
 <template>
   <Container
-    class="flex items-center justify-around cursor-pointer"
+    class="
+      flex
+      items-center
+      justify-around
+      cursor-pointer
+      transition-opacity
+      duration-75
+      hover:opacity-80
+    "
     :title="hoverMessage"
     @click="handleOpenPath()"
   >

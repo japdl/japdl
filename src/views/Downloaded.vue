@@ -1,12 +1,15 @@
 <template>
   <div v-if="valid">
     <div class="flex justify-center items-center flex-col">
-      <h1 class="text-center text-2xl">
-        Mangas téléchargés dans le dossier {{ config.outputDirectory }}
+      <h1 class="text-center text-2xl flex flex-col">
+        Mangas téléchargés dans le dossier
+        <div
+          class="hover:underline text-blue-600 cursor-pointer"
+          @click="shell.openPath(config.outputDirectory)"
+        >
+          {{ config.outputDirectory }}
+        </div>
       </h1>
-      <button class="basic text-2xl my-3" @click="getFolders">
-        Rafraîchir la liste des fichiers
-      </button>
     </div>
     <div>
       <div id="directories" class="flex flex-wrap">
@@ -26,11 +29,12 @@
 
 <script lang="ts" setup>
 import { configData } from "@/utils/handleConfig";
-import { ipcRenderer } from "electron";
+import { ipcRenderer, shell } from "electron";
 import fs from "fs";
 import path from "path";
 import { ref } from "vue";
 import MangaDirectory from "@/components/Downloaded/MangaDirectory.vue";
+import chokidar from "chokidar";
 
 function readdirSyncFullPath(folder: string) {
   try {
@@ -44,6 +48,7 @@ function readdirSyncFullPath(folder: string) {
 }
 
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
+
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
 function getFolders() {
   folders.value = readdirSyncFullPath(config.outputDirectory).filter(
@@ -53,5 +58,16 @@ function getFolders() {
 
 // valid if has files in it
 getFolders();
+
+// watch for file changes to auto update
+const watcher = chokidar.watch(config.outputDirectory, {
+  awaitWriteFinish: true,
+  ignored: /^\./,
+});
+
+watcher.on("add", getFolders);
+watcher.on("addDir", getFolders);
+watcher.on("change", getFolders);
+
 const valid = ref(!!folders.value.length);
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="loadingBar" class="w-full">
     <div id="fill" :style="widthStyle" class="flex items-center justify-center">
-      <span>{{ roundedPercent }}%</span>
+      <span v-if="roundedPercent !== 0">{{ roundedPercent }}%</span>
     </div>
   </div>
 </template>

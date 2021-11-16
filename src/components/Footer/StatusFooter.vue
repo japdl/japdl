@@ -1,5 +1,5 @@
 <template>
-  <footer class="flex justify-center items-center min-h-screen">
+  <footer class="flex justify-center items-center min-h-screen rounded-t-2xl">
     <h1 class="flex justify-center items-center" v-if="!downloads.length">
       <span>Aucun téléchargement en cours</span>
     </h1>

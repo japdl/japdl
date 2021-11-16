@@ -12,7 +12,7 @@
       </h1>
     </div>
     <div>
-      <div id="directories" class="flex flex-wrap">
+      <div id="directories" class="flex flex-wrap justify-center">
         <MangaDirectory
           v-for="(folder, ifolder) in folders"
           :key="ifolder"

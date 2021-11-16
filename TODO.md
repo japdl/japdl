@@ -6,6 +6,8 @@
 
 - Fix largeur du bouton de thème qui colle pas exactement au hover
 
+- shell.openExternal ne marche pas sur linux
+
 ## Idées
 
 - Ajouter une taskbar progress bar (https://www.electronjs.org/docs/latest/tutorial/progress-bar)

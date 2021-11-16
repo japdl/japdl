@@ -2,7 +2,7 @@
   <Container
     class="flex items-center justify-around cursor-pointer"
     :title="hoverMessage"
-    @click="handleOpenExternal(file.path)"
+    @click="handleOpenExternal()"
   >
     <ImageFolder v-if="file.stat.isDirectory()" class="icon mr-2" />
     <Read class="icon mr-2" v-if="file.stat.isFile()" />
@@ -42,12 +42,12 @@ function numberOfImages() {
 
 const baseName = computed(() => path.basename(props.file.path));
 
-function handleOpenExternal(path: string) {
+function handleOpenExternal() {
   shell
     .openExternal(props.file.path)
     .then(() => {
       console.log("Opened");
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.error("Error during open external", error));
 }
 </script>

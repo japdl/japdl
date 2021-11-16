@@ -4,6 +4,8 @@
 
 - Gerer le chemin chrome quand il est invalide et quand il est valide proposer le bouton de restart
 
+- Fix largeur du bouton de thème qui colle pas exactement au hover
+
 ## Idées
 
 - Ajouter une taskbar progress bar (https://www.electronjs.org/docs/latest/tutorial/progress-bar)

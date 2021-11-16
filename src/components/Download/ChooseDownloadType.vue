@@ -3,7 +3,7 @@
     <Container
       @change="submitType"
       class="mb-5 w-full p-3 flex items-center flex-col"
-      title="Type de téléchargement"
+      header="Type de téléchargement"
     >
       <div class="choice">
         <label>

@@ -1,5 +1,8 @@
 <template>
-  <Container title="Options de téléchargement">
+  <Container
+    class="flex justify-center items-center flex-col"
+    header="Options de téléchargement"
+  >
     <div class="downloadOption">
       <label>
         <input type="checkbox" v-model="state.images" value="images" />

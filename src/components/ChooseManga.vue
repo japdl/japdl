@@ -1,5 +1,5 @@
 <template>
-  <Container>
+  <Container class="flex justify-center items-center flex-col">
     <!-- Make a form containing an input, a submit button and a close button to clear results-->
     <form @submit.prevent="search" class="p-4 flex">
       <input

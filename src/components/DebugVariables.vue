@@ -1,5 +1,5 @@
 <template>
-  <Container :title="title">
+  <Container :header="header">
     <div v-for="(variable, name) in props.state" :key="name">
       <strong>{{ name }}</strong>
       {{ typeof variable === "string" ? '"' + variable + '"' : variable }}
@@ -16,7 +16,7 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  title: {
+  header: {
     type: String,
     required: false,
     default: "variables",

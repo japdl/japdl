@@ -1,15 +1,15 @@
 <template>
-  <div id="themeButton" class="hover:background">
+  <div id="themeButton">
     <div
       id="svgs"
-      class="flex justify-center items-center relative py-1 mr-2 w-full h-full"
+      class="flex justify-center items-center relative py-1 hover:background"
     >
       <Sun
         v-if="selectedTheme == 'dark'"
         ref="sun"
         src="../assets/svg/sun.svg"
         alt="sun"
-        class="topbar-icon"
+        class="topbar-icon w-full"
         @click="setTheme('light')"
       />
       <Moon
@@ -17,7 +17,7 @@
         ref="moon"
         src="../assets/svg/moon.svg"
         alt="moon"
-        class="topbar-icon"
+        class="topbar-icon w-full"
         @click="setTheme('dark')"
       />
     </div>

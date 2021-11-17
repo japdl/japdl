@@ -1,15 +1,28 @@
 <template>
   <Container
-    class="flex items-center justify-around cursor-pointer"
+    class="
+      flex
+      items-center
+      justify-around
+      cursor-pointer
+      transition-opacity
+      duration-75
+      hover:opacity-80
+      h-0
+      w-full
+    "
     :title="hoverMessage"
-    @click="handleOpenExternal(file.path)"
+    @click="handleOpenPath()"
   >
-    <ImageFolder v-if="file.stat.isDirectory()" class="icon mr-2" />
-    <Read class="icon mr-2" v-if="file.stat.isFile()" />
+    <ImageFolder v-if="file.stat.isDirectory()" class="w-20 mr-2" />
+    <Read v-if="file.stat.isFile()" class="w-10 mr-2" />
     <span :class="{ error: file.stat.isFile() }" class="w-full">{{
       baseName
     }}</span>
-    <span v-if="file.stat.isDirectory()" id="nbOfPages" class="text-xs"
+    <span
+      v-if="file.stat.isDirectory()"
+      id="nbOfPages"
+      class="text-xs w-full text-right"
       >{{ numberOfImages() }} pages</span
     >
   </Container>
@@ -42,12 +55,9 @@ function numberOfImages() {
 
 const baseName = computed(() => path.basename(props.file.path));
 
-function handleOpenExternal(path: string) {
+function handleOpenPath() {
   shell
-    .openExternal(props.file.path)
-    .then(() => {
-      console.log("Opened");
-    })
-    .catch((error) => console.error(error));
+    .openPath(props.file.path)
+    .catch((error) => console.error("Error during open path:", error));
 }
 </script>

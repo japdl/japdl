@@ -1,10 +1,17 @@
 <template>
-  <div class="m-6 min-w-max flex flex-col gap-1 p-2">
-    <h2 class="text-4xl font-manga text-center">
-      {{ path.basename(folder.path) }}
+  <div
+    id="wrapper"
+    class="m-6 min-w-max flex flex-col gap-1 p-2 items-center mt-20"
+  >
+    <img :src="imageLink" id="mangaImage" class="w-40 self-center" />
+    <h2 class="text-4xl font-manga text-center mt-2">
+      {{ mangaName }}
     </h2>
-    <button class="basic mb-5" @click="shell.openPath(folder.path)">
+    <button class="basic mt-3" @click="shell.openPath(folder.path)">
       Ouvrir le dossier
+    </button>
+    <button class="basic mb-5" @click="shell.openExternal(mangaLink)">
+      Voir sur japscan
     </button>
     <MangaFile v-for="(file, ifile) in sortedFiles" :key="ifile" :file="file" />
   </div>
@@ -46,4 +53,8 @@ const props =
       stat: fs.Stats;
     };
   }>();
+
+const mangaName = path.basename(props.folder.path);
+const imageLink = `https://japscan.ws/imgs/mangas/${mangaName}.jpg`;
+const mangaLink = `https://www.japscan.ws/manga/${mangaName}/`;
 </script>

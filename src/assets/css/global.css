@@ -57,10 +57,6 @@ input {
   outline-color: var(--dark-primary);
 }
 
-.icon {
-  width: 40px;
-}
-
 .error {
   color: red;
   text-align: center;

@@ -3,7 +3,7 @@
     <DebugVariables v-if="debug" :state="state.options" title="options" />
 
     <div id="imageFormat">
-      <label for="imageSelect"> Format des images: </label>
+      <label for="imageSelect"> Format des images:</label>
       <select
         id="imageSelect"
         v-model="state.options.imageFormat"
@@ -22,9 +22,7 @@
       <input
         type="text"
         v-model="state.options.chromePath"
-        :placeholder="
-          state.options.chromePath === '' ? 'Veuillez entrer un chemin' : ''
-        "
+        placeholder="Veuillez entrer un chemin"
         class="rounded-md bg-gray-100 p-2 text-black"
       /><button class="basic" @click="chooseChromePath">
         Choisir un fichier

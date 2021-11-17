@@ -22,7 +22,7 @@ nav {
 }
 
 nav a {
-  @apply mx-2 p-4 rounded-xl transition-all duration-200 w-full text-center;
+  @apply mx-2 p-4 rounded-xl transition-all duration-200 w-full text-center min-w-max;
 }
 nav a.router-link-exact-active {
   color: var(--dark-primary);

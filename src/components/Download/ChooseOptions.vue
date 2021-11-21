@@ -3,31 +3,36 @@
     class="flex justify-center items-center flex-col"
     header="Options de téléchargement"
   >
-    <div class="downloadOption">
-      <label>
-        <input type="checkbox" v-model="state.images" value="images" />
-        Télécharger les images</label
-      >
-    </div>
-    <!--div class="downloadOption">
+    <div>
+      <div class="downloadOption">
+        <label>
+          <input type="checkbox" v-model="state.images" value="images" />
+          Conserver les images dans un dossier</label
+        >
+      </div>
+      <!--div class="downloadOption">
       <label>
         <input type="radio" v-model="state.compression" value="pdf" />
         Créer un fichier PDF</label
       >
     </div-->
-    <div class="downloadOption">
-      <label>
-        <input type="radio" v-model="state.compression" value="cbr" />
-        Créer un fichier CBR</label
-      >
-    </div>
-    <div class="downloadOption">
-      <label>
-        <input type="radio" v-model="state.compression" value="" />
-        Ne pas créer de fichier</label
-      >
+      <div class="downloadOption">
+        <label>
+          <input type="radio" v-model="state.compression" value="cbr" />
+          Créer un fichier CBR*</label
+        >
+      </div>
+      <div class="downloadOption">
+        <label>
+          <input type="radio" v-model="state.compression" value="" />
+          Ne pas créer de fichier CBR</label
+        >
+      </div>
     </div>
   </Container>
+  <span class="text-gray-400"
+    >*format CBR: Toutes les images sont contenues dans un fichier unique.</span
+  >
 </template>
 
 <script lang="ts">

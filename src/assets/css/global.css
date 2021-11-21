@@ -42,6 +42,10 @@ button.basic {
   @apply select-none;
 }
 
+button.basic.selected {
+  background-color: var(--primary);
+}
+
 button.basic:enabled:hover {
   background-color: var(--primary);
   transform: translateX(2px);

@@ -13,11 +13,7 @@
     <button class="basic mb-5" @click="shell.openExternal(mangaLink)">
       Voir sur japscan
     </button>
-    <MangaFile
-      v-for="(file, ifile) in readdirSyncFullPath(folder.path)"
-      :key="ifile"
-      :file="file"
-    />
+    <MangaFile v-for="(file, ifile) in sortedFiles" :key="ifile" :file="file" />
   </div>
 </template>
 
@@ -27,11 +23,22 @@ import { defineProps } from "@vue/runtime-core";
 import path from "path";
 import { shell } from "electron";
 import MangaFile from "./MangaFile.vue";
+import { computed } from "vue";
 
-function readdirSyncFullPath(folder: string) {
+const sortedFiles = computed(() => {
+  var customSort = (a: { path: string }, b: { path: string }) => {
+    const noNullMatch = (str: string) => {
+      return (str.match(/(\d+)/g) ?? [0])[0];
+    };
+    return +noNullMatch(a.path) - +noNullMatch(b.path);
+  };
+  return readdirSyncFullPath().sort(customSort);
+});
+
+function readdirSyncFullPath() {
   try {
-    return fs.readdirSync(folder).map((file) => {
-      const filePath = path.join(folder, file);
+    return fs.readdirSync(props.folder.path).map((file) => {
+      const filePath = path.join(props.folder.path, file);
       return { path: filePath, stat: fs.lstatSync(filePath) };
     });
   } catch (e) {

@@ -1,14 +1,11 @@
 <template>
   <div v-if="valid">
     <div class="flex justify-center items-center flex-col">
-      <h1 class="text-center text-2xl flex flex-col">
+      <h1 class="text-center flex flex-col">
         Mangas téléchargés dans le dossier
-        <div
-          class="hover:underline text-blue-600 cursor-pointer"
-          @click="shell.openPath(config.outputDirectory)"
-        >
+        <button class="basic" @click="shell.openPath(config.outputDirectory)">
           {{ config.outputDirectory }}
-        </div>
+        </button>
       </h1>
     </div>
     <div>

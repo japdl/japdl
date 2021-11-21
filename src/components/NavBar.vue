@@ -1,6 +1,10 @@
 <template>
   <nav class="select-none h-16 flex justify-evenly items-center rounded-b-2xl">
-    <router-link v-for="route in routes" :key="route.name" :to="route.path"
+    <router-link
+      v-for="route in routes"
+      :key="route.name"
+      :to="route.path"
+      draggable="false"
       >{{ route.name }}
     </router-link>
   </nav>

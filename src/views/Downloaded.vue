@@ -53,7 +53,6 @@ function getFolders() {
   );
 }
 
-// valid if has files in it
 getFolders();
 
 // watch for file changes to auto update
@@ -63,8 +62,11 @@ const watcher = chokidar.watch(config.outputDirectory, {
 });
 
 watcher.on("add", getFolders);
+watcher.on("unlink", getFolders);
 watcher.on("addDir", getFolders);
+watcher.on("unlinkDir", getFolders);
 watcher.on("change", getFolders);
 
+// valid if has files in it
 const valid = ref(!!folders.value.length);
 </script>

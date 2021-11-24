@@ -7,6 +7,10 @@ export const setupListeners = (win: BrowserWindow): void => {
     app.quit();
   });
 
+  setupLogListener("version", (event) => {
+    event.reply("versionResponse", app.getVersion());
+  });
+
   win.on("maximize", () => {
     win.webContents.send("windowResize", true);
   });

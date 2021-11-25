@@ -8,10 +8,10 @@ Il est aussi possible de télécharger les images d'un chapitre ou d'un volume e
 
 Pour l'instant, il n'est pas possible de télécharger les webtoons quand toutes les pages d'un chapitre sont sur la même page japscan.
 
-Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl) ? Celui-ci est un programme avec une interface graphique <small><small>(GUI en anglais)</small></small> au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
+Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl-cli) ? Celui-ci est un programme avec une interface graphique au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
 
 # Téléchargement
-[Cliquez ici pour télécharger la dernière version](https://github.com/Seysa/japdl-gui/releases "Dernière version")
+[Cliquez ici pour télécharger la dernière version](https://github.com/Seysa/japdl/releases "Dernière version")
 
 Selectionnez la version de votre choix. La dernière version sera marquée `Latest` en ![#3fb950](https://via.placeholder.com/15/3fb950/000000?text=+) à droite de la version.
 A l'intérieur de cette version se trouve une catégorie `Assets` où sont disponibles au téléchargement les fichiers pour installer le programme.
@@ -21,7 +21,7 @@ A l'intérieur de cette version se trouve une catégorie `Assets` où sont dispo
 -  Une archive `.zip` qui contient tout le programme et qui n'a pas besoin d'être installée.
 
 ## Pour linux:
-- Une version `.AppImage` qui contient tout le programme en 1 fichier, facile à lancer (```./japdl-gui-<version>.appImage```)
+- Une version `.AppImage` qui contient tout le programme en 1 fichier, facile à lancer (```./japdl-<version>.appImage```)
 - Une version `.rpm` pour les distributions linux basées sur RedHat linux
 - Une version `.deb` pour les distributions linux basées sur Debian
 

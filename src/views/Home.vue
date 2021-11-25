@@ -69,7 +69,7 @@ const state = reactive({
   latestVersion: "",
 });
 
-const API_URL = "https://api.github.com/repos/Seysa/japdl-gui/releases";
+const API_URL = "https://api.github.com/repos/Seysa/japdl/releases";
 
 type FetchResults = {
   couldFetch: boolean;

@@ -51,20 +51,4 @@ main {
   padding: 15px 5px 10px 5px;
   background-color: var(--light-background);
 }
-
-/* width */
-::-webkit-scrollbar {
-  width: 0.5rem;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-primary);
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div
+  <li
     id="wrapper"
     class="m-6 min-w-max flex flex-col gap-1 p-2 items-center mt-20"
   >
@@ -13,8 +13,23 @@
     <button class="basic mb-5" @click="shell.openExternal(mangaLink)">
       Voir sur japscan
     </button>
-    <MangaFile v-for="(file, ifile) in sortedFiles" :key="ifile" :file="file" />
-  </div>
+    <ol
+      class="
+        flex flex-col
+        gap-0.5
+        max-h-96
+        overflow-y-scroll
+        border-2
+        rounded-l-xl
+      "
+    >
+      <MangaFile
+        v-for="(file, ifile) in sortedFiles"
+        :key="ifile"
+        :file="file"
+      />
+    </ol>
+  </li>
 </template>
 
 <script lang="ts" setup>

@@ -9,14 +9,14 @@
       </h1>
     </div>
     <div>
-      <div id="directories" class="flex flex-wrap justify-center">
+      <ul id="directories" class="flex flex-wrap justify-center">
         <MangaDirectory
           v-for="(folder, ifolder) in folders"
           :key="ifolder"
           class="m-6 min-w-max"
           :folder="folder"
         />
-      </div>
+      </ul>
     </div>
   </div>
   <div v-else class="text-center text-2xl">

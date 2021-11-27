@@ -1,71 +1,63 @@
 <template>
-  <div class="wrapper">
-    <div id="chooseRange">
-      <input
-        class="inputText"
-        type="number"
-        step="any"
-        @input="setRange($event.target.value, range.end)"
-        min="0"
-        :max="max"
-        :placeholder="'Numéro de ' + type"
-        required
-      />
-      <span class="ml-2 mr-2">à</span>
-      <input
-        class="inputText"
-        type="number"
-        step="any"
-        @input="setRange(range.start, $event.target.value)"
-        :min="range.start"
-        :max="max"
-        :placeholder="'Numéro de ' + type"
-      />
-    </div>
+  <div class="flex justify-center items-center my-5">
+    <input
+      type="number"
+      step="any"
+      @input="setRange($event.target.value, range.end)"
+      min="0"
+      :max="max"
+      :placeholder="placeholder"
+      required
+    />
+    <span class="ml-2 mr-2 text-xl">à</span>
+    <input
+      class="inputText"
+      type="number"
+      step="any"
+      @input="setRange(range.start, $event.target.value)"
+      :min="range.start"
+      :max="max"
+      :placeholder="placeholder"
+    />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "ChooseRange",
-  props: {
-    max: {
-      type: Number,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    range: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props, context) {
-    function filterValue(val: string | number) {
-      if (typeof val === "string") return val.length ? +val : undefined;
-      else return val;
-    }
+<script lang="ts" setup>
+import { defineProps, defineEmits } from "@vue/runtime-core";
+import { computed } from "vue";
 
-    function setRange(start: string, end: string): void {
-      context.emit("update:range", {
-        start: filterValue(start),
-        end: filterValue(end),
-      });
-    }
-    return {
-      filterValue,
-      setRange,
-    };
-  },
+const props =
+  defineProps<{
+    max: number;
+    type: string;
+    range: { start: number; end: number };
+  }>();
+
+const emits =
+  defineEmits<{
+    (event: "update:range", range: { start: number; end: number }): void;
+  }>();
+
+const placeholder = computed(() => {
+  return `Numéro de ${props.type}`;
 });
+
+function filterValue(val: string | number) {
+  if (typeof val === "string") return val.length ? +val : 0;
+  else return val;
+}
+
+function setRange(start: string | number, end: string | number): void {
+  emits("update:range", {
+    start: filterValue(start),
+    end: filterValue(end),
+  });
+}
 </script>
 
 <style scoped>
-input.inputText {
-  width: 200px;
+input {
+  @apply text-center p-1 rounded-xl text-lg min-w-min;
 }
 
 input:invalid {
@@ -73,26 +65,10 @@ input:invalid {
 }
 
 input:valid {
-  color: blue;
-}
-
-.wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-#chooseRange {
-  display: flex;
-  width: 48%;
-  justify-content: space-evenly;
+  color: green;
 }
 
 select {
   padding: 10px;
-}
-
-input {
-  text-align: center;
 }
 </style>

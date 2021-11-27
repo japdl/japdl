@@ -1,45 +1,44 @@
 <template>
   <div class="flex flex-col items-start">
     <Container
-      @change="submitType"
       class="mb-5 w-full p-3 flex items-center flex-col"
       header="Type de téléchargement"
     >
-      <div class="choice">
-        <label>
-          <input type="radio" v-model="type" value="chapitre" />
-          Chapitres(s)</label
+      <div class="flex justify-around text-xl w-full">
+        <button
+          class="basic w-full"
+          :class="{ selected: type === 'chapitre' }"
+          @click="handleEmit('chapitre')"
         >
-      </div>
-      <div class="choice">
-        <label>
-          <input type="radio" v-model="type" value="volume" />
-          Volume(s)</label
+          Chapitre
+        </button>
+        <button
+          class="basic w-full"
+          :class="{ selected: type === 'volume' }"
+          @click="handleEmit('volume')"
         >
+          Volume
+        </button>
       </div>
     </Container>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { defineEmits } from "@vue/runtime-core";
+import { ref } from "vue";
 import Container from "../Container.vue";
-Container;
-export default defineComponent({
-  components: { Container },
-  name: "ChooseDownloadType",
-  emits: ["type"],
-  data() {
-    return {
-      type: "",
-      start: "",
-      end: "",
-    };
-  },
-  methods: {
-    submitType() {
-      this.$emit("type", this.type);
-    },
-  },
-});
+
+const emit =
+  defineEmits<{
+    (event: "type", type: string): void;
+  }>();
+
+const type = ref("");
+
+const handleEmit = (_type: string) => {
+  emit("type", _type);
+  type.value = _type;
+};
+
 </script>

@@ -1,8 +1,8 @@
 {
-  "name": "japdl-gui",
-  "version": "0.3.0",
+  "name": "Japdl",
+  "version": "0.4.2",
   "private": true,
-  "description": "JUn programme pour télécharger les mangas de japscan en .cbr ou en images",
+  "description": "Un programme pour télécharger les mangas de japscan en .cbr ou en images",
   "author": "Seysa <garion.g@hotmail.fr>",
   "scripts": {
     "serve": "vue-cli-service serve",

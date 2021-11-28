@@ -5,6 +5,13 @@ import { setupJapscandlListeners } from "@/utils/listeners/japscan";
 import Config from "@/utils/handleConfig";
 import MockDownloader from "./utils/fakeJapscandl";
 import listenersHandler, { setupLogListener } from "./utils/listeners/handler";
+import yargs from "yargs";
+const argv = yargs.option("debug", {
+  alias: "d",
+  boolean: true,
+  default: false,
+  describe: "Enable debug mode",
+}).argv;
 
 let ready = false;
 setupLogListener("readyStatus", (event) => (event.returnValue = ready));
@@ -16,7 +23,7 @@ setupLogListener("mockDownloadChapter", (event, data) => {
     },
   });
 });
-const isDevelopment = process.env.NODE_ENV !== "production";
+const isDevelopment = argv.debug;
 
 if (!isDevelopment) {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

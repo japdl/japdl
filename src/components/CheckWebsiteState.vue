@@ -3,7 +3,8 @@
     class="border-2 p-3 rounded-xl flex flex-col"
     :class="{ reached: reachable, notreached: !reachable, loading: loading }"
   >
-    <WebLink :link="props.link"></WebLink>
+    <WebLink v-if="!title" :link="props.link"></WebLink>
+    <h1 v-else>{{ title }}</h1>
     <span v-if="loading">Chargement...</span>
     <span v-else-if="reachable">Accessible en {{ timeElapsed }}s</span>
     <span v-else>Inacessible</span>
@@ -18,6 +19,7 @@ import WebLink from "./WebLink.vue";
 const props =
   defineProps<{
     link: string;
+    title: string;
   }>();
 
 const loading = ref(true);

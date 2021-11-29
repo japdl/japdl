@@ -45,8 +45,9 @@
     </div>
     <div id="connectivity" class="flex flex-col justify-center">
       <h1 class="mt-4 mb-4">Status:</h1>
-      <div>
+      <div class="flex gap-2 flex-col">
         <CheckWebsiteState link="https://www.japscan.ws/" />
+        <CheckWebsiteState :link="API_URL" title="Github" />
       </div>
     </div>
   </div>
@@ -69,7 +70,7 @@ const state = reactive({
   latestVersion: "",
 });
 
-const API_URL = "https://api.github.com/repos/Seysa/japdl/releases";
+const API_URL = "https://api.github.com/repos/japdl/japdl/releases";
 
 type FetchResults = {
   couldFetch: boolean;

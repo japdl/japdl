@@ -61,7 +61,7 @@ import { inject } from "@vue/runtime-core";
 import fs from "fs";
 import DebugVariables from "@/components/DebugVariables.vue";
 
-const debug = inject("dev");
+const debug = inject("debug");
 
 const state = reactive({
   options: {} as configData,

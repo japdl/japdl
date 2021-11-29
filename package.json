@@ -1,12 +1,12 @@
 {
-  "name": "Japdl",
+  "name": "japdl",
   "version": "0.4.2",
   "private": true,
   "description": "Un programme pour télécharger les mangas de japscan en .cbr ou en images",
   "author": "Seysa <garion.g@hotmail.fr>",
   "scripts": {
     "start": "npm run electron:serve",
-    "debug": "npm run start -- -d",
+    "debug": "npm run electron:serve -- -d",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",

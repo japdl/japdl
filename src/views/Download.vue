@@ -70,7 +70,7 @@ import { SearchInfos } from "japscandl/js/src/utils/types";
 import DebugVariables from "@/components/DebugVariables.vue";
 import { inject } from "@vue/runtime-core";
 
-const debug = inject("dev");
+const debug = inject("debug");
 
 const state = reactive({
   range: {} as { start?: number; end?: number },

@@ -3,7 +3,6 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import { setupJapscandlListeners } from "@/utils/listeners/japscan";
 import Config from "@/utils/handleConfig";
-import MockDownloader from "./utils/fakeJapscandl";
 import listenersHandler, { setupLogListener } from "./utils/listeners/handler";
 import yargs from "yargs";
 const argv = yargs.option("debug", {
@@ -14,18 +13,16 @@ const argv = yargs.option("debug", {
 }).argv;
 
 let ready = false;
+console.log("argv:", argv);
 setupLogListener("readyStatus", (event) => (event.returnValue = ready));
-
-setupLogListener("mockDownloadChapter", (event, data) => {
-  MockDownloader.downloadChapter(data.name, data.number, {
-    onPage: (attributes, total) => {
-      console.log(attributes, total);
-    },
-  });
+setupLogListener("debug", (event) => {
+  event.returnValue = argv.debug;
 });
-const isDevelopment = argv.debug;
 
-if (!isDevelopment) {
+const isDevelopment = process.env.NODE_ENV !== "production";
+
+// if is in production mode, we don't need to print anything on the terminal
+if (!argv.debug) {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   console.log = () => {};
 }

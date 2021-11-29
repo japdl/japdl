@@ -42,8 +42,8 @@ ipcRenderer.on("changeTheme", (event, data) => {
   appElement.classList.add(data);
 });
 
-const dev = process.env.NODE_ENV !== "production";
-provide("dev", dev);
+const debug = ipcRenderer.sendSync("debug");
+provide("debug", debug);
 </script>
 
 <style scoped>

@@ -1,22 +1,24 @@
 <template>
   <div v-if="valid">
-    <div class="flex justify-center items-center flex-col">
+    <div class="flex justify-center items-center flex-col gap-4">
       <h1 class="text-center flex flex-col">
         Mangas téléchargés dans le dossier
         <button class="basic" @click="shell.openPath(config.outputDirectory)">
           {{ config.outputDirectory }}
         </button>
       </h1>
+      <input type="search" v-model="search" class="text-black  text-center p-1 rounded-xl text-lg min-w-min" placeholder="Chercher un manga" />
     </div>
     <div>
-      <ul id="directories" class="flex flex-wrap justify-center">
+      <ul v-if="iterableFolders.length > 0" id="directories" class="flex flex-wrap justify-center">
         <MangaDirectory
-          v-for="(folder, ifolder) in folders"
-          :key="ifolder"
+          v-for="folder in iterableFolders"
+          :key="folder.path"
           class="m-6 min-w-max"
           :folder="folder"
         />
       </ul>
+      <div v-else class="text-center mt-5 text-2xl text-red-700">Aucun manga ne correspond à votre recherche</div>
     </div>
   </div>
   <div v-else class="text-center text-2xl">
@@ -29,7 +31,7 @@ import { configData } from "@/utils/handleConfig";
 import { ipcRenderer, shell } from "electron";
 import fs from "fs";
 import path from "path";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import MangaDirectory from "@/components/Downloaded/MangaDirectory.vue";
 import chokidar from "chokidar";
 
@@ -44,9 +46,23 @@ function readdirSyncFullPath(folder: string) {
   }
 }
 
+const search = ref("");
+
+
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
+
+const iterableFolders = computed(() => {
+  if(search.value === "") {
+    return folders.value;
+  } else {
+    return folders.value.filter((folder) => {
+      return path.basename(folder.path.toLowerCase()).includes(search.value.toLowerCase());
+    });
+  }
+});
+
 function getFolders() {
   folders.value = readdirSyncFullPath(config.outputDirectory).filter(
     (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0

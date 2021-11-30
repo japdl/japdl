@@ -7,10 +7,21 @@
           {{ config.outputDirectory }}
         </button>
       </h1>
-      <input type="search" v-model="search" class="text-black  text-center p-1 rounded-xl text-lg min-w-min" placeholder="Chercher un manga" />
+      <div>
+        <input
+          type="search"
+          v-model="search"
+          class="text-black rounded-md bg-gray-100 p-2"
+          placeholder="Chercher un manga"
+        />
+      </div>
     </div>
     <div>
-      <ul v-if="iterableFolders.length > 0" id="directories" class="flex flex-wrap justify-center">
+      <ul
+        v-if="iterableFolders.length > 0"
+        id="directories"
+        class="flex flex-wrap justify-center"
+      >
         <MangaDirectory
           v-for="folder in iterableFolders"
           :key="folder.path"
@@ -18,7 +29,9 @@
           :folder="folder"
         />
       </ul>
-      <div v-else class="text-center mt-5 text-2xl text-red-700">Aucun manga ne correspond à votre recherche</div>
+      <div v-else class="text-center mt-5 text-2xl text-red-700">
+        Aucun manga ne correspond à votre recherche
+      </div>
     </div>
   </div>
   <div v-else class="text-center text-2xl">
@@ -48,17 +61,18 @@ function readdirSyncFullPath(folder: string) {
 
 const search = ref("");
 
-
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
 
 const iterableFolders = computed(() => {
-  if(search.value === "") {
+  if (search.value === "") {
     return folders.value;
   } else {
     return folders.value.filter((folder) => {
-      return path.basename(folder.path.toLowerCase()).includes(search.value.toLowerCase());
+      return path
+        .basename(folder.path.toLowerCase())
+        .includes(search.value.toLowerCase());
     });
   }
 });

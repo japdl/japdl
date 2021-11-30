@@ -17,7 +17,7 @@
     >
       <ImageFolder v-if="file.stat.isDirectory()" class="w-20 mr-2" />
       <Read v-if="file.stat.isFile()" class="w-10 mr-2" />
-      <span :class="{ error: file.stat.isFile() }" class="w-full">{{
+      <span class="w-full">{{
         baseName
       }}</span>
       <span

@@ -18,12 +18,18 @@ html, body, #app {
   border-radius: 5px;
 }
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--dark-dark-primary);
+}
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--dark-primary);
 }
 
 :root {
+    --dark-dark-primary: #86092075;
     --dark-primary: #880921;
     --primary: #ff0000;
 }

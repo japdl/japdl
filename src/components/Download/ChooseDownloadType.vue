@@ -40,5 +40,4 @@ const handleEmit = (_type: string) => {
   emit("type", _type);
   type.value = _type;
 };
-
 </script>

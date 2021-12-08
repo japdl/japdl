@@ -19,8 +19,7 @@
         gap-0.5
         max-h-96
         overflow-y-scroll
-        border-2
-        border-dark-primary
+        border-2 border-dark-primary
         rounded-l-xl
       "
     >

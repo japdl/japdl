@@ -17,9 +17,7 @@
     >
       <ImageFolder v-if="file.stat.isDirectory()" class="w-20 mr-2" />
       <Read v-if="file.stat.isFile()" class="w-10 mr-2" />
-      <span class="w-full">{{
-        baseName
-      }}</span>
+      <span class="w-full">{{ baseName }}</span>
       <span
         v-if="file.stat.isDirectory()"
         id="nbOfPages"

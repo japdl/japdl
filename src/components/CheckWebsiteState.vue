@@ -19,7 +19,7 @@ import WebLink from "./WebLink.vue";
 const props =
   defineProps<{
     link: string;
-    title: string;
+    title?: string;
   }>();
 
 const loading = ref(true);

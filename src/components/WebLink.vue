@@ -1,14 +1,22 @@
 <template>
-  <span class="hover:underline cursor-pointer" @click="shell.openExternal(props.link)">{{
-    props.link
-  }}</span>
+  <span
+    class="hover:underline cursor-pointer"
+    @click="shell.openExternal(props.link)"
+    >{{ whatToShow }}</span
+  >
 </template>
 
 <script lang="ts" setup>
 import { shell } from "electron";
-import { defineProps } from "@vue/runtime-core";
+import { defineProps, computed } from "@vue/runtime-core";
 const props =
   defineProps<{
     link: string;
+    text?: string;
   }>();
+
+const whatToShow = computed(() => {
+  const { link, text } = props;
+  return text ? text : link;
+});
 </script>

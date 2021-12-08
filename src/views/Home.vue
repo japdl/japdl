@@ -9,6 +9,11 @@
       <div v-if="state.needUpdate" class="flex flex-col justify-center">
         <h2>
           La nouvelle version <b>{{ state.latestVersion }}</b> est disponible!
+          <WebLink
+            class="px-4 py-2 hover:background rounded-xl font-bold"
+            :link="state.url"
+            text="Cliquez ici pour la télécharger."
+          />
         </h2>
         <div id="infos">
           <p>
@@ -44,7 +49,7 @@
       <div v-else>Votre version est à jour!</div>
     </div>
     <div id="connectivity" class="flex flex-col justify-center">
-      <h1 class="mt-4 mb-4">Status:</h1>
+      <h1 class="mt-4 mb-4">Accessibilité:</h1>
       <div class="flex gap-2 flex-col">
         <CheckWebsiteState link="https://www.japscan.ws/" />
         <CheckWebsiteState :link="API_URL" title="Github" />
@@ -55,6 +60,7 @@
 
 <script lang="ts" setup>
 import CheckWebsiteState from "@/components/CheckWebsiteState.vue";
+import WebLink from "@/components/WebLink.vue";
 import { ipcRenderer } from "electron";
 import { reactive, ref } from "vue";
 
@@ -68,6 +74,7 @@ const state = reactive({
   releaseDate: "",
   changeLog: "",
   latestVersion: "",
+  url: "",
 });
 
 const API_URL = "https://api.github.com/repos/japdl/japdl/releases";
@@ -77,6 +84,7 @@ type FetchResults = {
   releaseDate: string;
   changeLog: string;
   latestVersion: string;
+  url: string;
 };
 
 const fetchLastRelease = async (): Promise<FetchResults> => {
@@ -85,7 +93,13 @@ const fetchLastRelease = async (): Promise<FetchResults> => {
     const latestRelease = response.data[0];
     const releaseDate = new Date(latestRelease.created_at).toLocaleDateString(
       "fr-FR",
-      { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      }
     );
     const changeLog = latestRelease.body;
     console.log("changelog", changeLog);
@@ -97,6 +111,7 @@ const fetchLastRelease = async (): Promise<FetchResults> => {
       changeLog,
       latestVersion,
       releaseDate,
+      url: latestRelease.html_url,
     };
   } catch (e) {
     console.log(e);
@@ -106,6 +121,7 @@ const fetchLastRelease = async (): Promise<FetchResults> => {
       changeLog: "",
       latestVersion: "",
       releaseDate: "",
+      url: "",
     };
   }
 };
@@ -121,6 +137,7 @@ ipcRenderer.on("versionResponse", async (event, arg) => {
       state.changeLog = results.changeLog;
       state.latestVersion = results.latestVersion;
       state.releaseDate = results.releaseDate;
+      state.url = results.url;
     }
   }
 });

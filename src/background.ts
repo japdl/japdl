@@ -13,7 +13,6 @@ const argv = yargs.option("debug", {
 }).argv;
 
 let ready = false;
-console.log("argv:", argv);
 setupLogListener("readyStatus", (event) => (event.returnValue = ready));
 setupLogListener("debug", (event) => {
   event.returnValue = argv.debug;

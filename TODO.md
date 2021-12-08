@@ -3,9 +3,6 @@
 
 - Forcer une seule instance du programme avec (https://stackoverflow.com/questions/35916158/how-to-prevent-multiple-instances-in-electron), testé mais fonctionne pas
 
-- Pouvoir chercher dans les mangas téléchargés au cas où il y en a beaucoup
-
-- Ajouter une option --debug | -d qui active le mode dev (avec les variables et les print dans la console)
 ## Idées
 
 - Ajouter une taskbar progress bar (https://www.electronjs.org/docs/latest/tutorial/progress-bar)

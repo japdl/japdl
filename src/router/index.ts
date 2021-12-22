@@ -1,34 +1,49 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 
-const makeRoute = (path: string, name?: string) => {
-  const upperCaseFirstLetter = (str: string): string => {
-    const splitted = str.split("");
-    splitted[0] = splitted[0].toUpperCase();
-    return splitted.join("");
-  };
-  const vueModuleName = `${upperCaseFirstLetter(path)}`;
-  const routeName = name ? name : vueModuleName;
-  return {
-    path: "/" + path,
-    name: routeName,
-    component: () => import(`../views/${vueModuleName}.vue`),
-  } as RouteRecordRaw;
-};
+const capitalize = (str: string) => {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
+const importView  = (viewName: string) => {
+  return () => import(`../views/${capitalize(viewName)}.vue`);
+}
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Accueil",
+    name: "Home",
+    //alias: "Accueil",
     component: Home,
   },
-  makeRoute("download", "Télécharger un manga"),
-  makeRoute("downloaded", "Mangas téléchargés"),
-  //makeRoute("infos", "Informations sur un manga"),
-  //makeRoute("about", "À propos"),
-  //makeRoute("tests"),
-  makeRoute("options"),
+  {
+    path: "/download",
+    props: true,
+    name: "Download",
+    //alias: "Télécharger un manga",
+    component: importView("download"),
+  },
+  {
+    path: "/choose",
+    name: "Choose",
+    //alias: "Choisir un manga",
+    component: importView("choose"),
+  },
+  {
+    path: "/downloaded",
+    name: "Downloaded",
+    //alias: "Mangas téléchargés",
+    component: importView("downloaded"),
+  },
+  {
+    path: "/options",
+    name: "Options",
+    //alias: "Options",
+    component: importView("options"),
+  }
 ];
+
+console.log(routes);
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),

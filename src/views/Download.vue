@@ -68,7 +68,15 @@ import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 import DebugVariables from "@/components/DebugVariables.vue";
-import { inject } from "@vue/runtime-core";
+import { inject, defineProps } from "@vue/runtime-core";
+
+const props = defineProps<{
+  manga?: string,
+}>();
+
+/* if(props.manga){
+  getMangaInfos(props.manga);
+} */
 
 const debug = inject("debug");
 
@@ -81,7 +89,7 @@ const state = reactive({
 });
 
 const manga = reactive({
-  name: "" as string,
+  name: props.manga ?? "" as string,
   japscanName: "" as string,
   volumes: null as null | number,
   chapters: null as null | number,

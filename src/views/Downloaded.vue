@@ -61,6 +61,8 @@ function readdirSyncFullPath(folder: string) {
 
 const search = ref("");
 
+let lastTimeUpdated: Date | null = null;
+
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
@@ -78,9 +80,17 @@ const iterableFolders = computed(() => {
 });
 
 function getFolders() {
-  folders.value = readdirSyncFullPath(config.outputDirectory).filter(
-    (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
-  );
+  if (
+    lastTimeUpdated === null ||
+    new Date().getMilliseconds() - lastTimeUpdated.getMilliseconds() > 200
+  ) {
+    lastTimeUpdated = new Date();
+    folders.value = readdirSyncFullPath(config.outputDirectory).filter(
+      (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
+    );
+  } else {
+    console.log("Not updating folders because got updated last");
+  }
 }
 
 getFolders();

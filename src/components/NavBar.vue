@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts" setup>
-import route from "@/router";
-import { ref } from "vue";
 
-const routes = ref(
-  route.getRoutes().map(({ name, path }) => ({ name: name as string, path }))
-);
+const routes = [
+  { name: 'Accueil', path: '/' },
+  { name: 'Télécharger un manga', path: '/choose' },
+  { name: 'Options', path: '/options' },
+]
 </script>
 
 <style scoped>

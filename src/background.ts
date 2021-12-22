@@ -51,6 +51,7 @@ async function createWindow() {
     frame: false,
   });
   try {
+    console.log("Loading config");
     const config = new Config();
     console.log("Config data:", config.getData());
     const { imageFormat, chromePath, outputDirectory } = config.getData();
@@ -64,12 +65,14 @@ async function createWindow() {
         win
       );
     });
+    console.log("App is ready");
     ready = true;
   } catch (e) {
     console.error("Error in config:", e);
   }
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
+    console.log(process.env.WEBPACK_DEV_SERVER_URL);
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     //if (!process.env.IS_TEST) win.webContents.openDevTools();
@@ -80,7 +83,10 @@ async function createWindow() {
     console.log("Done loading");
   }
   // show window after everything is set up
-  win.show();
+  console.log("Showing window");
+  setTimeout(() => {
+    win.show();
+  }, 1000);
 }
 
 // Quit when all windows are closed.

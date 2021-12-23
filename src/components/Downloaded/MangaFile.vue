@@ -48,9 +48,7 @@ const props =
 
 const hoverMessage = props.file.stat.isFile() ? "Lire" : "Ouvrir le dossier";
 function numberOfImages() {
-  return fs
-    .readdirSync(props.file.path)
-    .filter((file) => file.endsWith(".jpg") || file.endsWith(".png")).length;
+  return fs.readdirSync(props.file.path).length;
 }
 
 const baseName = computed(() => path.basename(props.file.path));

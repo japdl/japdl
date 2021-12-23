@@ -4,7 +4,7 @@
       <DebugVariables header="state" :state="state" />
       <DebugVariables header="manga" :state="manga" />
     </div>
-    <ChooseManga @manga="getMangaInfos" />
+    <ChooseManga @manga="getMangaInfos($event.japscan)" />
     <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" class="m-6" v-if="manga.name && !state.loading">
       <h1 class="font-manga text-6xl bg-gray">{{ manga.name }}</h1>
@@ -66,17 +66,14 @@ import { ipcRenderer } from "electron";
 import Loading from "@/components/Loading.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
-import { SearchInfos } from "japscandl/js/src/utils/types";
 import DebugVariables from "@/components/DebugVariables.vue";
 import { inject, defineProps } from "@vue/runtime-core";
+import { LocationQuery } from "vue-router";
 
-const props = defineProps<{
-  manga?: string,
-}>();
-
-/* if(props.manga){
-  getMangaInfos(props.manga);
-} */
+const props =
+  defineProps<{
+    query?: LocationQuery;
+  }>();
 
 const debug = inject("debug");
 
@@ -89,7 +86,7 @@ const state = reactive({
 });
 
 const manga = reactive({
-  name: props.manga ?? "" as string,
+  name: "" as string,
   japscanName: "" as string,
   volumes: null as null | number,
   chapters: null as null | number,
@@ -123,16 +120,16 @@ function downloadSelected(): void {
   console.log("Sending", toSend);
   ipcRenderer.send("download", toSend);
 }
-function getMangaInfos(result: SearchInfos) {
+function getMangaInfos(mangaName: string) {
   // reset last manga's infos
   manga.type = "";
   manga.volumes = manga.chapters = null;
-  console.log("Nom du manga: ", result.japscan);
+  console.log("Nom du manga: ", mangaName);
   state.loading = true;
-  ipcRenderer.send("getMangaInfos", result.japscan);
+  ipcRenderer.send("getMangaInfos", mangaName);
   ipcRenderer.once("replyMangaInfos", (event, infos) => {
     if (infos) {
-      manga.name = result.name;
+      manga.name = infos.name;
       manga.japscanName = infos.name;
       manga.volumes = infos.volumes;
       manga.chapters = infos.chapters;
@@ -144,6 +141,10 @@ function getMangaInfos(result: SearchInfos) {
 function getType(type: string) {
   manga.type = type;
   console.log("type: ", type);
+}
+
+if (props.query && props.query.manga) {
+  getMangaInfos(props.query.manga as string);
 }
 </script>
 

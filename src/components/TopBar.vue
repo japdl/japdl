@@ -39,7 +39,9 @@ import { ref } from "vue";
 import ThemeSwitch from "./ThemeSwitch.vue";
 
 const maximized = ref(false); // default window is not maximized
-ipcRenderer.on("windowResize", (_event, arg) => (maximized.value = arg));
+ipcRenderer.on("windowResize", (_event, arg) =>
+  console.log("maximized?: ", (maximized.value = arg))
+);
 
 const minimizeWindow = () => ipcRenderer.send("minimizeWindow");
 const maximizeWindow = () => ipcRenderer.send("maximizeWindow");

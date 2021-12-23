@@ -5,7 +5,7 @@ const capitalize = (str: string) => {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-const importView  = (viewName: string) => {
+const importView = (viewName: string) => {
   return () => import(`../views/${capitalize(viewName)}.vue`);
 }
 
@@ -18,7 +18,9 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/download",
-    props: true,
+    props: (route) => ({
+      query: route.query,
+    }),
     name: "Download",
     //alias: "Télécharger un manga",
     component: importView("download"),
@@ -42,8 +44,6 @@ const routes: Array<RouteRecordRaw> = [
     component: importView("options"),
   }
 ];
-
-console.log(routes);
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),

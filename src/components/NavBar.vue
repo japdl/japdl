@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts" setup>
-
 const routes = [
-  { name: 'Accueil', path: '/' },
-  { name: 'Télécharger un manga', path: '/choose' },
-  { name: 'Options', path: '/options' },
-]
+  { name: "Accueil", path: "/" },
+  { name: "Télécharger un manga", path: "/download" },
+  { name: "Mangas téléchargés", path: "/downloaded" },
+  { name: "Options", path: "/options" },
+];
 </script>
 
 <style scoped>

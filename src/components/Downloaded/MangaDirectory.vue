@@ -10,9 +10,10 @@
     <button class="basic mt-3" @click="shell.openPath(folder.path)">
       Ouvrir le dossier
     </button>
-    <button class="basic mb-5" @click="shell.openExternal(mangaLink)">
+    <button class="basic" @click="shell.openExternal(mangaLink)">
       Voir sur japscan
     </button>
+    <button class="basic mb-5" @click="downloadMore">Télécharger</button>
     <ol
       class="
         flex flex-col
@@ -34,11 +35,12 @@
 
 <script lang="ts" setup>
 import fs from "fs";
-import { defineProps } from "@vue/runtime-core";
+import { defineProps, onMounted } from "@vue/runtime-core";
 import path from "path";
 import { shell } from "electron";
 import MangaFile from "./MangaFile.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import router from "@/router";
 
 const sortedFiles = computed(() => {
   var customSort = (a: { path: string }, b: { path: string }) => {
@@ -68,6 +70,15 @@ const props =
       stat: fs.Stats;
     };
   }>();
+
+const downloadMore = () => {
+  router.push({
+    name: "Download",
+    query: {
+      manga: mangaName,
+    },
+  });
+}
 
 const mangaName = path.basename(props.folder.path);
 const imageLink = `https://japscan.ws/imgs/mangas/${mangaName}.jpg`;

@@ -12,10 +12,12 @@ export const setupListeners = (win: BrowserWindow): void => {
   });
 
   win.on("maximize", () => {
+    console.log("Maximize event");
     win.webContents.send("windowResize", true);
   });
 
   win.on("unmaximize", () => {
+    console.log("UNMaximize event");
     win.webContents.send("windowResize", false);
   });
 

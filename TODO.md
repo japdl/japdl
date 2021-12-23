@@ -3,9 +3,6 @@
 
 - Forcer une seule instance du programme avec (https://stackoverflow.com/questions/35916158/how-to-prevent-multiple-instances-in-electron), testé mais fonctionne pas
 
-- Faire que Download soit ce qui est cliqué dans downloaded mais direct sur /download sans paramètre, puis si y a pas de paramètre alors faire choisir le manga, sinon afficher directement
-  comme si on venait de choisir
-
 ## Idées
 
 - Ajouter une taskbar progress bar (https://www.electronjs.org/docs/latest/tutorial/progress-bar)

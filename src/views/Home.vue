@@ -48,7 +48,7 @@
       </div>
       <div v-else>Votre version est à jour!</div>
     </div>
-    <div id="connectivity" class="flex flex-col justify-center">
+    <div id="connectivity" class="flex flex-col justify-center items-center">
       <h1 class="mt-4 mb-4">Accessibilité:</h1>
       <div class="flex gap-2 flex-col">
         <CheckWebsiteState link="https://www.japscan.ws/" />

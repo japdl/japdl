@@ -79,7 +79,7 @@ const debug = inject("debug");
 
 const state = reactive({
   range: {} as { start?: number; end?: number },
-  options: {} as { compression: "pdf" | "cbr" | ""; images: boolean },
+  options: {} as { compression: "cbr" | ""; images: boolean },
   error: "" as string,
   loading: false as boolean,
   japscanInitiated: ipcRenderer.sendSync("readyStatus") as boolean,
@@ -112,9 +112,7 @@ function downloadSelected(): void {
     manga: manga.japscanName,
     start: state.range.start,
     end: state.range.end,
-    compression: state.options.compression
-      ? state.options.compression
-      : undefined,
+    compression: !!state.options.compression,
     keepImages: state.options.images,
   };
   console.log("Sending", toSend);

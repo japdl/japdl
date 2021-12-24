@@ -1,4 +1,4 @@
-import { Downloader } from "japscandl";
+import { Downloader } from "../../../../japscandl";
 import path from "path";
 import { BrowserWindow, ipcMain, shell } from "electron";
 import { ComponentFlags, MangaAttributes } from "japscandl/js/src/utils/types";

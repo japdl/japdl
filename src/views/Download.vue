@@ -97,6 +97,7 @@ const manga = reactive({
 const isRangeInvalid = computed(() => {
   return state.range.start === undefined;
 });
+
 const selectMax = computed(() => {
   return manga.type === "volume"
     ? (manga.volumes as number)
@@ -141,9 +142,10 @@ function getType(type: string) {
   console.log("type: ", type);
 }
 
-if (props.query && props.query.manga) {
+if (props?.query?.manga) {
   getMangaInfos(props.query.manga as string);
 }
+
 </script>
 
 <style scoped>

@@ -8,27 +8,41 @@ export default class DownloadSet {
   }
 
   add(value: Download): void {
-    if (!this.has(value)){
-      console.log("Is unique, adding");
-      this.data.push(value);
-    } else {
-      console.log("duplicate, not adding");
-    }
+    if (!this.has(value)) this.data.push(value);
   }
 
   get next(): Download | null {
-      return this.data[0] ?? null;
+    /**
+     * could be used instead of size, idk
+     */
+    return this.data[0] ?? null;
   }
 
   popNext(): Download | null {
-      return this.data.shift() ?? null;
+    /**
+     * remove first element of the array and returns it
+     */
+    return this.data.shift() ?? null;
   }
 
   remove(value: Download): void {
-    this.data = this.data.filter((obj) => !this.compare(obj, value));
+    /**
+     * This is better than filter because we stop when we find it
+     * this.data = this.data.filter((obj) => !this.compare(obj, value));
+     * instead of going through the entire array
+     */
+    for (let i = 0; i < this.data.length; i++) {
+      if (this.compare(this.data[i], value)) {
+        this.data.splice(i, 1);
+        return;
+      }
+    }
   }
 
   has(value: Download): boolean {
+    /* every returns true if every element in the array is different from `value`
+     * we need to return true if one of the elements is the same, so we use `!`
+     */
     return !this.data.every((obj) => !this.compare(obj, value));
   }
 

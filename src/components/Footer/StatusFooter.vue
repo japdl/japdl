@@ -6,7 +6,7 @@
     >
       <span>Aucun téléchargement en cours</span>
     </h1>
-    <div v-if="loading">Initialisation du téléchargement...</div>
+    <div class="p-4" v-if="loading">Initialisation du téléchargement...</div>
     <div v-if="download !== null && !loading" class="w-full">
       <div
         class="
@@ -18,10 +18,12 @@
           border-b-2 border-black
         "
       >
-        <div>{{ download.manga }}</div>
-        <div>{{ download.chapter }}</div>
-        <div>{{ download.pageCurrent }} / {{ download.pageTotal }}</div>
-        <LoadingBar :done="download.getProgressPercent()" />
+        <div class="flex justify-center w-full pt-4">
+          <span class="text-4xl font-manga">{{ download.manga }}</span>
+        </div>
+        <div class="text-2xl">{{ download.chapter }}</div>
+        <div>page {{ download.pageCurrent }} / {{ download.pageTotal }}</div>
+        <LoadingBar :show="false" :done="download.getProgressPercent()" />
       </div>
     </div>
   </footer>
@@ -33,9 +35,6 @@ import { ref } from "@vue/reactivity";
 import { ipcRenderer } from "electron";
 import LoadingBar from "../LoadingBar.vue";
 import Loading from "../Loading.vue";
-
-const download = ref(null as null | ChapterDownload);
-const loading = ref(false);
 
 class ChapterDownload {
   constructor(
@@ -49,6 +48,13 @@ class ChapterDownload {
     return progress(this.pageCurrent, this.pageTotal);
   }
 }
+
+const dummy = new ChapterDownload("one-piece", 998, 8, 11);
+
+const download = ref(null as null | ChapterDownload);
+const loading = ref(false);
+
+
 
 ipcRenderer.on("loading", () => {
   loading.value = true;

@@ -5,7 +5,7 @@
       :style="widthStyle"
       class="flex items-center justify-center"
     ></div>
-    <span class="absolute" v-if="roundedPercent !== 0"
+    <span class="absolute" v-if="roundedPercent !== 0 && props.show"
       >{{ roundedPercent }}%</span
     >
   </div>
@@ -17,6 +17,10 @@ const props = defineProps({
   done: {
     type: Number,
     default: 0,
+  },
+  show: {
+    type: Boolean,
+    default: true,
   },
 });
 const roundedPercent = computed(() => Math.round(props.done));

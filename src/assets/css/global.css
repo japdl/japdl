@@ -62,7 +62,7 @@ button.basic {
   cursor: pointer;
   outline: none;
   text-transform: uppercase;
-  @apply select-none;
+  @apply select-none mx-1;
 }
 
 button.basic.selected {
@@ -90,7 +90,7 @@ input {
 }
 
 .topbar-icon {
-    @apply cursor-pointer w-9 h-5 px-2 h-full;
+    @apply cursor-pointer w-9 px-2 h-full;
 }
 
 .hover\:background:hover {

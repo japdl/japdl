@@ -44,7 +44,7 @@ import { configData } from "@/utils/handleConfig";
 import { ipcRenderer, shell } from "electron";
 import fs from "fs";
 import path from "path";
-import { computed, ref } from "vue";
+import { computed, onUnmounted, ref } from "vue";
 import MangaDirectory from "@/components/Downloaded/MangaDirectory.vue";
 import chokidar from "chokidar";
 
@@ -60,8 +60,6 @@ function readdirSyncFullPath(folder: string) {
 }
 
 const search = ref("");
-
-let lastTimeUpdated: Date | null = null;
 
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
@@ -80,32 +78,17 @@ const iterableFolders = computed(() => {
 });
 
 function getFolders() {
-  if (
-    lastTimeUpdated === null ||
-    new Date().getMilliseconds() - lastTimeUpdated.getMilliseconds() > 200
-  ) {
-    lastTimeUpdated = new Date();
-    folders.value = readdirSyncFullPath(config.outputDirectory).filter(
-      (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
-    );
-  } else {
-    console.log("Not updating folders because got updated last");
-  }
+  console.log("getFolders");
+  folders.value = readdirSyncFullPath(config.outputDirectory).filter(
+    (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
+  );
 }
 
 getFolders();
 
-// watch for file changes to auto update
-const watcher = chokidar.watch(config.outputDirectory, {
-  awaitWriteFinish: true,
-  ignored: /^\./,
-});
-
-watcher.on("add", getFolders);
-watcher.on("unlink", getFolders);
-watcher.on("addDir", getFolders);
-watcher.on("unlinkDir", getFolders);
-watcher.on("change", getFolders);
+// else this keeps going forever
+const interval = setInterval(getFolders, 1000);
+onUnmounted(() => clearInterval(interval));
 
 // valid if has files in it
 const valid = ref(!!folders.value.length);

@@ -1,7 +1,17 @@
+import { BrowserWindow } from "electron";
 import { Download } from ".";
 
 export default class DownloadSet {
-  private data: Download[] = [];
+  private data: Download[];
+
+  constructor(downloads?: Download[]) {
+    // to prevent using downloads as a reference to the private field
+    this.data = downloads ? Array.from(downloads) : [];
+  }
+
+  get(): Download[] {
+    return this.data;
+  }
 
   get size() {
     return this.data.length;
@@ -11,11 +21,8 @@ export default class DownloadSet {
     if (!this.has(value)) this.data.push(value);
   }
 
-  get next(): Download | null {
-    /**
-     * could be used instead of size, idk
-     */
-    return this.data[0] ?? null;
+  isEmpty(): boolean {
+    return this.data.length === 0;
   }
 
   popNext(): Download | null {
@@ -46,6 +53,32 @@ export default class DownloadSet {
     return !this.data.every((obj) => !this.compare(obj, value));
   }
 
+  /**
+   * Show a summary of the downloads
+   * @returns
+   */
+  toStringArray(): string[] {
+    return this.data.map((obj) => this.toName(obj));
+  }
+
+  /**
+   * returns a simple name to identify the download
+   * @param obj1 download object
+   * @returns download name in a human readable format
+   */
+  toName(obj1: Download): string {
+    const endString = obj1.end ? `-${obj1.end}` : "";
+    if (obj1.type === "chapitre") {
+      return `${obj1.manga} - ${obj1.start}${endString}`;
+    } else {
+      return `${obj1.manga} volume ${obj1.start}${endString}`;
+    }
+  }
+
+  signalUpdateTo(win: BrowserWindow){
+    win.webContents.send("update-queue", this.toStringArray());
+  }
+
   // return true if they are the same
   compare(obj1: Download, obj2: Download): boolean {
     if (obj1 === obj2) return true;
@@ -56,5 +89,9 @@ export default class DownloadSet {
     if (obj1.start !== obj2.start) return false;
     if (obj1.end !== obj2.end) return false;
     return true;
+  }
+
+  toString(): string {
+    return this.toStringArray().toString();
   }
 }

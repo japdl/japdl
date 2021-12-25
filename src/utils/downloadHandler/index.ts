@@ -28,6 +28,7 @@ const downloadFromArgs =
         console.log("already downloading");
       }
       console.log("adding to queue");
+      downloadQueue.signalUpdateTo(win);
       return;
     } else {
       win.webContents.send("loading");
@@ -64,14 +65,12 @@ const downloadFromArgs =
     }
     console.log("Done!");
     currentDownload = null;
-    if (downloadQueue.size) {
-      const next = downloadQueue.popNext();
-      if (!next) return;
-      console.log("downloading", next, "from queue");
-      downloadFromArgs(downloader, win)(_, next);
-    } else {
-      console.log("downloadqueue is", downloadQueue.size);
-    }
+    const next = downloadQueue.popNext();
+    // if queue is empty, quit
+    if (!next) return;
+    downloadQueue.signalUpdateTo(win);
+    console.log("downloading", next, "from queue");
+    downloadFromArgs(downloader, win)(_, next);
   };
 
 export default downloadFromArgs;

@@ -1,86 +1,15 @@
 <template>
-  <footer class="flex justify-center items-center min-h-screen rounded-t-2xl">
-    <h1
-      class="flex justify-center items-center"
-      v-if="download === null && !loading"
-    >
-      <span>Aucun téléchargement en cours</span>
-    </h1>
-    <div class="p-4" v-if="loading">Initialisation du téléchargement...</div>
-    <div v-if="download !== null && !loading" class="w-full">
-      <div
-        class="
-          w-full
-          flex flex-col
-          gap-5
-          justify-center
-          items-center
-          border-b-2 border-black
-        "
-      >
-        <div class="flex justify-center w-full pt-4">
-          <span class="text-4xl font-manga">{{ download.manga }}</span>
-        </div>
-        <div class="text-2xl">{{ download.chapter }}</div>
-        <div>page {{ download.pageCurrent }} / {{ download.pageTotal }}</div>
-        <LoadingBar :show="false" :done="download.getProgressPercent()" />
-      </div>
-    </div>
+  <footer
+    class="flex justify-center items-center min-h-screen rounded-t-2xl w-full"
+  >
+  <DownloadQueue class="w-1/5" />
+  <DownloadStatus class="w-4/5" />
   </footer>
 </template>
 
 <script lang="ts" setup>
-import { progress } from "@/utils/progress";
-import { ref } from "@vue/reactivity";
-import { ipcRenderer } from "electron";
-import LoadingBar from "../LoadingBar.vue";
-import Loading from "../Loading.vue";
-
-class ChapterDownload {
-  constructor(
-    public manga: string,
-    public chapter: number,
-    public pageCurrent: number,
-    public pageTotal: number
-  ) {}
-
-  getProgressPercent(): number {
-    return progress(this.pageCurrent, this.pageTotal);
-  }
-}
-
-const dummy = new ChapterDownload("one-piece", 998, 8, 11);
-
-const download = ref(null as null | ChapterDownload);
-const loading = ref(false);
-
-
-
-ipcRenderer.on("loading", () => {
-  loading.value = true;
-});
-
-ipcRenderer.on("chapter-start", (event, data) => {
-  loading.value = false;
-  const newDownload = new ChapterDownload(
-    data.manga,
-    data.attributes.chapter,
-    data.attributes.page,
-    data.total
-  );
-  download.value = newDownload;
-});
-
-ipcRenderer.on("chapter-page", (event, data) => {
-  if (download.value) {
-    download.value.pageCurrent = data.page;
-    download.value.pageTotal = data.total;
-  }
-});
-
-ipcRenderer.on("chapter-done", () => {
-  download.value = null;
-});
+import DownloadQueue from "./DownloadQueue.vue";
+import DownloadStatus from "./DownloadStatus.vue";
 </script>
 
 <style scoped>

@@ -8,13 +8,17 @@
   <div v-else class="w-full h-full flex flex-col justify-between">
     <TopBar />
     <NavBar />
-    <main class="overflow-y-scroll h-full">
-      <div id="image-container" class="flex justify-center">
-        <img class="w-32" src="./assets/svg/noun-torii.svg" />
-      </div>
-      <router-view />
-    </main>
-    <StatusFooter />
+    <div class="flex h-full">
+      <SideBar class="w-1/5" />
+      <main class="h-full flex w-4/5">
+        <div id="view" class="w-full overflow-y-scroll">
+          <div id="image-container" class="flex justify-center">
+            <img class="w-32" src="./assets/svg/noun-torii.svg" />
+          </div>
+          <router-view />
+        </div>
+      </main>
+    </div>
   </div>
 </template>
 
@@ -22,9 +26,9 @@
 import { ipcRenderer } from "electron";
 import { ref } from "vue";
 import { provide } from "@vue/runtime-core";
-import StatusFooter from "./components/Footer/StatusFooter.vue";
 import NavBar from "./components/NavBar.vue";
 import TopBar from "./components/TopBar.vue";
+import SideBar from "./components/SideBar/SideBar.vue";
 
 const notReady = ref(false);
 ipcRenderer.send("readyStatus");
@@ -48,7 +52,6 @@ provide("debug", debug);
 
 <style scoped>
 main {
-  padding: 15px 5px 10px 5px;
   background-color: var(--light-background);
 }
 </style>

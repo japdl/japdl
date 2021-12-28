@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { Download } from ".";
+import { Download, QueueDisplay } from ".";
 
 export default class DownloadSet {
   private data: Download[];
@@ -13,7 +13,7 @@ export default class DownloadSet {
     return this.data;
   }
 
-  get size() {
+  get size(): number {
     return this.data.length;
   }
 
@@ -75,8 +75,16 @@ export default class DownloadSet {
     }
   }
 
-  signalUpdateTo(win: BrowserWindow){
-    win.webContents.send("update-queue", this.toStringArray());
+  toQueueDisplay(): QueueDisplay[] {
+    return this.data.map((obj) => this.toDisplay(obj));
+  }
+
+  toDisplay(obj1: Download): QueueDisplay {
+    return { ...obj1 };
+  }
+
+  signalUpdateTo(win: BrowserWindow) {
+    win.webContents.send("update-queue", this.toQueueDisplay());
   }
 
   // return true if they are the same

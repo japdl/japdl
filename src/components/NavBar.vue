@@ -1,5 +1,14 @@
 <template>
-  <nav class="select-none h-16 flex justify-evenly items-center rounded-b-2xl">
+  <nav
+    class="
+      select-none
+      h-16
+      flex
+      justify-evenly
+      items-center
+      rounded-b-2xl
+    "
+  >
     <router-link
       v-for="route in routes"
       :key="route.name"
@@ -21,7 +30,6 @@ const routes = [
 
 <style scoped>
 nav {
-  display: flex;
   background-color: var(--dark-background);
 }
 
@@ -34,7 +42,7 @@ nav a.router-link-exact-active {
 nav a:hover {
   color: var(--primary);
   background-image: linear-gradient(
-    to bottom left,
+    to top,
     var(--light-background),
     var(--dark-background)
   );

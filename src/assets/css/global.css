@@ -3,6 +3,7 @@ html, body, #app {
   height: 100%;
   width: 100%;
   background-color: var(--light-background);
+  overflow: hidden;
 }
 
 
@@ -40,6 +41,7 @@ html, body, #app {
   --dark-background: #1d2125;
   --container: #111827;
   --text-color: white;
+  --reverse-color: black;
   color: var(--text-color);
 }
 
@@ -48,7 +50,12 @@ html, body, #app {
   --dark-background: #c7af9c;
   --container: #f4edde;
   --text-color: black;
+  --reverse-color: white;
   color: var(--text-color);
+}
+
+.text-reverse {
+  color: var(--reverse-color);
 }
 
 button.basic {

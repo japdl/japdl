@@ -3,11 +3,14 @@ import { Downloader } from "../../../../japscandl/js";
 import handleChapterDownload from "./chapter";
 import DownloadSet from "./DownloadSet";
 
-export type Download = {
-  type: "volume" | "chapitre";
+export type QueueDisplay = {
   manga: string;
+  type: "volume" | "chapitre";
   start: number;
   end?: number;
+};
+
+export type Download = QueueDisplay & {
   compression: boolean;
   keepImages: boolean;
 };

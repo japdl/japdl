@@ -1,14 +1,5 @@
 <template>
-  <nav
-    class="
-      select-none
-      h-16
-      flex
-      justify-evenly
-      items-center
-      rounded-b-2xl
-    "
-  >
+  <nav class="select-none h-16 flex justify-evenly items-center rounded-b-2xl">
     <router-link
       v-for="route in routes"
       :key="route.name"

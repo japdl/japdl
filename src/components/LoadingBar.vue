@@ -1,13 +1,10 @@
 <template>
   <div id="loadingBar" class="w-full">
-    <div
-      id="fill"
-      :style="widthStyle"
-      class="flex items-center justify-center"
-    ></div>
-    <span class="absolute" v-if="roundedPercent !== 0 && props.show"
-      >{{ roundedPercent }}%</span
-    >
+    <div id="fill" :style="widthStyle" class="flex items-center justify-center">
+      <span v-if="roundedPercent !== 0 && props.show"
+        >{{ roundedPercent }}%</span
+      >
+    </div>
   </div>
 </template>
 

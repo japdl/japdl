@@ -9,8 +9,8 @@
     <TopBar />
     <NavBar />
     <div class="flex h-full">
-      <SideBar class="w-1/5" />
-      <main class="h-full flex w-4/5">
+      <SideBar />
+      <main class="h-full flex w-full">
         <div id="view" class="w-full overflow-y-scroll">
           <div id="image-container" class="flex justify-center">
             <img class="w-32" src="./assets/svg/noun-torii.svg" />

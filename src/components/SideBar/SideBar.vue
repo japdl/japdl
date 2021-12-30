@@ -15,17 +15,18 @@
     <h1 class="font-manga text-3xl my-2">Téléchargements</h1>
     <div id="downloads" class="w-full flex flex-col gap-1">
       <SideChapter
-      class="download"
+        class="download"
         :current="3"
         :total="11"
-        name="one-piece chapitre 998"
+        fullname="one-piece chapitre 998"
       />
-      <div class="download chapters">
-        <h2>one-piece chapitre 1000-1009</h2>
-        <h3>one-piece chapitre 1002</h3>
-        <span>3 / 10</span>
-        <LoadingBar :done="(3 / 10) * 100" :show="false" />
-      </div>
+      <SideChapter
+        class="download"
+        :current="3"
+        :total="10"
+        fullname="one-piece chapitre 1000-1009"
+        chapter="one-piece chapitre 1002"
+      />
       <div class="download volume">
         <h2>one-piece volume 99</h2>
         <h3>one-piece chapitre 1004</h3>

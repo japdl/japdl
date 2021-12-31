@@ -15,6 +15,17 @@
     <h1 class="font-manga text-3xl my-2">Téléchargements</h1>
     <div id="downloads" class="w-full flex flex-col gap-1">
       <SideDownload
+        v-for="download in downloads"
+        class="download"
+        :key="download.fullname"
+        :current="download.current"
+        :total="download.total"
+        :fullname="download.fullname"
+        :volume="download.volume"
+        :chapter="download.chapter"
+        :percent="(download.current / download.total) * 100"
+      />
+      <!--SideDownload
         class="download"
         :current="3"
         :total="11"
@@ -41,17 +52,30 @@
         chapter="one-piece chapitre 1005"
         :current="1"
         :total="2"
-      />
+      /-->
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import LoadingBar from "../LoadingBar.vue";
 import SideDownload from "./SideDownload.vue";
 
-const downloads = ref(new Array(5));
+const downloads = ref([
+  {
+    fullname: "one-piece volume 99-100",
+    volume: "one-piece volume 99",
+    chapter: "one-piece chapitre 1005",
+    current: 1,
+    total: 2,
+  },
+  {
+    current: 2,
+    total: 8,
+    fullname: "one-piece volume 99",
+    chapter: "one-piece chapitre 1004",
+  },
+]);
 </script>
 
 <style scoped>

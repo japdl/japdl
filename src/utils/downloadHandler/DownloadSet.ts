@@ -1,15 +1,15 @@
 import { BrowserWindow } from "electron";
 import { Download, QueueDisplay } from ".";
 
-export default class DownloadSet {
-  private data: Download[];
+abstract class ObjectSet<T> {
+  private data: T[];
 
-  constructor(downloads?: Download[]) {
+  constructor(array?: T[]) {
     // to prevent using downloads as a reference to the private field
-    this.data = downloads ? Array.from(downloads) : [];
+    this.data = array ? Array.from(array) : [];
   }
 
-  get(): Download[] {
+  get(): T[] {
     return this.data;
   }
 
@@ -17,7 +17,7 @@ export default class DownloadSet {
     return this.data.length;
   }
 
-  add(value: Download): void {
+  add(value: T): void {
     if (!this.has(value)) this.data.push(value);
   }
 
@@ -25,14 +25,14 @@ export default class DownloadSet {
     return this.data.length === 0;
   }
 
-  popNext(): Download | null {
+  popNext(): T | null {
     /**
      * remove first element of the array and returns it
      */
     return this.data.shift() ?? null;
   }
 
-  remove(value: Download): void {
+  remove(value: T): void {
     /**
      * This is better than filter because we stop when we find it
      * this.data = this.data.filter((obj) => !this.compare(obj, value));
@@ -46,11 +46,20 @@ export default class DownloadSet {
     }
   }
 
-  has(value: Download): boolean {
+  has(value: T): boolean {
     /* every returns true if every element in the array is different from `value`
      * we need to return true if one of the elements is the same, so we use `!`
      */
     return !this.data.every((obj) => !this.compare(obj, value));
+  }
+
+  // return true if they are the same
+  abstract compare(obj1: T, obj2: T): boolean;
+}
+
+export default class DownloadSet extends ObjectSet<Download> {
+  constructor(downloads?: Download[]) {
+    super(downloads);
   }
 
   /**
@@ -58,7 +67,7 @@ export default class DownloadSet {
    * @returns
    */
   toStringArray(): string[] {
-    return this.data.map((obj) => this.toName(obj));
+    return this.get().map((obj) => this.toName(obj));
   }
 
   /**
@@ -76,14 +85,14 @@ export default class DownloadSet {
   }
 
   toQueueDisplay(): QueueDisplay[] {
-    return this.data.map((obj) => this.toDisplay(obj));
+    return this.get().map((obj) => this.toDisplay(obj));
   }
 
   toDisplay(obj1: Download): QueueDisplay {
     return { ...obj1 };
   }
 
-  signalUpdateTo(win: BrowserWindow) {
+  signalUpdateTo(win: BrowserWindow): void {
     win.webContents.send("update-queue", this.toQueueDisplay());
   }
 
@@ -101,5 +110,30 @@ export default class DownloadSet {
 
   toString(): string {
     return this.toStringArray().toString();
+  }
+}
+
+type QueueDownload = {
+  manga: string;
+  type: "volume" | "chapitre";
+  start: number;
+  end?: number;
+  isDone: boolean;
+  isCurrent: boolean;
+  current: number;
+  total: number;
+  percent: number;
+};
+
+class DownloadQueue extends ObjectSet<QueueDownload> {
+  // this approach only works for primitive typed fields
+  compare(obj1: QueueDownload, obj2: QueueDownload): boolean {
+    if (obj1 === obj2) return true;
+    for (const key of Object.keys(obj1)) {
+      //@ts-expect-error because string cannot index obj1, even if they are
+      // from obj1 itself, thank you typescript
+      if (obj1[key] !== obj2[key]) return false;
+    }
+    return true;
   }
 }

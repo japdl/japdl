@@ -46,7 +46,6 @@ import fs from "fs";
 import path from "path";
 import { computed, onUnmounted, ref } from "vue";
 import MangaDirectory from "@/components/Downloaded/MangaDirectory.vue";
-import chokidar from "chokidar";
 
 function readdirSyncFullPath(folder: string) {
   try {

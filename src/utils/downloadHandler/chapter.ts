@@ -8,7 +8,7 @@ const handleChapterDownload = async (
   chapter: number,
   compression: boolean,
   deleteAfterCompression: boolean
-) => {
+): Promise<void> => {
   await downloader.downloadChapter(manga, chapter, {
     compression,
     deleteAfterCompression,

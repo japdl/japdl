@@ -13,7 +13,17 @@
           v-model="search"
           class="text-black rounded-md bg-gray-100 p-2"
           placeholder="Chercher un manga"
+          list="suggestions"
         />
+        <datalist id="suggestions">
+          <option
+            v-for="manga in folders.map((folder) => path.basename(folder.path))"
+            :value="manga"
+            :key="manga"
+          >
+            {{ manga }}
+          </option>
+        </datalist>
       </div>
     </div>
     <div>

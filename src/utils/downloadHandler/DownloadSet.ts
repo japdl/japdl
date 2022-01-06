@@ -61,7 +61,6 @@ export class DownloadSet extends ObjectSet<Download> {
 export class DownloadSetHandler {
   private downloader: Downloader;
   private window: BrowserWindow;
-  private current: Download | null = null;
   private downloadQueue: DownloadSet;
   private done: DownloadSet = new DownloadSet();
   constructor(
@@ -74,38 +73,35 @@ export class DownloadSetHandler {
     this.downloadQueue = downloadQueue ?? new DownloadSet();
   }
 
-  async register(download: Download): Promise<void> {
-    // if there is already a download, add it to the queue
-    if (this.current) {
-      if (this.downloadQueue.compare(this.current, download)) return;
-      this.downloadQueue.add(download);
-    } else {
-      // if there is no download, put it as current
-      this.current = download;
-      // treat here
-      if (this.current.type === "chapitre") {
-        if (!this.current.end) {
-          await handleChapterDownload(
-            this.downloader,
-            this.window,
-            this.current.manga,
-            this.current.start,
-            this.current.compression,
-            !this.current.keepImages
-          );
-        }
+  async handleDownload(download: Download): Promise<void> {
+    if (download.type === "chapitre") {
+      if (!download.end) {
+        await handleChapterDownload(
+          this.downloader,
+          this.window,
+          download.manga,
+          download.start,
+          download.compression,
+          !download.keepImages
+        );
       }
-      // at the end, start next if there is
     }
   }
 
-  goNext(): void {
-    if (!this.current) return;
-    this.done.add(this.current);
-    this.current = this.downloadQueue.popNext();
+  async startNextDownload(): Promise<void> {
+    const download = this.downloadQueue.first;
+    await this.handleDownload(download);
+    this.done.add(this.downloadQueue.popFirst() as Download);
+    if (this.downloadQueue.isEmpty()) return;
+    return this.startNextDownload();
   }
 
-  getCurrent(): Download | null {
-    return this.current;
+  async register(download: Download): Promise<void> {
+    // if there is already a download, add it to the queue
+    const isNotEmpty = !this.downloadQueue.isEmpty();
+    this.downloadQueue.add(download);
+    if (isNotEmpty) return;
+    // treat here
+    return this.startNextDownload();
   }
 }

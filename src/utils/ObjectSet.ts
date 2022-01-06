@@ -1,9 +1,13 @@
 export default abstract class ObjectSet<T> {
-  private data: T[];
+  protected data: T[];
 
   constructor(array?: T[]) {
-    // to prevent using downloads as a reference to the private field
+    // to prevent using downloads as a reference to the protected field
     this.data = array ? Array.from(array) : [];
+  }
+
+  get first(): T {
+    return this.data[0];
   }
 
   get(): T[] {
@@ -22,7 +26,7 @@ export default abstract class ObjectSet<T> {
     return this.data.length === 0;
   }
 
-  popNext(): T | null {
+  popFirst(): T | null {
     /**
      * remove first element of the array and returns it
      */

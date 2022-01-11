@@ -16,11 +16,7 @@
           list="suggestions"
         />
         <datalist id="suggestions">
-          <option
-            v-for="manga in folders.map((folder) => path.basename(folder.path))"
-            :value="manga"
-            :key="manga"
-          >
+          <option v-for="manga in folderNames" :value="manga" :key="manga">
             {{ manga }}
           </option>
         </datalist>
@@ -39,7 +35,7 @@
           :folder="folder"
         />
       </ul>
-      <div v-else class="text-center mt-5 text-2xl text-red-700">
+      <div v-else class="text-center pt-5 text-2xl text-red-700">
         Aucun manga ne correspond à votre recherche
       </div>
     </div>
@@ -70,6 +66,10 @@ function readdirSyncFullPath(folder: string) {
 
 const search = ref("");
 
+const folderNames = computed(() => {
+  return folders.value.map((folder) => path.basename(folder.path));
+});
+
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
@@ -86,17 +86,40 @@ const iterableFolders = computed(() => {
   }
 });
 
+function compareArrayOfFolders(
+  arr1: { path: string; stat: fs.Stats }[],
+  arr2: { path: string; stat: fs.Stats }[]
+) {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i].path !== arr2[i].path) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function getFolders() {
   console.log("getFolders");
-  folders.value = readdirSyncFullPath(config.outputDirectory).filter(
+  const newFolders = readdirSyncFullPath(config.outputDirectory).filter(
     (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
   );
+  /* if are different, update folders.
+   * I use this to prevent vue from reloading everything,
+   * causing search autocomplete to vanish every call to this
+   * function.
+   */
+  if (!compareArrayOfFolders(newFolders, folders.value)) {
+    folders.value = newFolders;
+  }
 }
 
 getFolders();
 
-// else this keeps going forever
 const interval = setInterval(getFolders, 1000);
+// else this keeps going forever
 onUnmounted(() => clearInterval(interval));
 
 // valid if has files in it

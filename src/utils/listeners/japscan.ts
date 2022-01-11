@@ -61,7 +61,6 @@ export async function setupJapscandlListeners(
         });
 
         ipcMain.on("search", async (event, data) => {
-          console.log(data);
           const results = await downloader.searchManga(data.value);
           if (data.sync) {
             console.log("Sync");

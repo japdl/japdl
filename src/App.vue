@@ -1,25 +1,13 @@
 <template>
-  <div v-if="notReady">
-    <TopBar />
-    <div>
-      {{ notReady }}
-    </div>
+  <SideBar class="pt-20 w-64 fixed" />
+  <div id="top" class="h-16 fixed w-full z-50">
+    <TopBar class="w-full" />
+    <NavBar class="w-full" />
   </div>
-  <div v-else class="w-full h-full flex flex-col justify-between">
-    <TopBar />
-    <NavBar />
-    <div class="flex h-full">
-      <SideBar />
-      <main class="h-full flex w-full">
-        <div id="view" class="w-full overflow-y-scroll">
-          <div id="image-container" class="flex justify-center">
-            <img class="w-32" src="./assets/svg/noun-torii.svg" />
-          </div>
-          <router-view />
-        </div>
-      </main>
-    </div>
-  </div>
+  <main class="pt-16 pl-64 overflow-y-auto">
+    <img src="./assets/svg/noun-torii.svg" class="w-32 mx-auto" />
+    <router-view></router-view>
+  </main>
 </template>
 
 <script lang="ts" setup>
@@ -50,8 +38,3 @@ const debug = ipcRenderer.sendSync("debug");
 provide("debug", debug);
 </script>
 
-<style scoped>
-main {
-  background-color: var(--light-background);
-}
-</style>

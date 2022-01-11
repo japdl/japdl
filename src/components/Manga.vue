@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      mt-5
+      mb-5
       max-w-md
       mx-auto
       bg-white
@@ -37,7 +37,6 @@
         <span
           @click.prevent.stop="openExternalLink(mangaLink)"
           class="
-            mt-1
             text-lg
             leading-tight
             font-medium
@@ -47,8 +46,8 @@
           "
           >Voir sur Japscan</span
         >
-        <div class="mt-2 text-gray-800">
-          <div class="mt-2 text-gray-500">
+        <div class="text-gray-800">
+          <div class="text-gray-500">
             <div v-if="props.infos.original_name">
               <i>Nom original:</i> {{ props.infos.original_name }}
             </div>

@@ -1,16 +1,8 @@
-html, body, #app {
-  margin: 0;
-  height: 100%;
-  width: 100%;
+#app {
+  height: 100vh;
   background-color: var(--light-background);
   font-family: "Roboto", sans-serif;
 }
-
-html {
-  overflow: hidden;
-}
-
-
 
 /* width */
 ::-webkit-scrollbar {
@@ -34,13 +26,12 @@ html {
 }
 
 :root {
-    --dark-dark-primary: #86092075;
-    --dark-primary: #880921;
-    --primary: #ff0000;
+  --dark-dark-primary: #86092075;
+  --dark-primary: #880921;
+  --primary: #ff0000;
 }
 
 #app.dark {
-
   --light-background: #24292e;
   --dark-background: #1d2125;
   --container: #111827;
@@ -101,22 +92,21 @@ input {
 }
 
 .topbar-icon {
-    @apply cursor-pointer w-9 px-2 h-full;
+  @apply cursor-pointer w-9 px-2 h-full;
 }
 
 .hover\:background:hover {
-    background-color: var(--dark-background);
-
+  background-color: var(--dark-background);
 }
 
 img {
-    @apply select-none;
+  @apply select-none;
 }
 
 input {
-    border: 2px solid var(--container);
+  border: 2px solid var(--container);
 }
 
 path {
-    fill: var(--container);
+  fill: var(--container);
 }

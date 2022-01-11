@@ -1,19 +1,19 @@
 <template>
   <div class="telecharger" v-if="state.japscanInitiated">
-    <div v-if="debug" class="flex space-x-1">
+    <div v-if="debug" class="flex gap-1">
       <DebugVariables header="state" :state="state" />
       <DebugVariables header="manga" :state="manga" />
     </div>
     <ChooseManga @manga="getMangaInfos($event.japscan)" />
     <Loading v-if="state.loading" />
-    <div id="afterMangaChoosen" class="m-6" v-if="manga.name && !state.loading">
+    <div id="afterMangaChoosen" class="p-6" v-if="manga.name && !state.loading">
       <h1 class="font-manga text-6xl bg-gray">{{ manga.name }}</h1>
-      <div class="informations m-5">
+      <div class="informations p-5">
         <p>
-          <span class="text-xl m-2" v-if="manga.volumes">
+          <span class="text-xl p-2" v-if="manga.volumes">
             <strong>Volumes:</strong> {{ manga.volumes }} <br />
           </span>
-          <span class="text-xl m-2" v-if="manga.chapters"
+          <span class="text-xl p-2" v-if="manga.chapters"
             ><strong>Chapitres:</strong> {{ manga.chapters }} <br
           /></span>
           <span class="text-gray-400" v-if="manga.synopsis">
@@ -145,7 +145,6 @@ function getType(type: string) {
 if (props?.query?.manga) {
   getMangaInfos(props.query.manga as string);
 }
-
 </script>
 
 <style scoped>

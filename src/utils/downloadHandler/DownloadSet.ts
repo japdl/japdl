@@ -61,6 +61,7 @@ export class DownloadSet extends ObjectSet<Download> {
 export class DownloadSetHandler {
   private downloader: Downloader;
   private window: BrowserWindow;
+
   private downloadQueue: DownloadSet;
   private done: DownloadSet = new DownloadSet();
   constructor(
@@ -71,6 +72,17 @@ export class DownloadSetHandler {
     this.downloader = downloader;
     this.window = window;
     this.downloadQueue = downloadQueue ?? new DownloadSet();
+  }
+
+  synchronizeWithWindow(): void {
+    this.window.webContents.send(
+      "update-queue",
+      this.downloadQueue.toQueueDisplay()
+    );
+
+    this.window.webContents.send("update-done", this.done.toStringArray());
+
+    console.log;
   }
 
   async handleDownload(download: Download): Promise<void> {
@@ -84,22 +96,49 @@ export class DownloadSetHandler {
           download.compression,
           !download.keepImages
         );
+        return;
       }
     }
+
+    console.log("Undefined download, was not treated: ", download);
+  }
+
+  addToQueue(download: Download): void {
+    this.downloadQueue.add(download);
+    this.synchronizeWithWindow();
+  }
+
+  addToFinished(download: Download): void {
+    this.done.add(download);
+    this.synchronizeWithWindow();
+  }
+
+  removeCurrentDownload(): void {
+    this.downloadQueue.popFirst();
+    this.synchronizeWithWindow();
   }
 
   async startNextDownload(): Promise<void> {
+    /*
+     * we need to keep current download in the queue
+     * during the download
+     */
     const download = this.downloadQueue.first;
     await this.handleDownload(download);
-    this.done.add(this.downloadQueue.popFirst() as Download);
+    this.removeCurrentDownload();
+    this.addToFinished(download);
     if (this.downloadQueue.isEmpty()) return;
     return this.startNextDownload();
   }
 
   async register(download: Download): Promise<void> {
-    // if there is already a download, add it to the queue
+    /*
+     * if there is already a download, add it to the queue
+     * and leave function since all queue elements will be called
+     * after the current download
+     */
     const isNotEmpty = !this.downloadQueue.isEmpty();
-    this.downloadQueue.add(download);
+    this.addToQueue(download);
     if (isNotEmpty) return;
     // treat here
     return this.startNextDownload();

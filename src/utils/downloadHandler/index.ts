@@ -14,10 +14,13 @@ export type Download = QueueDisplay & {
   keepImages: boolean;
 };
 
-const downloadFromArgs = (downloader: Downloader, win: BrowserWindow): void => {
+const downloadFromArgs = (
+  downloader: Downloader,
+  win: BrowserWindow
+): ((_: Event, args: Download) => void) => {
   const downloadQueue = new DownloadSetHandler(downloader, win);
 
-  async (_: Event, args: Download): Promise<void> => {
+  return (_: Event, args: Download): void => {
     downloadQueue.register(args);
   };
 };

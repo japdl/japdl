@@ -1,5 +1,5 @@
 <template>
-  <nav class="select-none h-16 flex justify-evenly items-center rounded-b-2xl">
+  <nav class="select-none flex justify-evenly items-center rounded-b-2xl mb-1">
     <router-link
       v-for="route in routes"
       :key="route.name"
@@ -25,7 +25,7 @@ nav {
 }
 
 nav a {
-  @apply mx-2 p-4 rounded-xl transition-all duration-200 w-full text-center min-w-max;
+  @apply mx-2 p-2 rounded-xl transition-all duration-200 w-full text-center min-w-max;
 }
 nav a.router-link-exact-active {
   color: var(--dark-primary);

@@ -1,8 +1,5 @@
 #app {
-  max-height: 100%;
-  min-height: 100vh;
-  background-color: var(--light-background);
-  font-family: "Roboto", sans-serif;
+  @apply max-h-full min-h-screen font-main bg-light-background;
 }
 
 /* width */
@@ -58,14 +55,8 @@ button.basic {
   transition: all 200ms ease;
   background-color: var(--dark-primary);
   border: none;
-  color: white;
-  padding: 8px;
-  text-align: center;
-  border-radius: 15px;
-  cursor: pointer;
   outline: none;
-  text-transform: uppercase;
-  @apply select-none mx-1;
+  @apply select-none mx-1 uppercase cursor-pointer rounded-2xl text-center p-2 text-white transition-all duration-200;
 }
 
 button.basic.selected {
@@ -92,12 +83,8 @@ input {
   text-align: center;
 }
 
-.topbar-icon {
-  @apply cursor-pointer w-9 px-2 h-full;
-}
-
-.hover\:background:hover {
-  background-color: var(--dark-background);
+.full {
+  @apply h-full w-full;
 }
 
 img {
@@ -110,4 +97,13 @@ input {
 
 path {
   fill: var(--container);
+}
+
+.fit-screen {
+  /* 2.5rem = h-10 for tailwind */
+  height: calc(100vh - calc(2.5rem + 3.5rem + 0.5rem));
+}
+
+.fit-side {
+  height: calc(100vh - 2.5rem);
 }

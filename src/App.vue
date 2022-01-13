@@ -1,13 +1,17 @@
 <template>
-  <SideBar class="pt-20 w-64 fixed" />
-  <div id="top" class="h-16 fixed w-full z-50">
-    <TopBar class="w-full" />
-    <NavBar class="w-full" />
+  <div id="container" class="full flex flex-col">
+    <TopBar />
+    <main class="flex">
+      <SideBar class="fit-side" />
+      <div id="content" class="w-full">
+        <NavBar class="w-full" />
+        <div id="view" class="fit-screen overflow-y-scroll">
+          <img src="./assets/svg/noun-torii.svg" class="mx-auto w-32" />
+          <router-view></router-view>
+        </div>
+      </div>
+    </main>
   </div>
-  <main class="pt-20 pl-64 overflow-y-auto">
-    <img src="./assets/svg/noun-torii.svg" class="w-32 mx-auto" />
-    <router-view></router-view>
-  </main>
 </template>
 
 <script lang="ts" setup>
@@ -37,4 +41,3 @@ ipcRenderer.on("changeTheme", (event, data) => {
 const debug = ipcRenderer.sendSync("debug");
 provide("debug", debug);
 </script>
-

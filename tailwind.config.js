@@ -4,12 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#ff0000",
-        "dark-primary": "#880921",
-        "dark-grey": "#111827",
+        primary: "var(--primary)",
+        "dark-primary": "var(--dark-primary)",
+        "dark-background": "var(--dark-background)",
+        "light-background": "var(--light-background)",
+        container: "var(--container)",
       },
       fontFamily: {
         manga: ["Staatliches", "cursive"],
+        main: ["Roboto", "sans-serif"],
       },
     },
   },

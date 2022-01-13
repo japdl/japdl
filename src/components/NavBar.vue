@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="h-14 select-none flex justify-evenly items-center rounded-b-2xl bg-dark-background"
+    class="h-14 select-none flex justify-evenly items-center rounded-b-2xl bg-dark-background border-l-2 border-light-background"
   >
     <router-link
       v-for="route in routes"

@@ -1,15 +1,7 @@
 <template>
   <aside
     id="container"
-    class="
-      flex flex-col
-      items-center
-      w-72
-      h-full
-      overflow-hidden
-      text-gray-300
-      rounded
-    "
+    class="flex flex-col items-center w-72 h-full overflow-hidden text-gray-300 rounded"
   >
     <h1 class="font-manga text-3xl my-2">Téléchargements</h1>
     <div id="downloads" class="w-full flex flex-col gap-1">
@@ -19,6 +11,7 @@
         :fullname="currentDownload.fullname"
         :current="currentDownload.current"
         :total="currentDownload.total"
+        :percent="(currentDownload.current / currentDownload.total) * 100"
       />
       <div class="border-b-2 border-t-2 text-center text-xl">En attente</div>
       <div v-for="queueElement in queue" :key="queueElement">

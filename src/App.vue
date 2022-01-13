@@ -4,7 +4,7 @@
     <TopBar class="w-full" />
     <NavBar class="w-full" />
   </div>
-  <main class="pt-16 pl-64 overflow-y-auto">
+  <main class="pt-20 pl-64 overflow-y-auto">
     <img src="./assets/svg/noun-torii.svg" class="w-32 mx-auto" />
     <router-view></router-view>
   </main>

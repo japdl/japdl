@@ -26,17 +26,15 @@
 import { defineProps, defineEmits } from "@vue/runtime-core";
 import { computed } from "vue";
 
-const props =
-  defineProps<{
-    max: number;
-    type: string;
-    range: { start: number; end: number };
-  }>();
+const props = defineProps<{
+  max: number;
+  type: string;
+  range: { start: number; end: number };
+}>();
 
-const emits =
-  defineEmits<{
-    (event: "update:range", range: { start: number; end: number }): void;
-  }>();
+const emits = defineEmits<{
+  (event: "update:range", range: { start: number; end: number }): void;
+}>();
 
 const placeholder = computed(() => {
   return `Numéro de ${props.type}`;

@@ -9,11 +9,10 @@
 <script lang="ts" setup>
 import { shell } from "electron";
 import { defineProps, computed } from "@vue/runtime-core";
-const props =
-  defineProps<{
-    link: string;
-    text?: string;
-  }>();
+const props = defineProps<{
+  link: string;
+  text?: string;
+}>();
 
 const whatToShow = computed(() => {
   const { link, text } = props;

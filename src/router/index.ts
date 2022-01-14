@@ -3,11 +3,11 @@ import Home from "../views/Home.vue";
 
 const capitalize = (str: string) => {
   return str[0].toUpperCase() + str.slice(1);
-}
+};
 
 const importView = (viewName: string) => {
   return () => import(`../views/${capitalize(viewName)}.vue`);
-}
+};
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,7 +42,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Options",
     //alias: "Options",
     component: importView("options"),
-  }
+  },
 ];
 
 const router = createRouter({

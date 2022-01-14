@@ -15,14 +15,7 @@
     </button>
     <button class="basic mb-5" @click="downloadMore">Télécharger</button>
     <ol
-      class="
-        flex flex-col
-        gap-0.5
-        max-h-96
-        overflow-y-scroll
-        border-2 border-dark-primary
-        rounded-l-xl
-      "
+      class="flex flex-col gap-0.5 max-h-96 overflow-y-auto border-2 border-dark-primary rounded-l-xl"
     >
       <MangaFile
         v-for="(file, ifile) in sortedFiles"
@@ -35,11 +28,11 @@
 
 <script lang="ts" setup>
 import fs from "fs";
-import { defineProps, onMounted } from "@vue/runtime-core";
+import { defineProps } from "@vue/runtime-core";
 import path from "path";
 import { shell } from "electron";
 import MangaFile from "./MangaFile.vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import router from "@/router";
 
 const sortedFiles = computed(() => {
@@ -63,13 +56,12 @@ function readdirSyncFullPath() {
   }
 }
 
-const props =
-  defineProps<{
-    folder: {
-      path: string;
-      stat: fs.Stats;
-    };
-  }>();
+const props = defineProps<{
+  folder: {
+    path: string;
+    stat: fs.Stats;
+  };
+}>();
 
 const downloadMore = () => {
   router.push({
@@ -78,7 +70,7 @@ const downloadMore = () => {
       manga: mangaName,
     },
   });
-}
+};
 
 const mangaName = path.basename(props.folder.path);
 const imageLink = `https://japscan.ws/imgs/mangas/${mangaName}.jpg`;

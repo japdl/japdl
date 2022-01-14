@@ -29,10 +29,9 @@ import { defineEmits } from "@vue/runtime-core";
 import { ref } from "vue";
 import Container from "../Container.vue";
 
-const emit =
-  defineEmits<{
-    (event: "type", type: string): void;
-  }>();
+const emit = defineEmits<{
+  (event: "type", type: string): void;
+}>();
 
 const type = ref("");
 

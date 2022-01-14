@@ -1,17 +1,7 @@
 <template>
   <li>
     <Container
-      class="
-        flex
-        items-center
-        justify-around
-        cursor-pointer
-        transition-opacity
-        duration-75
-        hover:opacity-80
-        h-0
-        w-full
-      "
+      class="flex items-center justify-around cursor-pointer transition-opacity duration-75 hover:opacity-80 h-0 w-full"
       :title="hoverMessage"
       @click="handleOpenPath()"
     >
@@ -38,13 +28,12 @@ import ImageFolder from "../Images/ImageFolder.vue";
 import Read from "../Images/Read.vue";
 import Container from "../Container.vue";
 
-const props =
-  defineProps<{
-    file: {
-      path: string;
-      stat: fs.Stats;
-    };
-  }>();
+const props = defineProps<{
+  file: {
+    path: string;
+    stat: fs.Stats;
+  };
+}>();
 
 const hoverMessage = props.file.stat.isFile() ? "Lire" : "Ouvrir le dossier";
 function numberOfImages() {

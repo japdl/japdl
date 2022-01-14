@@ -22,13 +22,7 @@
         :stroke-dashoffset="
           circumference - (props.percent / 100) * circumference
         "
-        class="
-          text-blue-500
-          hover:text-blue-600
-          cursor-pointer
-          transition-all
-          duration-500
-        "
+        class="text-blue-500 hover:text-blue-600 cursor-pointer transition-all duration-500"
       ></circle>
     </svg>
     <span class="relative -left-2/4">{{ props.percent }}% </span>

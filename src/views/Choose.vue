@@ -12,11 +12,10 @@ import router from "@/router";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 const redirectToDownload = (manga: SearchInfos) => {
   router.push({
-      name: "Download",
-      params: {
-        manga: manga.japscan
-      }
+    name: "Download",
+    params: {
+      manga: manga.japscan,
+    },
   });
 };
-
 </script>

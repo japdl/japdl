@@ -70,10 +70,9 @@ import DebugVariables from "@/components/DebugVariables.vue";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
 
-const props =
-  defineProps<{
-    query?: LocationQuery;
-  }>();
+const props = defineProps<{
+  query?: LocationQuery;
+}>();
 
 const debug = inject("debug");
 

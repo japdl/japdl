@@ -16,11 +16,10 @@ import axios from "axios";
 import { defineProps } from "@vue/runtime-core";
 import { ref } from "vue";
 import WebLink from "./WebLink.vue";
-const props =
-  defineProps<{
-    link: string;
-    title?: string;
-  }>();
+const props = defineProps<{
+  link: string;
+  title?: string;
+}>();
 
 const loading = ref(true);
 const reachable = ref(false);

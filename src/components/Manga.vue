@@ -1,17 +1,6 @@
 <template>
   <div
-    class="
-      mb-5
-      max-w-md
-      mx-auto
-      bg-white
-      hover:opacity-75
-      transition-all
-      rounded-xl
-      shadow-xl
-      overflow-hidden
-      md:max-w-2xl
-    "
+    class="mb-5 max-w-md mx-auto bg-white hover:opacity-75 transition-all rounded-xl shadow-xl overflow-hidden md:max-w-2xl"
   >
     <div class="md:flex">
       <div class="md:flex-shrink-0">
@@ -22,28 +11,14 @@
       </div>
       <div class="p-8">
         <span
-          class="
-            font-manga
-            uppercase
-            tracking-wide
-            text-primary
-            font-semibold
-            text-2xl
-          "
+          class="font-manga uppercase tracking-wide text-primary font-semibold text-2xl"
         >
           {{ props.infos.name }}
         </span>
         <br />
         <span
           @click.prevent.stop="openExternalLink(mangaLink)"
-          class="
-            text-lg
-            leading-tight
-            font-medium
-            text-black
-            hover:underline
-            cursor-pointer
-          "
+          class="text-lg leading-tight font-medium text-black hover:underline cursor-pointer"
           >Voir sur Japscan</span
         >
         <div class="text-gray-800">

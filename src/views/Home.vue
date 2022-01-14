@@ -24,16 +24,7 @@
           <div class="flex justify-center items-center">
             <div
               id="changelog"
-              class="
-                flex flex-col
-                justify-center
-                text-left
-                w-2/3
-                border-4
-                p-4
-                border-dark-primary
-                rounded-xl
-              "
+              class="flex flex-col justify-center text-left w-2/3 border-4 p-4 border-dark-primary rounded-xl"
             >
               <p
                 id="line"

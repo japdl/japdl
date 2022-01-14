@@ -14,15 +14,14 @@
 import LoadingBar from "../LoadingBar.vue";
 import { defineProps } from "@vue/runtime-core";
 
-const props =
-  defineProps<{
-    fullname: string;
-    volume?: string;
-    chapter?: string;
-    current: number;
-    total: number;
-    percent: number;
-  }>();
+const props = defineProps<{
+  fullname: string;
+  volume?: string;
+  chapter?: string;
+  current: number;
+  total: number;
+  percent: number;
+}>();
 </script>
 
 <style scoped>

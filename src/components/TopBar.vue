@@ -2,23 +2,23 @@
   <div id="wrapper" class="w-full h-10 flex select-none">
     <div class="w-full draggable"></div>
     <div class="flex justify-center items-center">
-      <ThemeSwitch class="topbar-icon" />
+      <ThemeSwitch class="topbar-icon hover:bg-dark-background" />
       <Minimize
         @click="minimizeWindow"
         title="Minimiser la fenêtre"
-        class="topbar-icon"
+        class="topbar-icon hover:bg-dark-background"
       />
       <Maximize
         v-if="!maximized"
         @click="maximizeWindow"
         title="Maximiser la fenêtre"
-        class="topbar-icon"
+        class="topbar-icon hover:bg-dark-background"
       />
       <Restore
         v-else
         @click="restoreWindow"
         title="Réduire la fenêtre"
-        class="topbar-icon"
+        class="topbar-icon hover:bg-dark-background"
       />
       <Close
         @click="closeWindow"
@@ -60,6 +60,6 @@ const closeWindow = () => ipcRenderer.send("closeWindow");
 }
 
 .topbar-icon {
-  @apply cursor-pointer w-10 px-2 h-full hover:bg-dark-background;
+  @apply cursor-pointer w-10 px-2 h-full;
 }
 </style>

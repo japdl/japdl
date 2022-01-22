@@ -1,50 +1,48 @@
-import { BrowserWindow } from "electron";
-import { Downloader } from "../../../../japscandl/js";
+import { DownloadSetHandler } from "./DownloadSet";
+import { OngoingDownload } from "./types";
 
 const handleChapterDownload = async (
-  downloader: Downloader,
-  window: BrowserWindow,
+  downloadSet: DownloadSetHandler,
   manga: string,
   chapter: number,
   compression: boolean,
   deleteAfterCompression: boolean
 ): Promise<void> => {
-  await downloader.downloadChapter(manga, chapter, {
+  const { downloader } = downloadSet;
+  const download: OngoingDownload = {
+    fullname: `${manga} chapitre ${chapter}`,
+    current: 0,
+    total: 0,
+    percent: 0,
+  };
+  downloadSet.setCurrentDownload(download);
+  return downloader.downloadChapter(manga, chapter, {
     compression,
     deleteAfterCompression,
     callback: (events) => {
       events.on("start", (attributes, link, total) => {
-        window.webContents.send("chapter-start", {
-          manga,
-          attributes,
-          total,
-        });
+        download.current = 0;
+        download.total = total;
+        download.percent = 0;
+        downloadSet.setCurrentDownload(download);
       });
-      events.on("noimage", (attributes, link) => {
-        window.webContents.send("chapter-noimage", {
-          attributes,
-          link,
+      /* events.on("noimage", (attributes, link) => {
         });
-      });
+      }); */
       events.on("page", (attributes, total) => {
-        window.webContents.send("chapter-page", {
-          page: attributes.page,
-          total,
-        });
+        download.current = +attributes.page;
+        download.percent = (download.current / download.total) * 100;
         console.log(attributes, total);
+        downloadSet.setCurrentDownload(download);
       });
-      if (compression) {
+      /* if (compression) {
         events.on("compressing", () => {
-          window.webContents.send("chapter-compressing");
         });
         events.on("compressed", (attributes, path, stats) => {
-          window.webContents.send("chapter-compressed", {
-            stats,
-          });
         });
-      }
+      } */
       events.on("done", () => {
-        window.webContents.send("chapter-done");
+        downloadSet.clearCurrentDownload();
       });
     },
   });

@@ -1,8 +1,10 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import { Download, QueueDisplay } from ".";
 import { Downloader } from "../../../../japscandl/js";
 import ObjectSet from "../ObjectSet";
 import handleChapterDownload from "./chapter";
+import handleChaptersDownload from "./chapters";
+import { OngoingDownload } from "./types";
 
 export class DownloadSet extends ObjectSet<Download> {
   constructor(downloads?: Download[]) {
@@ -40,7 +42,7 @@ export class DownloadSet extends ObjectSet<Download> {
   }
 
   signalUpdateTo(win: BrowserWindow): void {
-    win.webContents.send("update-queue", this.toQueueDisplay());
+    win.webContents.send("update-queue", this.toStringArray());
   }
 
   compare(obj1: Download, obj2: Download): boolean {
@@ -59,8 +61,8 @@ export class DownloadSet extends ObjectSet<Download> {
   }
 }
 export class DownloadSetHandler {
-  private downloader: Downloader;
-  private window: BrowserWindow;
+  downloader: Downloader;
+  window: BrowserWindow;
 
   private downloadQueue: DownloadSet;
   private done: DownloadSet = new DownloadSet();
@@ -74,6 +76,10 @@ export class DownloadSetHandler {
     this.downloadQueue = downloadQueue ?? new DownloadSet();
   }
 
+  clearCurrentDownload(): void {
+    this.window.webContents.send("update-current", null);
+  }
+
   synchronizeWithWindow(): void {
     this.window.webContents.send(
       "update-queue",
@@ -81,26 +87,40 @@ export class DownloadSetHandler {
     );
 
     this.window.webContents.send("update-done", this.done.toStringArray());
-
-    console.log;
   }
 
   async handleDownload(download: Download): Promise<void> {
-    if (download.type === "chapitre") {
-      if (!download.end) {
-        await handleChapterDownload(
-          this.downloader,
-          this.window,
-          download.manga,
-          download.start,
-          download.compression,
-          !download.keepImages
-        );
-        return;
+    switch (download.type) {
+      case "chapitre": {
+        if (!download.end) {
+          return handleChapterDownload(
+            this,
+            download.manga,
+            download.start,
+            download.compression,
+            !download.keepImages
+          );
+        } else {
+          return handleChaptersDownload(
+            this,
+            download.manga,
+            download.start,
+            download.end,
+            download.compression,
+            !download.keepImages
+          );
+        }
       }
+      case "volume": {
+        console.log("Not yet implemented");
+        break;
+      }
+      default:
+        throw new Error("Unknown download type");
     }
-
-    console.log("Undefined download, was not treated: ", download);
+  }
+  setCurrentDownload(download: OngoingDownload): void {
+    this.window.webContents.send("update-current", download);
   }
 
   addToQueue(download: Download): void {
@@ -124,7 +144,9 @@ export class DownloadSetHandler {
      * during the download
      */
     const download = this.downloadQueue.first;
+    console.log("Waiting for download...");
     await this.handleDownload(download);
+    console.log("Wait is over! removing");
     this.removeCurrentDownload();
     this.addToFinished(download);
     if (this.downloadQueue.isEmpty()) return;
@@ -139,6 +161,7 @@ export class DownloadSetHandler {
      */
     const isNotEmpty = !this.downloadQueue.isEmpty();
     this.addToQueue(download);
+    this.synchronizeWithWindow();
     if (isNotEmpty) return;
     // treat here
     return this.startNextDownload();

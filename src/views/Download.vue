@@ -7,7 +7,11 @@
     <ChooseManga @manga="getMangaInfos($event.japscan)" />
     <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" class="p-6" v-if="manga.name && !state.loading">
-      <h1 class="font-manga text-6xl bg-gray">{{ manga.name }}</h1>
+      <WebLink
+        :link="'https://japscan.ws/manga/' + manga.japscanName + '/'"
+        :text="manga.name"
+        class="font-manga text-6xl bg-gray"
+       />
       <div class="informations p-5">
         <p>
           <span class="text-xl p-2" v-if="manga.volumes">
@@ -69,6 +73,7 @@ import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import DebugVariables from "@/components/DebugVariables.vue";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
+import WebLink from "@/components/WebLink.vue";
 
 const props = defineProps<{
   query?: LocationQuery;
@@ -127,7 +132,7 @@ function getMangaInfos(mangaName: string) {
   ipcRenderer.send("getMangaInfos", mangaName);
   ipcRenderer.once("replyMangaInfos", (event, infos) => {
     if (infos) {
-      manga.name = infos.name;
+      manga.name = infos.display;
       manga.japscanName = infos.name;
       manga.volumes = infos.volumes;
       manga.chapters = infos.chapters;

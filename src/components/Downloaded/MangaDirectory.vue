@@ -1,10 +1,10 @@
 <template>
   <li
-    id="wrapper"
-    class="m-6 min-w-max flex flex-col gap-1 p-2 items-center mt-20"
+    class="m-6 min-w-max flex flex-col gap-1 p-2 items-center mt-20 rounded-md"
+    :style="`background-color: ${backgroundColor};`"
   >
     <img :src="imageLink" id="mangaImage" class="w-40 self-center" />
-    <h2 class="text-4xl font-manga text-center mt-2">
+    <h2 class="text-4xl font-manga text-center mt-2 text-white">
       {{ mangaName }}
     </h2>
     <button class="basic mt-3" @click="shell.openPath(folder.path)">
@@ -35,6 +35,32 @@ import MangaFile from "./MangaFile.vue";
 import { computed } from "vue";
 import router from "@/router";
 
+const props = defineProps<{
+  folder: {
+    path: string;
+    stat: fs.Stats;
+  };
+}>();
+
+const mangaName = path.basename(props.folder.path);
+const imageLink = `https://japscan.ws/imgs/mangas/${mangaName}.jpg`;
+const mangaLink = `https://www.japscan.ws/manga/${mangaName}/`;
+
+const stringToColour = function (str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  let colour = "#";
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    colour += ("00" + value.toString(16)).substr(-2);
+  }
+  return colour;
+};
+
+const backgroundColor = stringToColour(mangaName);
+
 const sortedFiles = computed(() => {
   var customSort = (a: { path: string }, b: { path: string }) => {
     const noNullMatch = (str: string) => {
@@ -56,13 +82,6 @@ function readdirSyncFullPath() {
   }
 }
 
-const props = defineProps<{
-  folder: {
-    path: string;
-    stat: fs.Stats;
-  };
-}>();
-
 const downloadMore = () => {
   router.push({
     name: "Download",
@@ -71,8 +90,4 @@ const downloadMore = () => {
     },
   });
 };
-
-const mangaName = path.basename(props.folder.path);
-const imageLink = `https://japscan.ws/imgs/mangas/${mangaName}.jpg`;
-const mangaLink = `https://www.japscan.ws/manga/${mangaName}/`;
 </script>

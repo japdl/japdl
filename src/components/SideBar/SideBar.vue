@@ -38,7 +38,11 @@
       >
         <h2>Terminés</h2>
 
-        <div v-for="doneElement in done" :key="doneElement">
+        <div
+          class="line-through"
+          v-for="doneElement in done"
+          :key="doneElement"
+        >
           {{ doneElement }}
         </div>
       </div>

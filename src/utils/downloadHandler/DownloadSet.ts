@@ -1,10 +1,11 @@
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow } from "electron";
 import { Download, QueueDisplay } from ".";
 import { Downloader } from "../../../../japscandl/js";
 import ObjectSet from "../ObjectSet";
 import handleChapterDownload from "./chapter";
 import handleChaptersDownload from "./chapters";
 import { OngoingDownload } from "./types";
+import handleVolumeDownload from "./volume";
 
 export class DownloadSet extends ObjectSet<Download> {
   constructor(downloads?: Download[]) {
@@ -112,7 +113,17 @@ export class DownloadSetHandler {
         }
       }
       case "volume": {
-        console.log("Not yet implemented");
+        if (!download.end) {
+          return handleVolumeDownload(
+            this,
+            download.manga,
+            download.start,
+            download.compression,
+            !download.keepImages
+          );
+        } else {
+          throw new Error("Not implemented");
+        }
         break;
       }
       default:

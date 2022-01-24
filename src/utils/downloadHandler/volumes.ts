@@ -50,26 +50,17 @@ const handleVolumesDownload = async (
         });
       }); */
       events.on("page", (attributes, total) => {
-        // 2 volumes, 2 chapters, 10 pages
-        /**
-         * volumePortion = 100 / 2 = 50
-         * chapterPortion = 50 / 2 = 25
-         * pagePortion = 25 / 10 = 2.5
-         * percent = 2.5 * currentPage + chapterPortion * currentChapter + volumePortion * volIndex
-         */
 
         const volumePortion = 100 / download.total;
         const chapterPortion = volumePortion / nbChapters;
         const pagePortion = chapterPortion / total;
+
         download.percent =
           (download.current - 1) * volumePortion +
           chapterPortion * (currentChapter - 1) +
           pagePortion * +attributes.page;
 
-        console.log(
-          `${download.percent}%, v ${volumePortion}%  c ${chapterPortion}% p ${pagePortion}%`
-        );
-        console.log(attributes.page, " / ", total, currentChapter, nbChapters);
+        console.log(attributes, total);
         downloadSet.setCurrentDownload(download);
       });
       /* if (compression) {

@@ -38,11 +38,7 @@
       >
         <h2>Terminés</h2>
 
-        <div
-          class="line-through"
-          v-for="doneElement in done"
-          :key="doneElement"
-        >
+        <div class="opacity-80" v-for="doneElement in done" :key="doneElement">
           {{ doneElement }}
         </div>
       </div>

@@ -6,6 +6,7 @@ import handleChapterDownload from "./chapter";
 import handleChaptersDownload from "./chapters";
 import { OngoingDownload } from "./types";
 import handleVolumeDownload from "./volume";
+import handleVolumesDownload from "./volumes";
 
 export class DownloadSet extends ObjectSet<Download> {
   constructor(downloads?: Download[]) {
@@ -122,9 +123,15 @@ export class DownloadSetHandler {
             !download.keepImages
           );
         } else {
-          throw new Error("Not implemented");
+          return handleVolumesDownload(
+            this,
+            download.manga,
+            download.start,
+            download.end,
+            download.compression,
+            !download.keepImages
+          );
         }
-        break;
       }
       default:
         throw new Error("Unknown download type");

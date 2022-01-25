@@ -1,27 +1,25 @@
 <template>
-  <div class="flex flex-col items-start">
-    <Container
-      class="mb-5 w-full p-3 flex items-center flex-col"
-      header="Type de téléchargement"
-    >
-      <div class="flex justify-around text-xl w-full">
-        <button
-          class="basic w-full"
-          :class="{ selected: type === 'chapitre' }"
-          @click="handleEmit('chapitre')"
-        >
-          Chapitre
-        </button>
-        <button
-          class="basic w-full"
-          :class="{ selected: type === 'volume' }"
-          @click="handleEmit('volume')"
-        >
-          Volume
-        </button>
-      </div>
-    </Container>
-  </div>
+  <Container
+    class="mb-5 w-full p-3 flex items-center flex-col"
+    header="Type de téléchargement"
+  >
+    <div v-scroll-to class="flex justify-around text-xl w-full">
+      <button
+        class="basic w-full"
+        :class="{ selected: type === 'chapitre' }"
+        @click="handleEmit('chapitre')"
+      >
+        Chapitre
+      </button>
+      <button
+        class="basic w-full"
+        :class="{ selected: type === 'volume' }"
+        @click="handleEmit('volume')"
+      >
+        Volume
+      </button>
+    </div>
+  </Container>
 </template>
 
 <script lang="ts" setup>

@@ -19,13 +19,13 @@
       >
     </div>
   </Container>
-  <span class="text-gray-400 hover:text-current" ref="cbrNote">
+  <span v-scroll-to class="text-gray-400 hover:text-current">
     *format CBR: Toutes les images sont contenues dans un fichier unique.</span
   >
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, watch, ref } from "vue";
+import { onMounted, reactive, watch} from "vue";
 import { defineProps, defineEmits } from "@vue/runtime-core";
 
 import Container from "../Container.vue";
@@ -60,15 +60,11 @@ const state = reactive({
   images: false,
 });
 
-const cbrNote = ref<null | HTMLElement>(null);
-
 onMounted(() => {
   emit("update:options", {
     compression: state.compression,
     images: state.images,
   });
-
-  cbrNote.value?.scrollIntoView({ behavior: "smooth" });
 });
 
 watch(

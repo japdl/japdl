@@ -6,7 +6,7 @@
     <h3 v-if="props.volume" class="text-xl font-manga">{{ props.volume }}</h3>
     <h3 v-if="props.chapter">chapitre {{ props.chapter }}</h3>
     <span class="text-center">{{ props.current }} / {{ props.total }}</span>
-    <LoadingBar :done="props.percent" />
+    <LoadingBar :done="props.percent" :show="true" />
   </div>
 </template>
 

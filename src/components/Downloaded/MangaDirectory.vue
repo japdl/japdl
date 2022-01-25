@@ -1,6 +1,6 @@
 <template>
   <li
-    class="m-6 min-w-max flex flex-col gap-1 p-6 items-center mt-20 rounded-md"
+    class="m-6 min-w-max flex flex-col gap-1 p-6 items-center mt-20 rounded-md shadow-2xl"
     :style="`background-color: ${backgroundColor};`"
   >
     <img :src="imageLink" id="mangaImage" class="w-40 self-center" />
@@ -79,14 +79,6 @@ function readdirSyncFullPath() {
     return [];
   }
 }
-
-const interval = setInterval(() => {
-  readdirSyncFullPath();
-}, 1000);
-
-onUnmounted(() => {
-  clearInterval(interval);
-});
 
 const downloadMore = () => {
   router.push({

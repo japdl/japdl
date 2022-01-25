@@ -15,11 +15,6 @@
           placeholder="Chercher un manga"
           list="suggestions"
         />
-        <datalist id="suggestions">
-          <option v-for="manga in folderNames" :value="manga" :key="manga">
-            {{ manga }}
-          </option>
-        </datalist>
       </div>
     </div>
     <div>
@@ -65,11 +60,6 @@ function readdirSyncFullPath(folder: string) {
 }
 
 const search = ref("");
-
-const folderNames = computed(() => {
-  return folders.value.map((folder) => path.basename(folder.path));
-});
-
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
@@ -102,7 +92,6 @@ function compareArrayOfFolders(
 }
 
 function getFolders() {
-  console.log("getFolders");
   const newFolders = readdirSyncFullPath(config.outputDirectory).filter(
     (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
   );
@@ -111,9 +100,7 @@ function getFolders() {
    * causing search autocomplete to vanish every call to this
    * function.
    */
-  if (!compareArrayOfFolders(newFolders, folders.value)) {
-    folders.value = newFolders;
-  }
+  folders.value = newFolders;
 }
 
 getFolders();

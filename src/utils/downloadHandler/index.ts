@@ -14,14 +14,16 @@ export type Download = QueueDisplay & {
   keepImages: boolean;
 };
 
+export let downloadQueue: DownloadSetHandler | null = null;
+
 const downloadFromArgs = (
   downloader: Downloader,
   win: BrowserWindow
 ): ((_: Event, args: Download) => void) => {
-  const downloadQueue = new DownloadSetHandler(downloader, win);
+  downloadQueue = new DownloadSetHandler(downloader, win);
 
   return (_: Event, args: Download): void => {
-    downloadQueue.register(args);
+    downloadQueue?.register(args);
   };
 };
 

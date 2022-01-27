@@ -82,6 +82,10 @@ export class DownloadSetHandler {
     this.window.webContents.send("update-current", null);
   }
 
+  isDownloading(): boolean {
+    return !this.downloadQueue.isEmpty();
+  }
+
   synchronizeWithWindow(): void {
     this.window.webContents.send(
       "update-queue",
@@ -162,9 +166,7 @@ export class DownloadSetHandler {
      * during the download
      */
     const download = this.downloadQueue.first;
-    console.log("Waiting for download...");
     await this.handleDownload(download);
-    console.log("Wait is over! removing");
     this.removeCurrentDownload();
     this.addToFinished(download);
     if (this.downloadQueue.isEmpty()) return;

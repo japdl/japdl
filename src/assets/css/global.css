@@ -33,8 +33,8 @@
   --light-background: #24292e;
   --dark-background: #1d2125;
   --container: #111827;
-  --text-color: white;
-  --reverse-color: black;
+  --text-color: #ffffff;
+  --reverse-color: #000000;
   color: var(--text-color);
 }
 
@@ -42,8 +42,8 @@
   --light-background: white;
   --dark-background: #c7af9c;
   --container: #f4edde;
-  --text-color: black;
-  --reverse-color: white;
+  --text-color: #000000;
+  --reverse-color: #ffffff;
   color: var(--text-color);
 }
 

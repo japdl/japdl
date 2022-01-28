@@ -1,12 +1,13 @@
 <template>
-  <div class="chapter flex flex-col justify-around overflow-auto">
+  <div class="chapter flex flex-col justify-around overflow-auto p-2">
     <h2 class="text-center text-xl font-manga underline">
       {{ props.fullname }}
     </h2>
     <h3 v-if="props.volume" class="text-xl font-manga">{{ props.volume }}</h3>
     <h3 v-if="props.chapter">chapitre {{ props.chapter }}</h3>
     <span class="text-center">{{ props.current }} / {{ props.total }}</span>
-    <LoadingBar :done="props.percent" :show="true" />
+    <span>{{ props.percent.toFixed(2) }}%</span>
+    <LoadingBar :done="props.percent" :show="false" />
   </div>
 </template>
 

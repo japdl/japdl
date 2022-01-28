@@ -38,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
     component: importView("downloaded"),
   },
   {
+    path: "/reader",
+    name: "Reader",
+    component: importView("reader"),
+  },
+  {
     path: "/options",
     name: "Options",
     //alias: "Options",

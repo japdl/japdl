@@ -19,6 +19,7 @@ const routes = [
   { name: "Accueil", path: "/" },
   { name: "Télécharger un manga", path: "/download" },
   { name: "Mangas téléchargés", path: "/downloaded" },
+  { name: "Lire", path: "/reader" },
   { name: "Options", path: "/options" },
 ];
 </script>

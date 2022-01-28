@@ -9,13 +9,11 @@ export function setupLogListener(
   callback: (event: IpcMainEvent, arg?: any) => void
 ): void {
   ipcMain.on(eventName, (event, arg) => {
-    if (arg) {
-      if (dev) process.stdout.write(`Received ${arg} for `);
-    } else {
-      if (dev) console.log(`event ${eventName}`);
+    if (dev) {
+      console.log(`[${eventName}] arg: ${arg}`);
     }
     callback(event, arg);
-    if (dev) console.log(`event ${eventName} ended`);
+    if (dev) console.log(`[${eventName}] end`);
   });
 }
 

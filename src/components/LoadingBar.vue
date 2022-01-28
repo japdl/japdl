@@ -49,6 +49,6 @@ const widthStyle = computed(() => {
 
 div {
   transition: ease-in-out 1s;
-  border-radius: 20px;
+  @apply rounded;
 }
 </style>

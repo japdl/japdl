@@ -76,21 +76,6 @@ const iterableFolders = computed(() => {
   }
 });
 
-function compareArrayOfFolders(
-  arr1: { path: string; stat: fs.Stats }[],
-  arr2: { path: string; stat: fs.Stats }[]
-) {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
-  for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i].path !== arr2[i].path) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function getFolders() {
   const newFolders = readdirSyncFullPath(config.outputDirectory).filter(
     (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0

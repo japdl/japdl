@@ -35,8 +35,6 @@ export const setupListeners = (win: BrowserWindow): void => {
   setupLogListener("restoreWindow", () => win.restore());
 
   setupLogListener("closeWindow", (event) => {
-
-
     async function askForClose() {
       const options = {
         title: "Quitter japdl",

@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, watch} from "vue";
+import { onMounted, reactive, watch } from "vue";
 import { defineProps, defineEmits } from "@vue/runtime-core";
 
 import Container from "../Container.vue";

@@ -39,8 +39,7 @@ const switchTheme = () => {
   setTheme(selectedTheme.value as Theme);
 };
 
-const setTheme = (theme: Theme) =>
-  ipcRenderer.send("setTheme", theme);
+const setTheme = (theme: Theme) => ipcRenderer.send("setTheme", theme);
 
 ipcRenderer.send("getTheme");
 ipcRenderer.on("changeTheme", (event, arg) => (selectedTheme.value = arg));

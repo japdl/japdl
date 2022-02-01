@@ -50,7 +50,6 @@ const handleVolumesDownload = async (
         });
       }); */
       events.on("page", (attributes, total) => {
-
         const volumePortion = 100 / download.total;
         const chapterPortion = volumePortion / nbChapters;
         const pagePortion = chapterPortion / total;

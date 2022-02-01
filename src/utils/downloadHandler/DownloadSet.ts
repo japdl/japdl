@@ -89,7 +89,7 @@ export class DownloadSetHandler {
   synchronizeWithWindow(): void {
     this.window.webContents.send(
       "update-queue",
-      this.downloadQueue.toQueueDisplay()
+      this.downloadQueue.toStringArray()
     );
 
     this.window.webContents.send("update-done", this.done.toStringArray());

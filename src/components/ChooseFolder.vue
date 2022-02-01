@@ -1,41 +1,33 @@
 <template>
   <div class="chooseFolder">
-    <button ref="choose" @click="handleDirectory"></button>
+    <button ref="choose" @click="handleDirectory">{{ buttonTextValue }}</button>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { ipcRenderer } from "electron";
+import { defineEmits, defineProps } from "@vue/runtime-core";
+import { computed } from "vue";
 
-export default defineComponent({
-  props: ["multiple", "buttonText"],
-  name: "chooseFolder",
-  emits: ["selected"],
-  methods: {
-    queryDirectory(): string {
-      return ipcRenderer.sendSync("directory-question", false)[0];
-    },
-    queryDirectories(): string[] {
-      return ipcRenderer.sendSync("directory-question", true);
-    },
-    handleDirectory() {
-      let result = ipcRenderer.sendSync("directory-question", this.multiple);
-      if (result) this.$emit("selected", result);
-    },
-  },
-  mounted() {
-    console.log(this.$refs);
-    if (this.$refs.choose) {
-      const chooseButton = this.$refs.choose as HTMLButtonElement;
-      chooseButton.textContent = this.buttonText
-        ? this.buttonText
-        : this.multiple
-        ? "Sélectionner le(s) dossier(s)"
-        : "Sélectionner le dossier";
-    }
-  },
-});
+const emit = defineEmits<{
+  (event: "selected", folders: string[]): void;
+}>();
+
+const buttonTextValue = computed(() =>
+  props.buttonText
+    ? props.buttonText
+    : props.multiple
+    ? "Sélectionner le(s) dossier(s)"
+    : "Sélectionner le dossier"
+);
+
+const props = defineProps<{
+  multiple: boolean;
+  buttonText: string;
+}>();
+
+function handleDirectory() {
+  let result = ipcRenderer.sendSync("directory-question", props.multiple);
+  if (result) emit("selected", result);
+}
 </script>
-
-<style></style>

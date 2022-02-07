@@ -40,4 +40,6 @@ ipcRenderer.on("changeTheme", (event, data) => {
 
 const debug = ipcRenderer.sendSync("debug");
 provide("debug", debug);
+const platform = ipcRenderer.sendSync("process", "platform");
+provide("platform", platform);
 </script>

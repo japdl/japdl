@@ -13,13 +13,18 @@ export const setupListeners = (win: BrowserWindow): void => {
     event.reply("versionResponse", app.getVersion());
   });
 
+  setupLogListener("process", (event, key: string) => {
+    // @ts-expect-error process can't be indexed by any string but caller will be careful
+    event.returnValue = process[key];
+  });
+
   win.on("maximize", () => {
     console.log("Maximize event");
     win.webContents.send("windowResize", true);
   });
 
   win.on("unmaximize", () => {
-    console.log("UNMaximize event");
+    console.log("Unmaximize event");
     win.webContents.send("windowResize", false);
   });
 
@@ -28,6 +33,7 @@ export const setupListeners = (win: BrowserWindow): void => {
     "windowStatus",
     (event) => (event.returnValue = win.isMaximized())
   );
+
   setupLogListener("maximizeWindow", () => {
     win.maximize();
   });

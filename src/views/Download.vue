@@ -7,23 +7,26 @@
     <ChooseManga @manga="getMangaInfos($event.japscan)" />
     <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" class="p-6" v-if="manga.name && !state.loading">
-      <WebLink
-        :link="'https://japscan.ws/manga/' + manga.japscanName + '/'"
-        :text="manga.name"
-        class="font-manga text-6xl bg-gray"
-      />
-      <div class="informations p-5">
-        <p>
-          <span class="text-xl p-2" v-if="manga.volumes">
-            <strong>Volumes:</strong> {{ manga.volumes }} <br />
-          </span>
-          <span class="text-xl p-2" v-if="manga.chapters"
-            ><strong>Chapitres:</strong> {{ manga.chapters }} <br
-          /></span>
-          <span class="text-gray-400" v-if="manga.synopsis">
-            {{ manga.synopsis }}
-          </span>
-        </p>
+      <div id="topView" class="flex gap-6 flex-wrap">
+        <MangaImage :manga="manga.japscanName" class="h-96 mx-auto rounded" />
+        <div id="summary">
+          <WebLink
+            :link="'https://japscan.ws/manga/' + manga.japscanName + '/'"
+            :text="manga.name"
+            class="font-manga text-6xl bg-gray hover:text-blue-400"
+          />
+          <div class="informations p-5">
+            <p class="text-xl" v-if="manga.volumes">
+              <strong>Volumes:</strong> {{ manga.volumes }}
+            </p>
+            <p class="text-xl mb-4" v-if="manga.chapters">
+              <strong>Chapitres:</strong> {{ manga.chapters }}
+            </p>
+            <p class="text-current opacity-80" v-if="manga.synopsis">
+              {{ manga.synopsis }}
+            </p>
+          </div>
+        </div>
       </div>
       <ChooseDownloadType @type="getType" />
       <form
@@ -71,6 +74,7 @@ import Loading from "@/components/Loading.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import DebugVariables from "@/components/DebugVariables.vue";
+import MangaImage from "@/components/MangaImage.vue";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
 import WebLink from "@/components/WebLink.vue";

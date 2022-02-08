@@ -3,7 +3,7 @@
     class="m-6 min-w-max flex flex-col gap-1 p-6 items-center mt-20 rounded-md shadow-2xl"
     :style="`background-color: ${backgroundColor};`"
   >
-    <img :src="imageLink" id="mangaImage" class="w-40 self-center" />
+    <MangaImage class="w-40 self-center" :manga="mangaName" />
     <h2 class="text-4xl font-manga text-center mt-2 text-white black-outline">
       {{ mangaName }}
     </h2>
@@ -31,6 +31,7 @@ import { defineProps } from "@vue/runtime-core";
 import path from "path";
 import { ipcRenderer, shell } from "electron";
 import MangaFile from "./MangaFile.vue";
+import MangaImage from "../MangaImage.vue";
 import { computed, ref } from "vue";
 import router from "@/router";
 
@@ -44,7 +45,6 @@ const props = defineProps<{
 }>();
 
 const mangaName = path.basename(props.folder.path);
-const imageLink = `https://japscan.ws/imgs/mangas/${mangaName}.jpg`;
 const mangaLink = `https://www.japscan.ws/manga/${mangaName}/`;
 
 const stringToColour = function (str: string) {

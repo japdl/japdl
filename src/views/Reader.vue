@@ -1,12 +1,13 @@
 <template>
-  <div class="container mx-auto">
+  <!-- <div class="container mx-auto">
     <ChooseFolder @selected="registerFolder" />
     Folder choosen is: {{ folder }}
-  </div>
+  </div> -->
+  <ViewMangaTree manga="one-piece" />
 </template>
 
 <script lang="ts" setup>
-import ChooseFolder from "@/components/ChooseFolder.vue";
+import ViewMangaTree from "@/components/MangaTree/MangaTree.vue";
 import { ref } from "vue";
 
 const folder = ref("");

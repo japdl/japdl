@@ -1,8 +1,8 @@
 <template>
   <div class="container mx-auto">
     <h1 v-if="!content">Chargement des informations du manga...</h1>
-    <div v-else id="volumes" class="flex flex-col gap-4">
-      <div id="sortBy">
+    <div v-else>
+      <div id="sortBy" class="ml-auto">
         Trier par ordre
         <select
           class="text-black"
@@ -13,18 +13,20 @@
           <option value="descending">décroissant</option>
         </select>
       </div>
-      <VolumeView
-        id="volume"
-        v-for="volume in content.volumes"
-        :key="volume.name"
-        :volume="volume"
-      />
+      <div id="volumes" class="flex flex-wrap gap-4">
+        <VolumeView
+          id="volume"
+          v-for="volume in content.volumes"
+          :key="volume.name"
+          :volume="volume"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "@vue/runtime-core";
+import { defineProps, defineEmits } from "@vue/runtime-core";
 import { ipcRenderer } from "electron";
 import { MangaContent } from "japscandl/js/src/utils/types";
 import { ref } from "vue";
@@ -32,6 +34,13 @@ import VolumeView from "./VolumeView.vue";
 const props = defineProps<{
   manga: string;
 }>();
+
+const emit = defineEmits<{
+  (event: "loading"): void;
+  (event: "loaded"): void;
+}>();
+
+emit("loading");
 const sortMode = ref("ascending");
 
 const content = ref<null | MangaContent>(null);
@@ -39,6 +48,7 @@ const content = ref<null | MangaContent>(null);
 ipcRenderer.send("getMangaContent", props.manga);
 ipcRenderer.on("returnMangaContent", (event, arg) => {
   content.value = arg;
+  emit("loaded");
 });
 
 function handleSortChange() {

@@ -14,6 +14,7 @@
             :link="'https://japscan.ws/manga/' + manga.japscanName + '/'"
             :text="manga.name"
             class="font-manga text-6xl bg-gray hover:text-blue-400"
+            title="Voir sur Japscan"
           />
           <div class="informations p-5">
             <p class="text-xl" v-if="manga.volumes">

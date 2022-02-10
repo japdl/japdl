@@ -43,8 +43,8 @@ import { ipcRenderer } from "electron";
 import { computed, ref } from "vue";
 import SideDownload from "./SideDownload.vue";
 
-const queue = ref<string[]>(["one-piece 999"]);
-const done = ref<string[]>(["one-piece 998"]);
+const queue = ref<string[]>([]);
+const done = ref<string[]>([]);
 let currentDownload = ref<OngoingDownload | null>(null);
 const displaysAnything = computed(
   () =>

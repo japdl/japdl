@@ -49,6 +49,7 @@ async function createWindow() {
     // hide window during initialization
     show: false,
     frame: false,
+    icon: "./src/assets/logo/large.ico",
   });
   try {
     console.log("Loading config");

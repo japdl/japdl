@@ -3,11 +3,11 @@
     <h2 class="text-center text-xl font-manga underline">
       {{ props.fullname }}
     </h2>
+    <span class="text-center">{{ props.current }} / {{ props.total }}</span>
+    <LoadingBar class="mb-1" :done="props.percent" :show="false" />
     <h3 v-if="props.volume" class="text-xl font-manga">{{ props.volume }}</h3>
     <h3 v-if="props.chapter">chapitre {{ props.chapter }}</h3>
-    <span class="text-center">{{ props.current }} / {{ props.total }}</span>
     <span>{{ props.percent.toFixed(2) }}%</span>
-    <LoadingBar :done="props.percent" :show="false" />
   </div>
 </template>
 

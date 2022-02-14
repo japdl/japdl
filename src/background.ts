@@ -83,6 +83,10 @@ async function createWindow() {
     win.loadURL("app://./index.html");
     console.log("Done loading");
   }
+  win.webContents.on("new-window", (event) => {
+    // prevent new window on middle click
+    event.preventDefault();
+  });
   // show window after everything is set up
   console.log("Showing window");
   setTimeout(() => {

@@ -7,30 +7,37 @@
       <h1 class="text-center opacity-70 pt-5" v-if="!displaysAnything">
         Aucun téléchargement en cours
       </h1>
-      <div v-if="currentDownload" class="text-center text-xl">
-        <h2>En cours</h2>
-        <SideDownload
-          v-if="currentDownload"
-          :fullname="currentDownload.fullname"
-          :chapter="currentDownload.chapter"
-          :current="currentDownload.current"
-          :total="currentDownload.total"
-          :percent="currentDownload.percent"
-        />
-      </div>
-
-      <div v-if="queue.length > 0" class="text-center text-lg">
-        <h2>En attente</h2>
-        <div v-for="queueElement in queue" :key="queueElement">
-          {{ queueElement }}
+      <div class="flex flex-col gap-4">
+        <div v-if="currentDownload" class="text-center text-xl">
+          <h2>En cours</h2>
+          <SideDownload
+            v-if="currentDownload"
+            :fullname="currentDownload.fullname"
+            :volume="currentDownload.volume"
+            :chapter="currentDownload.chapter"
+            :current="currentDownload.current"
+            :total="currentDownload.total"
+            :percent="currentDownload.percent"
+          />
         </div>
-      </div>
 
-      <div v-if="done.length > 0" class="text-center text-lg">
-        <h2>Terminés</h2>
+        <div v-if="queue.length > 0" class="text-center text-lg">
+          <h2>En attente</h2>
+          <div v-for="queueElement in queue" :key="queueElement">
+            {{ queueElement }}
+          </div>
+        </div>
 
-        <div class="opacity-80" v-for="doneElement in done" :key="doneElement">
-          {{ doneElement }}
+        <div v-if="done.length > 0" class="text-center text-lg">
+          <h2>Terminés</h2>
+
+          <div
+            class="opacity-80"
+            v-for="doneElement in done"
+            :key="doneElement"
+          >
+            {{ doneElement }}
+          </div>
         </div>
       </div>
     </div>
@@ -43,9 +50,16 @@ import { ipcRenderer } from "electron";
 import { computed, ref } from "vue";
 import SideDownload from "./SideDownload.vue";
 
-const queue = ref<string[]>([]);
-const done = ref<string[]>([]);
-let currentDownload = ref<OngoingDownload | null>(null);
+const queue = ref<string[]>(["one-piece 999", "one-piece 1000"]);
+const done = ref<string[]>(["one-piece 996", "one-piece 997"]);
+let currentDownload = ref<OngoingDownload | null>({
+  fullname: "one-piece chapitre 998",
+  chapter: "998",
+  volume: "volume 4",
+  current: 4,
+  total: 15,
+  percent: (4 / 15) * 100,
+});
 const displaysAnything = computed(
   () =>
     queue.value.length + done.value.length > 0 || currentDownload.value !== null

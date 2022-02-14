@@ -13,7 +13,7 @@
           <option value="descending">décroissant</option>
         </select>
       </div>
-      <div id="volumes" class="flex flex-wrap gap-4">
+      <div id="volumes" class="flex flex-col gap-4">
         <VolumeView
           id="volume"
           v-for="volume in content.volumes"

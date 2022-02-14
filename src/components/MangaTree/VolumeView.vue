@@ -3,15 +3,13 @@
     id="volume"
     class="bg-container min-w-max p-4 rounded-lg flex-1 cursor-pointer transition-all"
   >
-    <p
-      class="text-2xl mb-4 font-bold text-center p-2 border-l-4 border-dark-primary"
-    >
+    <p class="text-4xl font-manga tracking-wider mb-4 font-bold p-2">
       {{ props.volume.name }}
     </p>
-    <div id="chapters" class="ml-14 p-2 border-l-4 border-primary">
+    <div id="chapters" class="ml-14 p-2 flex flex-col gap-1">
       <ChapterView
-        v-for="chapter in props.volume.chapters"
-        :key="chapter.name"
+        v-for="(chapter, index) in props.volume.chapters"
+        :key="index"
         :chapter="chapter"
       />
     </div>
@@ -26,4 +24,5 @@ import ChapterView from "./ChapterView.vue";
 const props = defineProps<{
   volume: Volume;
 }>();
+
 </script>

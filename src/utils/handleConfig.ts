@@ -31,7 +31,7 @@ class Config {
         return "";
       }
     })(),
-    imageFormat: "jpg",
+    imageFormat: "png",
   };
 
   constructor() {

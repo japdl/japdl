@@ -1,34 +1,31 @@
 <template>
-  <div class="chapter flex flex-col justify-around overflow-auto p-2">
-    <h2 class="text-center text-xl font-manga tracking-wide">
-      {{ props.fullname }}
-    </h2>
-    <span class="text-center">{{ props.current }} / {{ props.total }}</span>
-    <LoadingBar class="mb-1" :done="props.percent" :show="false" />
-    <h3 v-if="props.volume" class="text-xl font-manga tracking-wide">
-      {{ props.volume }}
-    </h3>
-    <h3 v-if="props.chapter">chapitre {{ props.chapter }}</h3>
-    <span>{{ props.percent.toFixed(2) }}%</span>
-  </div>
+  <h2 class="text-center text-xl font-manga tracking-wide bg-dark-primary">
+    En cours
+  </h2>
+  <SideDownloadChapter
+    :download="download"
+    v-if="download.type === 'chapter'"
+  />
+  <SideDownloadChapters
+    :download="download"
+    v-if="download.type === 'chapters'"
+  />
+  <SideDownloadVolume :download="download" v-if="download.type === 'volume'" />
+  <SideDownloadVolumes
+    :download="download"
+    v-if="download.type === 'volumes'"
+  />
 </template>
 
 <script lang="ts" setup>
-import LoadingBar from "../LoadingBar.vue";
 import { defineProps } from "@vue/runtime-core";
+import SideDownloadChapter from "./SideDownloadChapter.vue";
+import SideDownloadChapters from "./SideDownloadChapters.vue";
+import SideDownloadVolume from "./SideDownloadVolume.vue";
+import SideDownloadVolumes from "./SideDownloadVolumes.vue";
+import { SideBarDownload } from "@/utils/downloadHandler";
 
-const props = defineProps<{
-  fullname: string;
-  volume?: string;
-  chapter?: string;
-  current: number;
-  total: number;
-  percent: number;
+defineProps<{
+  download: SideBarDownload;
 }>();
 </script>
-
-<style scoped>
-h3 {
-  @apply block text-center;
-}
-</style>

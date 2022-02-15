@@ -4,7 +4,7 @@ export type ChaptersDownload = {
   manga: string;
   start: string;
   end: string;
-  currentName: string;
+  currentChapter: string;
   current: number;
   total: number;
   percent: number;
@@ -24,7 +24,7 @@ const handleChaptersDownload = async (
     manga: manga,
     start: start.toString(),
     end: end.toString(),
-    currentName: "",
+    currentChapter: "",
     current: 0,
     total: 0,
     percent: 0,
@@ -43,7 +43,7 @@ const handleChaptersDownload = async (
       });
 
       events.on("startchapter", (attributes, pages, current, total) => {
-        download.currentName = attributes.chapter;
+        download.currentChapter = attributes.chapter;
         download.current = current;
         download.total = total;
         downloadSet.setCurrentDownload(download);

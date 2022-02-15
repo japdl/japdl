@@ -1,28 +1,29 @@
 <template>
   <aside
-    class="flex flex-col bg-dark-background items-center w-72 h-full overflow-y-auto rounded capitalize"
+    class="flex flex-col bg-dark-background items-center w-72 h-full overflow-y-auto rounded"
   >
     <h1 class="font-manga tracking-wide text-2xl my-2">Téléchargements</h1>
     <div id="downloads" class="w-full flex flex-col h-full">
+      <div v-if="debug" class="flex flex-col gap-1 my-2">
+        <button class="basic" @click="currentDownload = null">Vider</button>
+        <button class="basic" @click="currentDownload = chapterDownload">
+          Chapitre
+        </button>
+        <button class="basic" @click="currentDownload = chaptersDownload">
+          Chapitres
+        </button>
+        <button class="basic" @click="currentDownload = volumeDownload">
+          Volume
+        </button>
+        <button class="basic" @click="currentDownload = volumesDownload">
+          Volumes
+        </button>
+      </div>
       <h1 class="text-center opacity-70 pt-5" v-if="!displaysAnything">
         Aucun téléchargement en cours
       </h1>
       <div class="flex flex-col gap-4">
-        <div v-if="currentDownload">
-          <h2 class="">En cours</h2>
-          <SideDownloadChapter
-            :download="currentDownload"
-            v-if="currentDownload.type === 'chapter'"
-          />
-          <SideDownloadChapters
-            :download="currentDownload"
-            v-if="currentDownload.type === 'chapters'"
-          />
-          <SideDownloadVolume
-            :download="currentDownload"
-            v-if="currentDownload.type === 'volume'"
-          />
-        </div>
+        <SideDownload v-if="currentDownload" :download="currentDownload" />
 
         <div v-if="queue.length > 0" class="text-center">
           <h2>En attente</h2>
@@ -51,25 +52,61 @@
 import { ChapterDownload } from "@/utils/downloadHandler/chapter";
 import { ChaptersDownload } from "@/utils/downloadHandler/chapters";
 import { VolumeDownload } from "@/utils/downloadHandler/volume";
+import SideDownload from "./SideDownload.vue";
 import { ipcRenderer } from "electron";
-import { computed, ref } from "vue";
-import SideDownloadChapter from "./SideDownloadChapter.vue";
-import SideDownloadChapters from "./SideDownloadChapters.vue";
-import SideDownloadVolume from "./SideDownloadVolume.vue";
+import { computed, inject, ref } from "vue";
+import { VolumesDownload } from "@/utils/downloadHandler/volumes";
+import { SideBarDownload } from "@/utils/downloadHandler";
 
-const queue = ref<string[]>(["one-piece 999", "one-piece 1000"]);
-const done = ref<string[]>(["one-piece 996", "one-piece 997"]);
-let currentDownload = ref<
-  ChapterDownload | ChaptersDownload | VolumeDownload | null
->({
-  manga: "one-piece",
-  currentName: "one-piece 998",
-  num: "8",
-  current: 1,
-  total: 2,
-  percent: (1 / 2) * 100,
+const percent = (current: number, total: number) => (current / total) * 100;
+
+const debug = inject("debug");
+
+const chapterDownload: ChapterDownload = {
+  manga: "fire-punch",
+  current: 15,
+  num: "120",
+  percent: percent(15, 20),
+  total: 20,
+  type: "chapter",
+};
+
+const chaptersDownload: ChaptersDownload = {
+  manga: "shingeki-no-kyojin",
+  currentChapter: "123",
+  start: "120",
+  end: "130",
+  percent: percent(4, 11),
+  current: 4,
+  total: 11,
+  type: "chapters",
+};
+
+const volumeDownload: VolumeDownload = {
+  currentName: "128",
+  manga: "shingeki-no-kyojin",
+  num: "12",
+  percent: percent(3, 9),
+  current: 3,
+  total: 9,
   type: "volume",
-});
+};
+
+const volumesDownload: VolumesDownload = {
+  currentChapter: "128",
+  currentVolume: 12,
+  manga: "shingeki-no-kyojin",
+  start: 12,
+  end: 13,
+  percent: percent(3, 9),
+  current: 3,
+  total: 9,
+  type: "volumes",
+};
+
+const queue = ref<string[]>(debug ? ["one-piece 999", "one-piece 1000"] : []);
+const done = ref<string[]>(debug ? ["one-piece 996", "one-piece 997"] : []);
+let currentDownload = ref<SideBarDownload | null>(null);
 const displaysAnything = computed(
   () =>
     queue.value.length + done.value.length > 0 || currentDownload.value !== null

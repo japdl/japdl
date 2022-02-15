@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-around overflow-auto p-2 text-center">
     <h2 class="mb-1 font-manga text-lg tracking-wide">
-      <span class="block">{{ download.manga }}</span>
+      <p class="text-xl">{{ download.manga }}</p>
       chapitre {{ download.num }}
     </h2>
     <span v-if="download.total"

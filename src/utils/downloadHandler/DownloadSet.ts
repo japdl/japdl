@@ -2,10 +2,9 @@ import { BrowserWindow } from "electron";
 import { Download, QueueDisplay } from ".";
 import { Downloader } from "../../../../japscandl/js";
 import ObjectSet from "../ObjectSet";
-import handleChapterDownload from "./chapter";
-import handleChaptersDownload from "./chapters";
-import { OngoingDownload } from "./types";
-import handleVolumeDownload from "./volume";
+import handleChapterDownload, { ChapterDownload } from "./chapter";
+import handleChaptersDownload, { ChaptersDownload } from "./chapters";
+import handleVolumeDownload, { VolumeDownload } from "./volume";
 import handleVolumesDownload from "./volumes";
 
 export class DownloadSet extends ObjectSet<Download> {
@@ -141,7 +140,9 @@ export class DownloadSetHandler {
         throw new Error("Unknown download type");
     }
   }
-  setCurrentDownload(download: OngoingDownload): void {
+  setCurrentDownload(
+    download: ChapterDownload | ChaptersDownload | VolumeDownload
+  ): void {
     this.window.webContents.send("update-current", download);
   }
 

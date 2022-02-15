@@ -1,5 +1,14 @@
 import { DownloadSetHandler } from "./DownloadSet";
-import { OngoingDownload } from "./types";
+
+export type VolumeDownload = {
+  manga: string;
+  num: string;
+  current: number;
+  currentName: string;
+  total: number;
+  percent: number;
+  type: "volume";
+};
 
 const handleVolumeDownload = async (
   downloadSet: DownloadSetHandler,
@@ -9,12 +18,14 @@ const handleVolumeDownload = async (
   deleteAfterCompression: boolean
 ): Promise<void> => {
   const { downloader } = downloadSet;
-  const download: OngoingDownload = {
-    fullname: `${manga} volume ${num}`,
-    chapter: "chargement...",
+  const download: VolumeDownload = {
+    manga: manga,
+    num: num.toString(),
+    currentName: "",
     current: 0,
     total: 0,
     percent: 0,
+    type: "volume",
   };
   downloadSet.setCurrentDownload(download);
   await downloader.downloadVolume(manga, num, {
@@ -27,7 +38,7 @@ const handleVolumeDownload = async (
       });
 
       events.on("startchapter", (attributes, pages, current, total) => {
-        download.chapter = attributes.chapter;
+        download.currentName = attributes.chapter;
         download.current = current;
         download.total = total;
         downloadSet.setCurrentDownload(download);

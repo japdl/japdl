@@ -5,7 +5,6 @@
       <DebugVariables header="manga" :state="manga" />
     </div>
     <ChooseManga @manga="getMangaInfos($event.japscan)" />
-    <Loading v-if="state.loading" />
     <div id="afterMangaChoosen" class="p-6" v-if="manga.name && !state.loading">
       <div id="topView" class="flex gap-6 flex-wrap">
         <MangaImage :manga="manga.japscanName" class="h-96 mx-auto rounded" />
@@ -71,7 +70,6 @@ import { computed, reactive } from "vue";
 import ChooseManga from "@/components/ChooseManga.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import { ipcRenderer } from "electron";
-import Loading from "@/components/Loading.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 import DebugVariables from "@/components/DebugVariables.vue";
@@ -79,6 +77,7 @@ import MangaImage from "@/components/MangaImage.vue";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
 import WebLink from "@/components/WebLink.vue";
+import { startLoading, stopLoading } from "@/utils/loadingState";
 
 const props = defineProps<{
   query?: LocationQuery;
@@ -134,6 +133,7 @@ function getMangaInfos(mangaName: string) {
   manga.volumes = manga.chapters = null;
   console.log("Nom du manga: ", mangaName);
   state.loading = true;
+  startLoading();
   ipcRenderer.send("getMangaInfos", mangaName);
   ipcRenderer.once("replyMangaInfos", (event, infos) => {
     if (infos) {
@@ -144,6 +144,7 @@ function getMangaInfos(mangaName: string) {
       manga.synopsis = infos.synopsis;
     }
     state.loading = false;
+    stopLoading();
   });
 }
 function getType(type: string) {

@@ -33,7 +33,7 @@
         </div>
 
         <div v-if="done.length > 0" class="text-center">
-          <h2>Terminés</h2>
+          <h2>Terminé</h2>
 
           <div
             class="opacity-80"

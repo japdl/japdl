@@ -11,7 +11,6 @@
       />
       <button class="basic" type="submit">Rechercher</button>
     </form>
-    <Loading v-if="state.loading" />
     <div id="suggestion">
       <Manga
         v-for="result in state.results"
@@ -32,8 +31,12 @@ import { ipcRenderer } from "electron";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 import { defineEmits, reactive } from "vue";
 import Manga from "./Manga.vue";
-import Loading from "./Loading.vue";
 import Container from "./Container.vue";
+import { startLoading, stopLoading } from "@/utils/loadingState";
+
+const emit = defineEmits<{
+  (event: "manga", manga: SearchInfos): void;
+}>();
 
 const state = reactive({
   errors: [] as string[],
@@ -47,13 +50,11 @@ const mangaName = reactive({
   errors: [] as string[],
 });
 
-const emits = defineEmits(["manga"]);
-
 function submitResult(result: SearchInfos) {
   // reset values
   state.results = [];
   mangaName.value = "";
-  emits("manga", result);
+  emit("manga", result);
 }
 
 function search() {
@@ -64,6 +65,7 @@ function search() {
     return;
   }
   state.loading = true;
+  startLoading();
 
   ipcRenderer.send("search", {
     sync: false,
@@ -72,6 +74,7 @@ function search() {
 
   ipcRenderer.once("searchResult", (event, arg) => {
     state.loading = false;
+    stopLoading();
     state.results = arg.results;
     if (state.results.length === 0) {
       state.errors.push("La recherche n'a donné aucun résultat");

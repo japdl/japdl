@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts" setup>
+import { startLoading, stopLoading } from "@/utils/loadingState";
 import { defineProps, defineEmits } from "@vue/runtime-core";
 import { ipcRenderer } from "electron";
 import { MangaContent } from "japscandl/js/src/utils/types";
@@ -35,12 +36,7 @@ const props = defineProps<{
   manga: string;
 }>();
 
-const emit = defineEmits<{
-  (event: "loading"): void;
-  (event: "loaded"): void;
-}>();
-
-emit("loading");
+startLoading();
 const sortMode = ref("ascending");
 
 const content = ref<null | MangaContent>(null);
@@ -48,7 +44,7 @@ const content = ref<null | MangaContent>(null);
 ipcRenderer.send("getMangaContent", props.manga);
 ipcRenderer.on("returnMangaContent", (event, arg) => {
   content.value = arg;
-  emit("loaded");
+  stopLoading();
 });
 
 function handleSortChange() {

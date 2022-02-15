@@ -13,10 +13,7 @@
               loading,
             }"
           />
-          <router-view
-            @loading="startLoading"
-            @loaded="stopLoading"
-          ></router-view>
+          <router-view></router-view>
         </div>
       </div>
     </main>
@@ -30,10 +27,9 @@ import { provide } from "@vue/runtime-core";
 import NavBar from "./components/NavBar.vue";
 import TopBar from "./components/TopBar.vue";
 import SideBar from "./components/SideBar/SideBar.vue";
+import { loading } from "@/utils/loadingState";
 
 const notReady = ref(false);
-const loading = ref(false);
-const loadingTime = ref<null | Date>(null);
 
 ipcRenderer.send("readyStatus");
 ipcRenderer.on("readyStatusResponse", (event, arg) => (notReady.value = arg));
@@ -54,30 +50,6 @@ const debug = ipcRenderer.sendSync("debug");
 provide("debug", debug);
 const platform = ipcRenderer.sendSync("process", "platform");
 provide("platform", platform);
-
-function startLoading() {
-  loading.value = true;
-  loadingTime.value = new Date();
-}
-
-function stopLoading() {
-  if (!loadingTime.value) return;
-  const msElapsed = new Date().getTime() - loadingTime.value.getTime();
-  console.log("Loading took " + msElapsed + "ms");
-  if (msElapsed <= 10) {
-    loading.value = false;
-    loadingTime.value = null;
-    return;
-  }
-  // need to get ms left for next second
-  const msLeft = 1000 - (msElapsed % 1000);
-  console.log("Waiting " + msLeft + "ms before stopping loading");
-  setTimeout(() => {
-    loading.value = false;
-    loadingTime.value = null;
-    console.log("Loading stopped");
-  }, msLeft);
-}
 </script>
 
 <style scoped>

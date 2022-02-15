@@ -24,5 +24,4 @@ import ChapterView from "./ChapterView.vue";
 const props = defineProps<{
   volume: Volume;
 }>();
-
 </script>

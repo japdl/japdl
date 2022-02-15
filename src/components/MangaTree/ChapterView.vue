@@ -9,7 +9,6 @@
         clicked: clicked,
       }"
       @click="clicked = !clicked"
-  
     >
       {{ props.chapter.name }}
     </p>

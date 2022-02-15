@@ -26,9 +26,9 @@ const routes = [
 
 <style scoped>
 nav a.router-link-exact-active {
-  @apply text-dark-primary;
+  @apply text-primary;
 }
 nav a:hover {
-  @apply text-primary bg-gradient-to-t from-light-background to-dark-background;
+  @apply text-dark-primary bg-gradient-to-t from-light-background to-dark-background;
 }
 </style>

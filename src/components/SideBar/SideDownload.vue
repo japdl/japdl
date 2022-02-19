@@ -1,5 +1,7 @@
 <template>
-  <h2 class="text-center text-xl font-manga tracking-wide bg-dark-primary">
+  <h2
+    class="text-center text-xl font-manga tracking-wide bg-dark-primary text-white"
+  >
     En cours
   </h2>
   <SideDownloadChapter

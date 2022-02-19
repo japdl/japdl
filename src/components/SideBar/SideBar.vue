@@ -128,7 +128,7 @@ ipcRenderer.on("update-done", (event, data) => {
 
 <style scoped>
 h2 {
-  @apply text-center text-xl font-manga tracking-wide bg-dark-primary mb-2;
+  @apply text-center text-xl font-manga tracking-wide bg-dark-primary mb-2 text-white;
 }
 
 span,

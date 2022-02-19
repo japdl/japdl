@@ -47,14 +47,13 @@
           doit être cochée pour procéder au téléchargement
         </p>
         <div id="buttonWrapper">
-          <button
+          <BaseButton
             id="downloadButton"
             type="submit"
-            class="basic"
             :disabled="isRangeInvalid || areOptionsInvalid"
           >
             Télécharger
-          </button>
+          </BaseButton>
         </div>
       </form>
     </div>
@@ -78,6 +77,7 @@ import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
 import WebLink from "@/components/WebLink.vue";
 import { startLoading, stopLoading } from "@/utils/loadingState";
+import BaseButton from "@/components/BaseButton.vue";
 
 const props = defineProps<{
   query?: LocationQuery;

@@ -7,13 +7,13 @@
     <h2 class="text-4xl font-manga text-center mt-2 text-white black-outline">
       {{ mangaName }}
     </h2>
-    <button class="basic mt-3" @click="shell.openPath(folder.path)">
+    <BaseButton class="mt-3" @click="shell.openPath(folder.path)">
       Ouvrir le dossier
-    </button>
-    <button class="basic" @click="shell.openExternal(mangaLink)">
+    </BaseButton>
+    <BaseButton @click="shell.openExternal(mangaLink)">
       Voir sur japscan
-    </button>
-    <button class="basic mb-5" @click="downloadMore">Télécharger</button>
+    </BaseButton>
+    <BaseButton class="mb-5" @click="downloadMore">Télécharger</BaseButton>
     <ol class="flex flex-col gap-0.5 max-h-96 overflow-y-auto">
       <MangaFile
         v-for="(file, ifile) in sortedFiles"
@@ -34,6 +34,7 @@ import MangaFile from "./MangaFile.vue";
 import MangaImage from "../MangaImage.vue";
 import { computed, ref } from "vue";
 import router from "@/router";
+import BaseButton from "../BaseButton.vue";
 
 type File = {
   path: string;

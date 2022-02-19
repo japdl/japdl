@@ -17,9 +17,9 @@
               :key="chapter"
             >
               <span>{{ chapter.name }}</span>
-              <button class="basic" v-if="volume.chapters.length > 1">
+              <BaseButton v-if="volume.chapters.length > 1">
                 Télécharger
-              </button>
+              </BaseButton>
             </li>
           </ul>
         </div>
@@ -36,6 +36,7 @@ import ChooseManga from "@/components/ChooseManga.vue";
 import { ipcRenderer } from "electron";
 import { SearchInfos } from "japscandl/js/src/utils/types";
 import { reactive } from "vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const state = reactive({
   name: "" as string,

@@ -51,29 +51,6 @@
   color: var(--reverse-color);
 }
 
-button.basic {
-  transition: all 200ms ease;
-  background-color: var(--dark-primary);
-  border: none;
-  outline: none;
-  @apply select-none mx-1 uppercase cursor-pointer rounded-2xl text-center p-2 text-white transition-all duration-200;
-}
-
-button.basic.selected {
-  background-color: var(--primary);
-}
-
-button.basic:enabled:hover {
-  background-color: var(--primary);
-  transform: translateX(2px);
-}
-
-button.basic:disabled {
-  background-color: darkgrey;
-  color: grey;
-  cursor: not-allowed;
-}
-
 input {
   outline-color: var(--dark-primary);
 }

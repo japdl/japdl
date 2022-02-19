@@ -9,7 +9,7 @@
         v-model="mangaName.value"
         required
       />
-      <button class="basic" type="submit">Rechercher</button>
+      <BaseButton type="submit">Rechercher</BaseButton>
     </form>
     <div id="suggestion">
       <Manga
@@ -33,6 +33,7 @@ import { defineEmits, reactive } from "vue";
 import Manga from "./Manga.vue";
 import Container from "./Container.vue";
 import { startLoading, stopLoading } from "@/utils/loadingState";
+import BaseButton from "./BaseButton.vue";
 
 const emit = defineEmits<{
   (event: "manga", manga: SearchInfos): void;

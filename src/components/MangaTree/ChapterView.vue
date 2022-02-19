@@ -17,7 +17,7 @@
         <input type="checkbox" v-model="options.cbr" />
         <span>Créer un fichier CBR</span>
       </label>
-      <button class="basic">Télécharger</button>
+      <BaseButton>Télécharger</BaseButton>
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@
 import { defineProps } from "@vue/runtime-core";
 import { reactive, ref } from "vue";
 import { Chapter } from "japscandl/js/src/utils/types";
+import BaseButton from "../BaseButton.vue";
 const props = defineProps<{
   chapter: Chapter;
 }>();

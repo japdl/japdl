@@ -1,11 +1,10 @@
 <template>
-  <div id="options">
+  <div id="options" class="container mx-auto">
     <DebugVariables v-if="debug" :state="state.options" title="options" />
 
     <div id="imageFormat">
       <label for="imageSelect"> Format des images:</label>
       <select
-        id="imageSelect"
         v-model="state.options.imageFormat"
         class="text-black rounded-md p-2"
       >
@@ -24,12 +23,10 @@
         v-model="state.options.chromePath"
         placeholder="Veuillez entrer un chemin"
         class="rounded-md bg-gray-100 p-2 text-black"
-      /><button class="basic" @click="chooseChromePath">
-        Choisir un fichier
-      </button>
-      <button class="basic" @click="checkPath(state.options.chromePath)">
+      /><BaseButton @click="chooseChromePath"> Choisir un fichier </BaseButton>
+      <BaseButton @click="checkPath(state.options.chromePath)">
         Vérifier le chemin
-      </button>
+      </BaseButton>
       <div class="message">{{ state.pathMessage }}</div>
       <div class="error">{{ state.pathError }}</div>
     </div>
@@ -40,14 +37,14 @@
         v-model="state.options.outputDirectory"
         class="rounded-md bg-gray-100 p-2 text-black"
       />
-      <button class="basic" @click="chooseOutPath">Choisir un dossier</button>
-      <button class="basic" @click="defaultOutPath">Par défaut</button>
-      <button class="basic" @click="openOutPath">Ouvrir le dossier</button>
+      <BaseButton @click="chooseOutPath">Choisir un dossier</BaseButton>
+      <BaseButton @click="defaultOutPath">Par défaut</BaseButton>
+      <BaseButton @click="openOutPath">Ouvrir le dossier</BaseButton>
     </div>
     <div id="save">
-      <button class="basic text-2xl mt-32" @click="setData">
+      <BaseButton class="text-2xl mt-32" @click="setData">
         Sauvegarder les modifications
-      </button>
+      </BaseButton>
     </div>
     <div id="message" v-if="state.message">{{ state.message }}</div>
   </div>
@@ -60,6 +57,7 @@ import { configData } from "@/utils/handleConfig";
 import { inject } from "@vue/runtime-core";
 import fs from "fs";
 import DebugVariables from "@/components/DebugVariables.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const debug = inject("debug");
 
@@ -156,44 +154,3 @@ function openOutPath() {
   shell.showItemInFolder(state.options.outputDirectory);
 }
 </script>
-
-<style scoped>
-#options {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-#options div {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.colorBox {
-  transition: all ease 0.8s;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  border: 2px solid var(--text-color);
-}
-#dark {
-  background-color: black;
-  color: white;
-  border-radius: 15px 0px 0px 15px;
-}
-
-#light {
-  background-color: white;
-  color: black;
-  border-radius: 0px 15px 15px 0px;
-}
-
-.colorBox.selected {
-  width: 100px;
-  border-color: var(--primary);
-  border-radius: 0.5rem;
-}
-</style>

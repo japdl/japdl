@@ -5,19 +5,19 @@
     <h1 class="font-manga tracking-wide text-2xl my-2">Téléchargements</h1>
     <div id="downloads" class="w-full flex flex-col h-full">
       <div v-if="debug" class="flex flex-col gap-1 my-2">
-        <button class="basic" @click="currentDownload = null">Vider</button>
-        <button class="basic" @click="currentDownload = chapterDownload">
+        <BaseButton @click="currentDownload = null">Vider</BaseButton>
+        <BaseButton @click="currentDownload = chapterDownload">
           Chapitre
-        </button>
-        <button class="basic" @click="currentDownload = chaptersDownload">
+        </BaseButton>
+        <BaseButton @click="currentDownload = chaptersDownload">
           Chapitres
-        </button>
-        <button class="basic" @click="currentDownload = volumeDownload">
+        </BaseButton>
+        <BaseButton @click="currentDownload = volumeDownload">
           Volume
-        </button>
-        <button class="basic" @click="currentDownload = volumesDownload">
+        </BaseButton>
+        <BaseButton @click="currentDownload = volumesDownload">
           Volumes
-        </button>
+        </BaseButton>
       </div>
       <h1 class="text-center opacity-70 pt-5" v-if="!displaysAnything">
         Aucun téléchargement en cours
@@ -57,6 +57,7 @@ import { ipcRenderer } from "electron";
 import { computed, inject, ref } from "vue";
 import { VolumesDownload } from "@/utils/downloadHandler/volumes";
 import { SideBarDownload } from "@/utils/downloadHandler";
+import BaseButton from "../BaseButton.vue";
 
 const percent = (current: number, total: number) => (current / total) * 100;
 

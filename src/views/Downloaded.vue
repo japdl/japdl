@@ -3,9 +3,9 @@
     <div class="flex justify-center items-center flex-col gap-4">
       <h1 class="text-center flex flex-col">
         Mangas téléchargés dans le dossier
-        <button class="basic" @click="shell.openPath(config.outputDirectory)">
+        <BaseButton @click="shell.openPath(config.outputDirectory)">
           {{ config.outputDirectory }}
-        </button>
+        </BaseButton>
       </h1>
       <div>
         <input
@@ -47,6 +47,7 @@ import fs from "fs";
 import path from "path";
 import { computed, onUnmounted, ref } from "vue";
 import MangaDirectory from "@/components/Downloaded/MangaDirectory.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 function readdirSyncFullPath(folder: string) {
   try {

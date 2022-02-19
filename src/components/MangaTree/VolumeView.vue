@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { defineProps } from "@vue/runtime-core";
-import { Volume } from "../../../../japscandl/js/src/utils/types";
+import { Volume } from "japscandl/js/src/utils/types";
 import ChapterView from "./ChapterView.vue";
 
 const props = defineProps<{

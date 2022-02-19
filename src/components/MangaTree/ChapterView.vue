@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { defineProps } from "@vue/runtime-core";
 import { reactive, ref } from "vue";
-import { Chapter } from "../../../../japscandl/js/src/utils/types";
+import { Chapter } from "japscandl/js/src/utils/types";
 const props = defineProps<{
   chapter: Chapter;
 }>();

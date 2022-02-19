@@ -1,9 +1,10 @@
-import { Downloader } from "../../../../japscandl";
+import { Downloader } from "japscandl";
 import path from "path";
 import { BrowserWindow, ipcMain, shell } from "electron";
-import { ComponentFlags, MangaAttributes } from "japscandl/js/src/utils/types";
+import { ComponentFlags } from "japscandl/js/src/utils/types";
 import puppeteer from "puppeteer-core";
 import downloadHandler from "../downloadHandler";
+import MangaAttributes from "japscandl/js/src/MangaAttributes";
 
 export async function setupJapscandlListeners(
   options: {

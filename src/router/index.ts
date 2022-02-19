@@ -37,11 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     //alias: "Mangas téléchargés",
     component: importView("downloaded"),
   },
-  {
+  /*   {
     path: "/reader",
     name: "Reader",
     component: importView("reader"),
-  },
+  }, */
   {
     path: "/options",
     name: "Options",

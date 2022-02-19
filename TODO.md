@@ -1,4 +1,6 @@
 ## A faire
+-Ajouter l'option flat cbr, (refaire options)
+
 - Gerer le chemin chrome quand il est invalide et quand il est valide proposer le bouton de restart
 
 - Forcer une seule instance du programme avec (https://stackoverflow.com/questions/35916158/how-to-prevent-multiple-instances-in-electron), testé mais fonctionne pas

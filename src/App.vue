@@ -1,20 +1,22 @@
 <template>
-  <div v-if="notReady">
+  <div id="container" class="full flex flex-col">
     <TopBar />
-    <div>
-      {{ notReady }}
-    </div>
-  </div>
-  <div v-else class="w-full h-full flex flex-col justify-between">
-    <TopBar />
-    <NavBar />
-    <main class="overflow-y-scroll h-full">
-      <div id="image-container" class="flex justify-center">
-        <img class="w-32" src="./assets/svg/noun-torii.svg" />
+    <main class="flex">
+      <SideBar class="fit-side" />
+      <div id="content" class="w-full">
+        <NavBar class="w-full" />
+        <div id="view" class="fit-screen overflow-y-scroll">
+          <img
+            src="./assets/svg/noun-torii.svg"
+            class="mx-auto w-32 my-4 transition-all duration-200"
+            :class="{
+              loading,
+            }"
+          />
+          <router-view></router-view>
+        </div>
       </div>
-      <router-view />
     </main>
-    <StatusFooter />
   </div>
 </template>
 
@@ -22,11 +24,13 @@
 import { ipcRenderer } from "electron";
 import { ref } from "vue";
 import { provide } from "@vue/runtime-core";
-import StatusFooter from "./components/Footer/StatusFooter.vue";
 import NavBar from "./components/NavBar.vue";
 import TopBar from "./components/TopBar.vue";
+import SideBar from "./components/SideBar/SideBar.vue";
+import { loading } from "@/utils/loadingState";
 
 const notReady = ref(false);
+
 ipcRenderer.send("readyStatus");
 ipcRenderer.on("readyStatusResponse", (event, arg) => (notReady.value = arg));
 
@@ -44,11 +48,12 @@ ipcRenderer.on("changeTheme", (event, data) => {
 
 const debug = ipcRenderer.sendSync("debug");
 provide("debug", debug);
+const platform = ipcRenderer.sendSync("process", "platform");
+provide("platform", platform);
 </script>
 
 <style scoped>
-main {
-  padding: 15px 5px 10px 5px;
-  background-color: var(--light-background);
+.loading {
+  @apply p-2 animate-spin;
 }
 </style>

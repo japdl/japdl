@@ -4,6 +4,7 @@ publish:
 
 # Windows configuration
 win:
+  icon: "./src/assets/logo/large.ico"
   target:
     - "zip"
     - "nsis"

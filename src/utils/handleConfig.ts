@@ -31,14 +31,14 @@ class Config {
         return "";
       }
     })(),
-    imageFormat: "jpg",
+    imageFormat: "png",
   };
 
   constructor() {
     this.folderPath = path.join(app.getPath("appData"), "Japdl");
-    console.log("folderPath:", this.folderPath);
     this.configFile = path.join(this.folderPath, "config.json");
     japscandl.utils.fsplus.createPath(this.folderPath);
+    console.log("folderPath:", this.folderPath);
     console.log("configFile:", this.configFile);
     // parse JSON in file this.configFile if it exists
     // if not, create it with default data
@@ -57,7 +57,7 @@ class Config {
           this.data[field] = this.BASIC_CONFIG_DATA[field];
         });
       } else {
-        console.log("Config file is corrupted. Creating a fresh one.");
+        console.error("Config file is corrupted. Creating a fresh one.");
         // set data to default
         this.setData(this.BASIC_CONFIG_DATA);
         this.save();

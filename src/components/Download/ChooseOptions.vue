@@ -3,87 +3,87 @@
     class="flex justify-center items-center flex-col"
     header="Options de téléchargement"
   >
-    <div>
-      <div class="downloadOption">
-        <label>
-          <input type="checkbox" v-model="state.images" value="images" />
-          Conserver les images dans un dossier</label
-        >
-      </div>
-      <!--div class="downloadOption">
-      <label>
-        <input type="radio" v-model="state.compression" value="pdf" />
-        Créer un fichier PDF</label
+    <div id="download-options" class="flex flex-col">
+      <label class="block">
+        <input type="checkbox" v-model="state.images" value="images" />
+        Conserver les images dans un dossier</label
       >
-    </div-->
-      <div class="downloadOption">
-        <label>
-          <input type="radio" v-model="state.compression" value="cbr" />
-          Créer un fichier CBR*</label
-        >
-      </div>
-      <div class="downloadOption">
-        <label>
-          <input type="radio" v-model="state.compression" value="" />
-          Ne pas créer de fichier CBR</label
-        >
-      </div>
+
+      <label v-for="zipOption in zipOptions" :key="zipOption.value">
+        <input
+          type="radio"
+          v-model="state.compression"
+          :value="zipOption.value"
+        />
+        {{ zipOption.label }}</label
+      >
     </div>
   </Container>
-  <span class="text-gray-400"
-    >*format CBR: Toutes les images sont contenues dans un fichier unique.</span
+  <span v-scroll-to class="text-gray-400 hover:text-current">
+    *format CBR: Toutes les images sont contenues dans un fichier unique.</span
   >
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, reactive, watch } from "vue";
+<script lang="ts" setup>
+import { onMounted, reactive, watch } from "vue";
+import { defineProps, defineEmits } from "@vue/runtime-core";
+
 import Container from "../Container.vue";
 
-export default defineComponent({
-  components: { Container },
-  props: {
-    options: {
-      type: Object,
-      required: true,
-    },
+/* we are not using props in the code, we only use them for the
+ * v-model.
+ */
+defineProps<{
+  options: { compression: "cbr" | ""; images: boolean };
+}>();
+
+const zipOptions = [
+  {
+    label: "Créer un fichier CBR*",
+    value: "cbr",
   },
-  setup(props, context) {
-    const state = reactive({
-      compression: "",
-      images: false,
-    });
-    onMounted(() => {
-      context.emit("update:options", {
-        compression: state.compression,
-        images: state.images,
-      });
-    });
-
-    watch(
-      () => state.compression,
-      (newCompression) => {
-        context.emit("update:options", {
-          compression: newCompression,
-          images: state.images,
-        });
-      }
-    );
-
-    watch(
-      () => state.images,
-      (newImage) => {
-        context.emit("update:options", {
-          compression: state.compression,
-          images: newImage,
-        });
-      }
-    );
-
-    return {
-      state,
-    };
+  {
+    label: "Ne pas créer de fichier CBR*",
+    value: "",
   },
+];
+
+const emit = defineEmits<{
+  (
+    event: "update:options",
+    param: { compression: "cbr" | ""; images: boolean }
+  ): void;
+}>();
+
+const state = reactive({
+  compression: "" as "cbr" | "",
+  images: false,
 });
-</script>
 
-<style scoped></style>
+onMounted(() => {
+  emit("update:options", {
+    compression: state.compression,
+    images: state.images,
+  });
+});
+
+watch(
+  () => state.compression,
+  (newCompression) => {
+    emit("update:options", {
+      compression: newCompression,
+      images: state.images,
+    });
+  }
+);
+
+watch(
+  () => state.images,
+  (newImage) => {
+    emit("update:options", {
+      compression: state.compression,
+      images: newImage,
+    });
+  }
+);
+</script>

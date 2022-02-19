@@ -13,6 +13,7 @@
           v-model="search"
           class="text-black rounded-md bg-gray-100 p-2"
           placeholder="Chercher un manga"
+          list="suggestions"
         />
       </div>
     </div>
@@ -29,7 +30,7 @@
           :folder="folder"
         />
       </ul>
-      <div v-else class="text-center mt-5 text-2xl text-red-700">
+      <div v-else class="text-center pt-5 text-2xl text-red-700">
         Aucun manga ne correspond à votre recherche
       </div>
     </div>
@@ -46,7 +47,6 @@ import fs from "fs";
 import path from "path";
 import { computed, onUnmounted, ref } from "vue";
 import MangaDirectory from "@/components/Downloaded/MangaDirectory.vue";
-import chokidar from "chokidar";
 
 function readdirSyncFullPath(folder: string) {
   try {
@@ -60,7 +60,6 @@ function readdirSyncFullPath(folder: string) {
 }
 
 const search = ref("");
-
 const config: configData = ipcRenderer.sendSync("getConfigDataSync");
 
 const folders = ref([] as { path: string; stat: fs.Stats }[]);
@@ -72,22 +71,27 @@ const iterableFolders = computed(() => {
     return folders.value.filter((folder) => {
       return path
         .basename(folder.path.toLowerCase())
-        .includes(search.value.toLowerCase());
+        .includes(search.value.toLowerCase().replaceAll(/ +/g, "-"));
     });
   }
 });
 
 function getFolders() {
-  console.log("getFolders");
-  folders.value = readdirSyncFullPath(config.outputDirectory).filter(
+  const newFolders = readdirSyncFullPath(config.outputDirectory).filter(
     (file) => file.stat.isDirectory() && fs.readdirSync(file.path).length > 0
   );
+  /* if are different, update folders.
+   * I use this to prevent vue from reloading everything,
+   * causing search autocomplete to vanish every call to this
+   * function.
+   */
+  folders.value = newFolders;
 }
 
 getFolders();
 
-// else this keeps going forever
 const interval = setInterval(getFolders, 1000);
+// else this keeps going forever
 onUnmounted(() => clearInterval(interval));
 
 // valid if has files in it

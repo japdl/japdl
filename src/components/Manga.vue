@@ -1,17 +1,6 @@
 <template>
   <div
-    class="
-      mt-5
-      max-w-md
-      mx-auto
-      bg-white
-      hover:opacity-75
-      transition-all
-      rounded-xl
-      shadow-xl
-      overflow-hidden
-      md:max-w-2xl
-    "
+    class="mb-5 max-w-md mx-auto bg-white hover:opacity-75 transition-all rounded-xl shadow-xl overflow-hidden md:max-w-2xl"
   >
     <div class="md:flex">
       <div class="md:flex-shrink-0">
@@ -22,33 +11,18 @@
       </div>
       <div class="p-8">
         <span
-          class="
-            font-manga
-            uppercase
-            tracking-wide
-            text-primary
-            font-semibold
-            text-2xl
-          "
+          class="font-manga uppercase tracking-wide text-primary font-semibold text-2xl"
         >
           {{ props.infos.name }}
         </span>
         <br />
         <span
           @click.prevent.stop="openExternalLink(mangaLink)"
-          class="
-            mt-1
-            text-lg
-            leading-tight
-            font-medium
-            text-black
-            hover:underline
-            cursor-pointer
-          "
+          class="text-lg leading-tight font-medium text-black hover:underline cursor-pointer"
           >Voir sur Japscan</span
         >
-        <div class="mt-2 text-gray-800">
-          <div class="mt-2 text-gray-500">
+        <div class="text-gray-800">
+          <div class="text-gray-500">
             <div v-if="props.infos.original_name">
               <i>Nom original:</i> {{ props.infos.original_name }}
             </div>

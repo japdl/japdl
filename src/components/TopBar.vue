@@ -1,30 +1,30 @@
 <template>
-  <div id="wrapper" class="w-full flex select-none">
+  <div id="wrapper" class="w-full h-10 flex select-none">
     <div class="w-full draggable"></div>
-    <div class="flex">
-      <ThemeSwitch />
-      <div id="minimize" @click="minimizeWindow" title="Minimiser la fenêtre">
-        <Minimize class="topbar-icon hover:background" />
-      </div>
-      <div
-        id="maximize"
+    <div class="flex justify-center items-center">
+      <ThemeSwitch class="topbar-icon hover:bg-dark-background" />
+      <Minimize
+        @click="minimizeWindow"
+        title="Minimiser la fenêtre"
+        class="topbar-icon hover:bg-dark-background"
+      />
+      <Maximize
         v-if="!maximized"
         @click="maximizeWindow"
         title="Maximiser la fenêtre"
-      >
-        <Maximize class="topbar-icon hover:background" />
-      </div>
-      <div
-        id="restore"
+        class="topbar-icon hover:bg-dark-background"
+      />
+      <Restore
         v-else
         @click="restoreWindow"
         title="Réduire la fenêtre"
-      >
-        <Restore class="topbar-icon hover:background" />
-      </div>
-      <div id="close" @click="closeWindow" title="Fermer le programme">
-        <Close class="topbar-icon hover:bg-red-600" />
-      </div>
+        class="topbar-icon hover:bg-dark-background"
+      />
+      <Close
+        @click="closeWindow"
+        title="Fermer le programme"
+        class="topbar-icon hover:bg-red-600"
+      />
     </div>
   </div>
 </template>
@@ -57,5 +57,9 @@ const closeWindow = () => ipcRenderer.send("closeWindow");
   -webkit-user-select: none;
   user-select: none;
   -webkit-app-region: drag;
+}
+
+.topbar-icon {
+  @apply cursor-pointer w-10 px-2 h-full;
 }
 </style>

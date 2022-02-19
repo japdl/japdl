@@ -1,5 +1,7 @@
 import { app, BrowserWindow, dialog } from "electron";
+import { downloadQueue } from "../downloadHandler";
 import { setupLogListener } from "./handler";
+import { getWindowFromEvent } from "./helper";
 
 export const setupListeners = (win: BrowserWindow): void => {
   setupLogListener("restart", () => {
@@ -11,13 +13,18 @@ export const setupListeners = (win: BrowserWindow): void => {
     event.reply("versionResponse", app.getVersion());
   });
 
+  setupLogListener("process", (event, key: string) => {
+    // @ts-expect-error process can't be indexed by any string but caller will be careful
+    event.returnValue = process[key];
+  });
+
   win.on("maximize", () => {
     console.log("Maximize event");
     win.webContents.send("windowResize", true);
   });
 
   win.on("unmaximize", () => {
-    console.log("UNMaximize event");
+    console.log("Unmaximize event");
     win.webContents.send("windowResize", false);
   });
 
@@ -26,11 +33,34 @@ export const setupListeners = (win: BrowserWindow): void => {
     "windowStatus",
     (event) => (event.returnValue = win.isMaximized())
   );
-  setupLogListener("maximizeWindow", () => win.maximize());
+
+  setupLogListener("maximizeWindow", () => {
+    win.maximize();
+  });
 
   setupLogListener("restoreWindow", () => win.restore());
 
-  setupLogListener("closeWindow", () => win.close());
+  setupLogListener("closeWindow", (event) => {
+    async function askForClose() {
+      const options = {
+        title: "Quitter japdl",
+        buttons: ["Oui", "Non", "Annuler"],
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        actions: [() => eventWindow?.close(), () => {}, () => {}],
+        message:
+          "Un téléchargement est en cours. Voulez-vous vraiment quitter ? Le téléchargement sera interrompu.",
+      };
+      const response = await dialog.showMessageBox(options);
+      options.actions[response.response]();
+    }
+    const eventWindow = getWindowFromEvent(event);
+
+    if (downloadQueue?.isDownloading()) {
+      askForClose();
+    } else {
+      eventWindow?.close();
+    }
+  });
 
   setupLogListener("directory-question", async (event, data) => {
     const properties = ["openDirectory", "multiSelections"];

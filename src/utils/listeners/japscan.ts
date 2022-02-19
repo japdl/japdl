@@ -1,9 +1,10 @@
 import { Downloader } from "japscandl";
 import path from "path";
 import { BrowserWindow, ipcMain, shell } from "electron";
-import { ComponentFlags, MangaAttributes } from "japscandl/js/src/utils/types";
+import { ComponentFlags } from "japscandl/js/src/utils/types";
 import puppeteer from "puppeteer-core";
 import downloadHandler from "../downloadHandler";
+import MangaAttributes from "japscandl/js/src/MangaAttributes";
 
 export async function setupJapscandlListeners(
   options: {
@@ -61,7 +62,6 @@ export async function setupJapscandlListeners(
         });
 
         ipcMain.on("search", async (event, data) => {
-          console.log(data);
           const results = await downloader.searchManga(data.value);
           if (data.sync) {
             console.log("Sync");

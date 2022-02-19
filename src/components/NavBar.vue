@@ -1,11 +1,15 @@
 <template>
-  <nav class="select-none h-16 flex justify-evenly items-center rounded-b-2xl">
+  <nav
+    class="h-14 select-none flex justify-evenly items-center rounded-b-2xl bg-dark-background border-l-2 border-light-background"
+  >
     <router-link
       v-for="route in routes"
       :key="route.name"
       :to="route.path"
       draggable="false"
-      >{{ route.name }}
+      class="h-full flex justify-center items-center mx-2 p-2 rounded-xl transition-all duration-200 w-full text-center min-w-max hover:text-primary"
+    >
+      <span>{{ route.name }}</span>
     </router-link>
   </nav>
 </template>
@@ -15,28 +19,16 @@ const routes = [
   { name: "Accueil", path: "/" },
   { name: "Télécharger un manga", path: "/download" },
   { name: "Mangas téléchargés", path: "/downloaded" },
+  /* { name: "Lire", path: "/reader" }, */
   { name: "Options", path: "/options" },
 ];
 </script>
 
 <style scoped>
-nav {
-  display: flex;
-  background-color: var(--dark-background);
-}
-
-nav a {
-  @apply mx-2 p-4 rounded-xl transition-all duration-200 w-full text-center min-w-max;
-}
 nav a.router-link-exact-active {
-  color: var(--dark-primary);
+  @apply text-primary;
 }
 nav a:hover {
-  color: var(--primary);
-  background-image: linear-gradient(
-    to bottom left,
-    var(--light-background),
-    var(--dark-background)
-  );
+  @apply text-dark-primary bg-gradient-to-t from-light-background to-dark-background;
 }
 </style>

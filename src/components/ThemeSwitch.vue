@@ -1,26 +1,23 @@
 <template>
-  <div id="themeButton">
-    <div
-      id="svgs"
-      class="flex justify-center items-center relative py-1 hover:background"
-    >
-      <Sun
-        v-if="selectedTheme == 'dark'"
-        ref="sun"
-        src="../assets/svg/sun.svg"
-        alt="sun"
-        class="topbar-icon w-full"
-        @click="setTheme('light')"
-      />
-      <Moon
-        v-if="selectedTheme == 'light'"
-        ref="moon"
-        src="../assets/svg/moon.svg"
-        alt="moon"
-        class="topbar-icon w-full"
-        @click="setTheme('dark')"
-      />
-    </div>
+  <div
+    id="themeButton"
+    class="flex justify-center items-center py-1"
+    @click="switchTheme()"
+  >
+    <Sun
+      v-if="selectedTheme == 'dark'"
+      ref="sun"
+      src="../assets/svg/sun.svg"
+      alt="sun"
+      @click="setTheme('light')"
+    />
+    <Moon
+      v-if="selectedTheme == 'light'"
+      ref="moon"
+      src="../assets/svg/moon.svg"
+      alt="moon"
+      @click="setTheme('dark')"
+    />
   </div>
 </template>
 
@@ -31,12 +28,19 @@ import Moon from "./Images/Moon.vue";
 import Sun from "./Images/Sun.vue";
 
 const selectedTheme = ref("dark");
+type Theme = "dark" | "light";
 
-const setTheme = (theme: "dark" | "light") =>
-  ipcRenderer.send("setTheme", theme);
+const switchTheme = () => {
+  if (selectedTheme.value == "dark") {
+    selectedTheme.value = "light";
+  } else {
+    selectedTheme.value = "dark";
+  }
+  setTheme(selectedTheme.value as Theme);
+};
+
+const setTheme = (theme: Theme) => ipcRenderer.send("setTheme", theme);
 
 ipcRenderer.send("getTheme");
 ipcRenderer.on("changeTheme", (event, arg) => (selectedTheme.value = arg));
 </script>
-
-<style scoped></style>

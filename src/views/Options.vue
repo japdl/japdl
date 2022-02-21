@@ -1,9 +1,8 @@
 <template>
-  <div id="options" class="container mx-auto">
+  <div id="options" class="container w-2/3 mx-auto flex flex-col gap-1">
     <DebugVariables v-if="debug" :state="state.options" title="options" />
 
-    <div id="imageFormat">
-      <label for="imageSelect"> Format des images:</label>
+    <Container header="Format des fichiers d'images" id="imageFormat">
       <select
         v-model="state.options.imageFormat"
         class="text-black rounded-md p-2"
@@ -15,7 +14,7 @@
           {{ format }}
         </option>
       </select>
-    </div>
+    </Container>
     <div id="chromePath">
       Chemin de chrome:
       <input
@@ -58,6 +57,7 @@ import { inject } from "@vue/runtime-core";
 import fs from "fs";
 import DebugVariables from "@/components/DebugVariables.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import Container from "@/components/Container.vue";
 
 const debug = inject("debug");
 

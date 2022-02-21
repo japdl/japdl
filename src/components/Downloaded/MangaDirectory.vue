@@ -3,7 +3,7 @@
     class="m-6 min-w-max flex flex-col gap-1 p-6 items-center mt-20 rounded-md shadow-2xl"
     :style="`background-color: ${backgroundColor};`"
   >
-    <MangaImage class="w-40 self-center" :manga="mangaName" />
+    <MangaImage class="w-40 self-center rounded-md" :manga="mangaName" />
     <h2 class="text-4xl font-manga text-center mt-2 text-white black-outline">
       {{ mangaName }}
     </h2>

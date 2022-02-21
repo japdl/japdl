@@ -4,6 +4,8 @@ import { setupLogListener } from "./handler";
 import { getWindowFromEvent } from "./helper";
 
 export const setupListeners = (win: BrowserWindow): void => {
+  setupLogListener("log");
+
   setupLogListener("restart", () => {
     app.relaunch();
     app.quit();

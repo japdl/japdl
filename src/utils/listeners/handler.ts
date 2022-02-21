@@ -6,13 +6,13 @@ const dev = process.env.NODE_ENV !== "production";
 
 export function setupLogListener(
   eventName: string,
-  callback: (event: IpcMainEvent, arg?: any) => void
+  callback?: (event: IpcMainEvent, arg?: any) => void
 ): void {
   ipcMain.on(eventName, (event, arg) => {
     if (dev) {
       console.log(`[${eventName}] arg: ${arg}`);
     }
-    callback(event, arg);
+    callback?.(event, arg);
     if (dev) console.log(`[${eventName}] end`);
   });
 }

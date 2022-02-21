@@ -32,7 +32,7 @@ import path from "path";
 import { ipcRenderer, shell } from "electron";
 import MangaFile from "./MangaFile.vue";
 import MangaImage from "../MangaImage.vue";
-import { computed, ref } from "vue";
+import { computed, onUnmounted, ref } from "vue";
 import router from "@/router";
 import BaseButton from "../BaseButton.vue";
 
@@ -94,9 +94,18 @@ function calculateMidColor() {
 const backgroundColor = stringToColour(mangaName);
 
 const midColor = ref(calculateMidColor());
-ipcRenderer.on("changeTheme", () => {
+
+function changeThemeCallback() {
   midColor.value = calculateMidColor();
+}
+
+ipcRenderer.on("changeTheme", changeThemeCallback);
+
+onUnmounted(() => {
+  ipcRenderer.removeListener("changeTheme", changeThemeCallback);
 });
+
+ipcRenderer.send("log", ipcRenderer.listenerCount("changeTheme"));
 
 const sortedFiles = computed(() => {
   var customSort = (a: { path: string }, b: { path: string }) => {

@@ -42,5 +42,6 @@ const switchTheme = () => {
 const setTheme = (theme: Theme) => ipcRenderer.send("setTheme", theme);
 
 ipcRenderer.send("getTheme");
+ipcRenderer.setMaxListeners(0);
 ipcRenderer.on("changeTheme", (event, arg) => (selectedTheme.value = arg));
 </script>

@@ -2,7 +2,7 @@
   <div v-if="valid">
     <div class="flex justify-center items-center flex-col gap-4">
       <h1 class="text-center flex flex-col">
-        Mangas téléchargés dans le dossier
+        {{ folders.length }} mangas téléchargés dans le dossier
         <BaseButton @click="shell.openPath(config.outputDirectory)">
           {{ config.outputDirectory }}
         </BaseButton>

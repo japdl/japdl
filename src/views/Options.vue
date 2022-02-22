@@ -15,36 +15,39 @@
         </option>
       </select>
     </Container>
-    <div id="chromePath">
-      Chemin de chrome:
+    <Container header="Chemin vers Chrome" id="chromePath">
       <input
         type="text"
         v-model="state.options.chromePath"
         placeholder="Veuillez entrer un chemin"
-        class="rounded-md bg-gray-100 p-2 text-black"
-      /><BaseButton @click="chooseChromePath"> Choisir un fichier </BaseButton>
-      <BaseButton @click="checkPath(state.options.chromePath)">
+        class="rounded-md bg-gray-100 p-2 text-black block w-full"
+      />
+      <BaseButton class="mt-2" @click="chooseChromePath">
+        Choisir un fichier
+      </BaseButton>
+      <BaseButton class="mt-2" @click="checkPath(state.options.chromePath)">
         Vérifier le chemin
       </BaseButton>
       <div class="message">{{ state.pathMessage }}</div>
       <div class="error">{{ state.pathError }}</div>
-    </div>
-    <div id="downloadDirectory">
-      Dossier de téléchargement:
+    </Container>
+    <Container header="Dossier de téléchargement:" id="downloadDirectory">
       <input
         type="text"
         v-model="state.options.outputDirectory"
-        class="rounded-md bg-gray-100 p-2 text-black"
+        class="rounded-md bg-gray-100 p-2 text-black block w-full"
       />
-      <BaseButton @click="chooseOutPath">Choisir un dossier</BaseButton>
-      <BaseButton @click="defaultOutPath">Par défaut</BaseButton>
-      <BaseButton @click="openOutPath">Ouvrir le dossier</BaseButton>
-    </div>
-    <div id="save">
-      <BaseButton class="text-2xl mt-32" @click="setData">
+      <BaseButton class="mt-2" @click="chooseOutPath"
+        >Choisir un dossier</BaseButton
+      >
+      <BaseButton class="mt-2" @click="defaultOutPath">Par défaut</BaseButton>
+      <BaseButton class="mt-2" @click="openOutPath"
+        >Ouvrir le dossier</BaseButton
+      >
+    </Container>
+      <BaseButton class="text-2xl mt-2" @click="setData">
         Sauvegarder les modifications
       </BaseButton>
-    </div>
     <div id="message" v-if="state.message">{{ state.message }}</div>
   </div>
 </template>

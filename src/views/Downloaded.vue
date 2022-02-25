@@ -72,7 +72,7 @@ const iterableFolders = computed(() => {
     return folders.value.filter((folder) => {
       return path
         .basename(folder.path.toLowerCase())
-        .includes(search.value.toLowerCase().replaceAll(/ +/g, "-"));
+        .includes(search.value.trim().toLowerCase().replaceAll(/ +/g, "-"));
     });
   }
 });

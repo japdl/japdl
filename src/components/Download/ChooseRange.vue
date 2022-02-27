@@ -3,7 +3,7 @@
     <input
       type="number"
       step="any"
-      @input="setRange($event.target.value, range.end)"
+      @input="setRange($event?.target?.value, range.end)"
       min="0"
       :max="max"
       :placeholder="placeholder"
@@ -14,7 +14,7 @@
       class="inputText"
       type="number"
       step="any"
-      @input="setRange(range.start, $event.target.value)"
+      @input="setRange(range.start, $event?.target?.value)"
       :min="range.start"
       :max="max"
       :placeholder="placeholder"
@@ -29,26 +29,32 @@ import { computed } from "vue";
 const props = defineProps<{
   max: number;
   type: string;
-  range: { start: number; end: number };
+  range: { start?: number; end?: number };
 }>();
 
 const emits = defineEmits<{
-  (event: "update:range", range: { start: number; end: number }): void;
+  (event: "update:range", range: { start?: number; end?: number }): void;
 }>();
 
 const placeholder = computed(() => {
   return `Numéro de ${props.type}`;
 });
 
-function filterValue(val: string | number) {
-  if (typeof val === "string") return val.length ? +val : 0;
+function filterValue(val?: string | number) {
+  if(typeof val === "string") {
+    if(val.length) return +val;
+    else return 0;
+  }
   else return val;
 }
 
-function setRange(start: string | number, end: string | number): void {
+function setRange(
+  start?: string | number | null,
+  end?: string | number | null
+): void {
   emits("update:range", {
-    start: filterValue(start),
-    end: filterValue(end),
+    start: filterValue(start ?? undefined),
+    end: filterValue(end ?? undefined),
   });
 }
 </script>
@@ -58,12 +64,14 @@ input {
   @apply text-center p-1 rounded-xl text-lg min-w-min;
 }
 
-input:invalid {
+input:invalid:not(:placeholder-shown) {
   color: red;
+  @apply line-through;
 }
 
-input:valid {
+input:valid:not(:placeholder-shown) {
   color: green;
+  @apply font-bold;
 }
 
 select {

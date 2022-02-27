@@ -2,20 +2,15 @@
   <div id="options" class="container w-2/3 mx-auto flex flex-col gap-1">
     <DebugVariables v-if="debug" :state="state.options" title="options" />
 
-    <Container header="Format des fichiers d'images" id="imageFormat">
-      <select
-        v-model="state.options.imageFormat"
-        class="text-black rounded-md p-2"
-      >
-        <option
-          v-for="format in state.possibleOptions.imageFormat"
-          :key="format"
-        >
-          {{ format }}
-        </option>
-      </select>
-    </Container>
-    <Container header="Chemin vers Chrome" id="chromePath">
+    <ChooseBetweenTwo
+      header="Format des fichiers d'images"
+      first="png"
+      second="jpg"
+      :selected="imageFormatToChoice"
+      @choice="handleImageFormat"
+    />
+    <Container>
+      <h1 class="header">Chemin vers Chrome</h1>
       <input
         type="text"
         v-model="state.options.chromePath"
@@ -31,7 +26,7 @@
       <div class="message">{{ state.pathMessage }}</div>
       <div class="error">{{ state.pathError }}</div>
     </Container>
-    <Container header="Dossier de téléchargement:" id="downloadDirectory">
+    <Container header="Dossier de téléchargement" id="downloadDirectory">
       <input
         type="text"
         v-model="state.options.outputDirectory"
@@ -45,22 +40,23 @@
         >Ouvrir le dossier</BaseButton
       >
     </Container>
-      <BaseButton class="text-2xl mt-2" @click="setData">
-        Sauvegarder les modifications
-      </BaseButton>
+    <BaseButton class="text-2xl mt-2" @click="setData">
+      Sauvegarder les modifications
+    </BaseButton>
     <div id="message" v-if="state.message">{{ state.message }}</div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ipcRenderer, shell } from "electron";
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import { configData } from "@/utils/handleConfig";
 import { inject } from "@vue/runtime-core";
 import fs from "fs";
 import DebugVariables from "@/components/DebugVariables.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import Container from "@/components/Container.vue";
+import ChooseBetweenTwo, { Choice } from "@/components/ChooseBetweenTwo.vue";
 
 const debug = inject("debug");
 
@@ -78,20 +74,16 @@ const state = reactive({
   pathTimeout: null as null | Timeout,
 });
 
-console.log("Options mounted");
 ipcRenderer.send("getConfigData");
 ipcRenderer.once("returnConfigData", (event, data: configData) => {
   state.options = data;
-  console.log("Data received", data);
 });
 ipcRenderer.send("getPossibleOptions");
 ipcRenderer.once("returnPossibleOptions", (event, data) => {
   state.possibleOptions = data;
-  console.log("Possible options received", data);
 });
 
 function setData() {
-  console.log("Sending set data", state.options);
   const data = ipcRenderer.sendSync("setDataSync", {
     theme: state.options.theme,
     outputDirectory: state.options.outputDirectory,
@@ -116,7 +108,6 @@ function setData() {
 
 function chooseChromePath() {
   const [newPath] = ipcRenderer.sendSync("file-question");
-  console.log(newPath);
   if (newPath) {
     state.options.chromePath = newPath;
     // verif path
@@ -126,7 +117,6 @@ function chooseChromePath() {
 
 function chooseOutPath() {
   const [newPath] = ipcRenderer.sendSync("directory-question");
-  console.log(newPath);
   if (newPath) state.options.outputDirectory = newPath;
 }
 function checkPath(path: string) {
@@ -156,4 +146,29 @@ function defaultOutPath() {
 function openOutPath() {
   shell.showItemInFolder(state.options.outputDirectory);
 }
+
+function handleImageFormat(selection: Choice) {
+  if (selection === Choice.None) return;
+  if (selection === Choice.First) {
+    state.options.imageFormat = "png";
+  } else {
+    state.options.imageFormat = "jpg";
+  }
+}
+
+const imageFormatToChoice = computed(() => {
+  if (state.options.imageFormat === "png") {
+    return Choice.First;
+  } else if (state.options.imageFormat === "jpg") {
+    return Choice.Second;
+  } else {
+    return Choice.None;
+  }
+});
 </script>
+
+<style scoped>
+.header {
+  @apply text-2xl font-bold mb-4;
+}
+</style>

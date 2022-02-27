@@ -1,41 +1,26 @@
 <template>
-  <Container
-    class="mb-5 w-full p-3 flex items-center flex-col"
+  <ChooseBetweenTwo
+    first="chapitre"
+    second="volume"
     header="Type de téléchargement"
-  >
-    <div v-scroll-to class="flex justify-around text-xl w-full">
-      <BaseButton
-        class="w-full"
-        :class="{ selected: type === 'chapitre' }"
-        @click="handleEmit('chapitre')"
-      >
-        Chapitre
-      </BaseButton>
-      <BaseButton
-        class="w-full"
-        :class="{ selected: type === 'volume' }"
-        @click="handleEmit('volume')"
-      >
-        Volume
-      </BaseButton>
-    </div>
-  </Container>
+    @choice="handleEmit"
+  />
 </template>
 
 <script lang="ts" setup>
 import { defineEmits } from "@vue/runtime-core";
-import { ref } from "vue";
-import Container from "../Container.vue";
-import BaseButton from "../BaseButton.vue";
+import ChooseBetweenTwo from "../ChooseBetweenTwo.vue";
 
 const emit = defineEmits<{
   (event: "type", type: string): void;
 }>();
 
-const type = ref("");
-
-const handleEmit = (_type: string) => {
-  emit("type", _type);
-  type.value = _type;
+const handleEmit = (_type: -1 | 0 | 1) => {
+  if(_type === -1) return;
+  if (_type === 0) {
+    emit("type", "chapitre");
+  } else {
+    emit("type", "volume");
+  }
 };
 </script>

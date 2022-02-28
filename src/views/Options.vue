@@ -43,7 +43,14 @@
     <BaseButton class="text-2xl mt-2" @click="setData">
       Sauvegarder les modifications
     </BaseButton>
-    <div id="message" v-if="state.message">{{ state.message }}</div>
+    <div
+      id="message"
+      class="text-center text-xl opacity-70"
+      v-scroll-to
+      v-if="state.message"
+    >
+      {{ state.message }}
+    </div>
   </div>
 </template>
 
@@ -134,7 +141,7 @@ function checkPath(path: string) {
       state.pathMessage = "";
       state.pathError = "";
       state.pathTimeout = null;
-    }, 2000);
+    }, 5000);
   }
 }
 

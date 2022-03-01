@@ -7,7 +7,7 @@
     <ChooseManga @manga="getMangaInfos($event.japscan)" />
     <div id="afterMangaChoosen" class="p-6" v-if="manga.name && !state.loading">
       <div id="topView" class="flex gap-6 flex-wrap">
-        <MangaImage :manga="manga.japscanName" class="h-96 mx-auto rounded" />
+        <MangaImage :manga="manga.japscanName" class="mx-auto rounded" />
         <div id="summary">
           <WebLink
             :link="'https://japscan.ws/manga/' + manga.japscanName + '/'"

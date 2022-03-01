@@ -3,7 +3,7 @@
     <input
       type="number"
       step="any"
-      @input="setRange($event?.target?.value, range.end)"
+      @input="setRange(($event?.target as HTMLTextAreaElement).value, range.end)"
       min="0"
       :max="max"
       :placeholder="placeholder"
@@ -14,7 +14,7 @@
       class="inputText"
       type="number"
       step="any"
-      @input="setRange(range.start, $event?.target?.value)"
+      @input="setRange(range.start, ($event?.target as HTMLTextAreaElement).value)"
       :min="range.start"
       :max="max"
       :placeholder="placeholder"
@@ -41,11 +41,10 @@ const placeholder = computed(() => {
 });
 
 function filterValue(val?: string | number) {
-  if(typeof val === "string") {
-    if(val.length) return +val;
+  if (typeof val === "string") {
+    if (val.length) return +val;
     else return 0;
-  }
-  else return val;
+  } else return val;
 }
 
 function setRange(

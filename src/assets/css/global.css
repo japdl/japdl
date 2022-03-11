@@ -51,10 +51,6 @@
   color: var(--reverse-color);
 }
 
-input {
-  outline-color: var(--dark-primary);
-}
-
 .error {
   color: red;
   text-align: center;
@@ -69,7 +65,8 @@ img {
 }
 
 input {
-  border: 2px solid var(--container);
+  border: 2px solid var(--dark-primary);
+  outline-color: var(--reverse-color);
 }
 
 path {

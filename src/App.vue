@@ -7,7 +7,7 @@
         <NavBar class="w-full" />
         <div id="view" class="fit-screen overflow-y-scroll">
           <img
-            src="./assets/svg/noun-torii.svg"
+            :src="torii"
             class="mx-auto w-32 my-4 transition-all duration-200"
             :class="{
               loading,
@@ -28,6 +28,8 @@ import NavBar from "./components/NavBar.vue";
 import TopBar from "./components/TopBar.vue";
 import SideBar from "./components/SideBar/SideBar.vue";
 import { loading } from "@/utils/loadingState";
+//@ts-expect-error this is not a typescript file, typescript
+import torii from "./assets/svg/noun-torii.svg";
 
 const notReady = ref(false);
 

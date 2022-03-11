@@ -107,4 +107,8 @@ export const setupListeners = (win: BrowserWindow): void => {
     });
     event.returnValue = fileChooser.filePaths;
   });
+
+  setupLogListener("downloadChrome", () => {
+    console.log("Downloading chrome is not implemented yet");
+  });
 };

@@ -17,6 +17,21 @@
     <BaseButton class="mt-2" @click="checkPath(props.path)">
       Vérifier le chemin
     </BaseButton>
+    <BaseButton class="mt-2" @click="downloadChrome"
+      >Télécharger chrome*</BaseButton
+    >
+    <p class="opacity-80 mt-2">
+      *Une version de
+      <WebLink
+        link="https://en.wikipedia.org/wiki/Chromium_(web_browser)"
+        text="google chromium"
+        class="font-bold"
+      />
+      sera téléchargé sur votre pc permettant le bon fonctionnement du
+      programme. Le téléchargement n'est pas obligatoire. Ce téléchargement
+      n'est recommandé que si vous ne possédez pas chrome sur votre ordinateur
+      ou que vous ne savez pas comment trouver chrome sur votre ordinateur.
+    </p>
     <div id="message" class="message">{{ state.message }}</div>
     <div class="text-red-500">{{ state.error }}</div>
   </Container>
@@ -29,6 +44,7 @@ import BaseButton from "../BaseButton.vue";
 import { defineProps, defineEmits } from "@vue/runtime-core";
 import { ipcRenderer } from "electron";
 import { reactive } from "vue";
+import WebLink from "../WebLink.vue";
 
 const props = defineProps<{
   path: string;
@@ -72,5 +88,9 @@ function checkPath(path: string) {
       state.timeout = null;
     }, 5000);
   }
+}
+
+function downloadChrome() {
+  ipcRenderer.send("downloadChrome");
 }
 </script>

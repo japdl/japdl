@@ -17,7 +17,7 @@
     <BaseButton class="mt-2" @click="checkPath(props.path)">
       Vérifier le chemin
     </BaseButton>
-    <BaseButton class="mt-2" @click="downloadChrome"
+    <!-- <BaseButton class="mt-2" @click="downloadChrome"
       >Télécharger chrome*</BaseButton
     >
     <p class="opacity-80 mt-2">
@@ -31,7 +31,7 @@
       programme. Le téléchargement n'est pas obligatoire. Ce téléchargement
       n'est recommandé que si vous ne possédez pas chrome sur votre ordinateur
       ou que vous ne savez pas comment trouver chrome sur votre ordinateur.
-    </p>
+    </p> -->
     <div id="message" class="message">{{ state.message }}</div>
     <div class="text-red-500">{{ state.error }}</div>
   </Container>

@@ -1,6 +1,6 @@
 {
   "name": "japdl",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "description": "Un programme pour télécharger les mangas de japscan en .cbr ou en images",
   "author": "Seysa <garion.g@hotmail.fr>",

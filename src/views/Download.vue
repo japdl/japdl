@@ -28,34 +28,38 @@
           </div>
         </div>
       </div>
-      <ChooseDownloadType @type="getType" />
-      <form
-        v-if="manga.type && !state.loading"
-        @submit.prevent="downloadSelected"
-      >
-        <ChooseRange
-          v-model:range="state.range"
-          :max="selectMax"
-          :type="manga.type"
-        />
-        <p class="error" v-if="isRangeInvalid">
-          Veuillez entrer un numéro de {{ manga.type }}
-        </p>
-        <ChooseOptions v-model:options="state.options" />
-        <p class="error" v-if="areOptionsInvalid">
-          Une option de type fichier ou l'option de téléchargement des images
-          doit être cochée pour procéder au téléchargement
-        </p>
-        <div id="buttonWrapper">
-          <BaseButton
-            id="downloadButton"
-            type="submit"
-            :disabled="isRangeInvalid || areOptionsInvalid"
+      <div class="flex gap-2 w-full">
+        <div id="enterInfos" class="flex flex-col w-full">
+          <ChooseDownloadType @type="getType" />
+          <form
+            v-if="manga.type && !state.loading"
+            @submit.prevent="downloadSelected"
           >
-            Télécharger
-          </BaseButton>
+            <ChooseRange
+              v-model:range="state.range"
+              :max="selectMax"
+              :type="manga.type"
+            />
+            <p class="error" v-if="isRangeInvalid">
+              Veuillez entrer un numéro de {{ manga.type }}
+            </p>
+            <ChooseOptions v-model:options="state.options" />
+            <p class="error" v-if="areOptionsInvalid">
+              Une option de type fichier ou l'option de téléchargement des
+              images doit être cochée pour procéder au téléchargement
+            </p>
+            <div id="buttonWrapper">
+              <BaseButton
+                id="downloadButton"
+                type="submit"
+                :disabled="isRangeInvalid || areOptionsInvalid"
+              >
+                Télécharger
+              </BaseButton>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <div v-else class="error">
@@ -78,6 +82,7 @@ import { LocationQuery } from "vue-router";
 import WebLink from "@/components/WebLink.vue";
 import { startLoading, stopLoading } from "@/utils/loadingState";
 import BaseButton from "@/components/BaseButton.vue";
+import MangaTree from "@/components/MangaTree/MangaTree.vue";
 
 const props = defineProps<{
   query?: LocationQuery;
@@ -87,7 +92,7 @@ const debug = inject("debug");
 
 const state = reactive({
   range: {} as { start?: number; end?: number },
-  options: {} as { compression: "cbr" | ""; images: boolean },
+  options: {} as { compression: "cbz" | ""; images: boolean },
   error: "" as string,
   loading: false as boolean,
   japscanInitiated: ipcRenderer.sendSync("readyStatus") as boolean,

@@ -5814,10 +5814,10 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-japscandl@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-3.0.0.tgz#d82af0c3cce3e91f64dfddb72a5e138e11456cdf"
-  integrity sha512-bTwvIozlPtqBlZSvYMuvXYZ28vr244wgmO7i344Cxid7o3QZbFWwVsrrW0XZsRufbtMJSzOy6HGK+TwvEGfPLg==
+japscandl@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-3.0.1.tgz#8356940cb58977dc1f7e980e1f5fe8b1493c061d"
+  integrity sha512-byg3a9X4lSUM8Paga1Zl6eVaVDZr+ykumim7KP5Euqs4STfziPMSPGxtPay6dt/LaPlfiUs31PLMU0HOAO1cdA==
   dependencies:
     archiver "^5.3.0"
     node-fetch "^2.6.1"

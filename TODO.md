@@ -1,5 +1,5 @@
 ## A faire
--Ajouter l'option flat cbr, (refaire options)
+-Ajouter l'option flat cbz, (refaire options)
 
 - Gerer le chemin chrome quand il est invalide et quand il est valide proposer le bouton de restart
 

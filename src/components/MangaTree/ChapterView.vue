@@ -14,8 +14,8 @@
     </p>
     <div v-if="clicked" class="mt-2 ml-4 p-2 rounded-md">
       <label class="block">
-        <input type="checkbox" v-model="options.cbr" />
-        <span>Créer un fichier CBR</span>
+        <input type="checkbox" v-model="options.cbz" />
+        <span>Créer un fichier CBZ</span>
       </label>
       <BaseButton>Télécharger</BaseButton>
     </div>
@@ -34,7 +34,7 @@ const props = defineProps<{
 const clicked = ref(false);
 
 const options = reactive({
-  cbr: false,
+  cbz: false,
 });
 </script>
 

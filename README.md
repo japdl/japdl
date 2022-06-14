@@ -1,5 +1,5 @@
 # Japdl
-Japdl est un programme pour télécharger les mangas de japscan. Ce programme permet de créer des fichiers [`.cbr`](https://fr.wikipedia.org/wiki/CBR_(format_de_fichier)) pouvant contenir les images de:
+Japdl est un programme pour télécharger les mangas de japscan. Ce programme permet de créer des fichiers [`.cbz`](https://fr.wikipedia.org/wiki/CBZ_(format_de_fichier)) pouvant contenir les images de:
 - Tout un volume
 - Plusieurs chapitres
 - Un chapitre

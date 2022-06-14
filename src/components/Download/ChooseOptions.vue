@@ -20,7 +20,7 @@
     </div>
   </Container>
   <span v-scroll-to class="text-gray-400 hover:text-current">
-    *format CBR: Toutes les images sont contenues dans un fichier unique.</span
+    *format CBZ: Toutes les images sont contenues dans un fichier unique.</span
   >
 </template>
 
@@ -34,16 +34,16 @@ import Container from "../Container.vue";
  * v-model.
  */
 defineProps<{
-  options: { compression: "cbr" | ""; images: boolean };
+  options: { compression: "cbz" | ""; images: boolean };
 }>();
 
 const zipOptions = [
   {
-    label: "Créer un fichier CBR*",
-    value: "cbr",
+    label: "Créer un fichier CBZ*",
+    value: "cbz",
   },
   {
-    label: "Ne pas créer de fichier CBR*",
+    label: "Ne pas créer de fichier CBZ*",
     value: "",
   },
 ];
@@ -51,12 +51,12 @@ const zipOptions = [
 const emit = defineEmits<{
   (
     event: "update:options",
-    param: { compression: "cbr" | ""; images: boolean }
+    param: { compression: "cbz" | ""; images: boolean }
   ): void;
 }>();
 
 const state = reactive({
-  compression: "" as "cbr" | "",
+  compression: "" as "cbz" | "",
   images: false,
 });
 

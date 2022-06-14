@@ -12,8 +12,8 @@
       <label>Créer un fichier PDF</label>
     </div>
     <div class="downloadOption">
-      <input type="radio" v-model="state.compression" value="cbr" />
-      <label>Créer un fichier CBR</label>
+      <input type="radio" v-model="state.compression" value="cbz" />
+      <label>Créer un fichier CBZ</label>
     </div>
   </div>
 </template>

@@ -28,11 +28,8 @@
           </div>
         </div>
       </div>
-      <div class="flex gap-2 w-full border border-red-500">
-        <div
-          id="enterInfos"
-          class="flex flex-col border border-blue-500 w-full"
-        >
+      <div class="flex gap-2 w-full">
+        <div id="enterInfos" class="flex flex-col w-full">
           <ChooseDownloadType @type="getType" />
           <form
             v-if="manga.type && !state.loading"
@@ -61,9 +58,6 @@
               </BaseButton>
             </div>
           </form>
-        </div>
-        <div id="displayInfos">
-          <MangaTree :manga="manga.japscanName" class="max-h-96 overflow-y-scroll" />
         </div>
       </div>
     </div>
@@ -98,7 +92,7 @@ const debug = inject("debug");
 
 const state = reactive({
   range: {} as { start?: number; end?: number },
-  options: {} as { compression: "cbr" | ""; images: boolean },
+  options: {} as { compression: "cbz" | ""; images: boolean },
   error: "" as string,
   loading: false as boolean,
   japscanInitiated: ipcRenderer.sendSync("readyStatus") as boolean,

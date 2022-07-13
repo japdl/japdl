@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain, IpcMainEvent } from "electron";
 import Config from "../handleConfig";
 import { setupListeners } from "./global";
+import { setupWebserver } from "./webserver";
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -29,6 +30,7 @@ const setupAllListeners = (
   return new Promise((resolve, reject) => {
     setupListeners(win);
     config.setupListeners(win);
+    setupWebserver(win, config);
     japscanInitiator()
       .then(() => {
         win.webContents.send("ready");

@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog } from "electron";
 import { downloadQueue } from "../downloadHandler";
 import { setupLogListener } from "./handler";
 import { getWindowFromEvent } from "./helper";
+import express from "express";
 
 export const setupListeners = (win: BrowserWindow): void => {
   setupLogListener("log");

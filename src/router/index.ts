@@ -48,6 +48,11 @@ const routes: Array<RouteRecordRaw> = [
     //alias: "Options",
     component: importView("options"),
   },
+  {
+    path: "/transfer",
+    name: "Transfer",
+    component: importView("transfer"),
+  },
 ];
 
 const router = createRouter({

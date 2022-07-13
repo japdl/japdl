@@ -7,7 +7,7 @@
       :key="route.name"
       :to="route.path"
       draggable="false"
-      class="h-full flex justify-center items-center mx-2 p-2 rounded-xl transition-all duration-200 w-full text-center min-w-max hover:text-primary"
+      class="h-full flex justify-center items-center mx-2 xl:px-1 py-2 rounded-xl transition-all duration-200 w-full text-center min-w-max hover:text-primary"
     >
       <span>{{ route.name }}</span>
     </router-link>
@@ -19,7 +19,7 @@ const routes = [
   { name: "Accueil", path: "/" },
   { name: "Télécharger un manga", path: "/download" },
   { name: "Mangas téléchargés", path: "/downloaded" },
-  /* { name: "Lire", path: "/reader" }, */
+  { name: "Transfert", path: "/transfer" },
   { name: "Options", path: "/options" },
 ];
 </script>

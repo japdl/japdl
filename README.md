@@ -11,6 +11,11 @@ Pour l'instant, il n'est pas possible de télécharger les webtoons quand toutes
 Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl-cli) ? Celui-ci est un programme avec une interface graphique au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
 
 ---
+# Discord
+
+Je suis disponible sur le serveur discord pour vos questions à l'adresse https://discord.gg/uUB5WbBceY.
+
+---
 # Téléchargement
 [Cliquez ici pour télécharger la dernière version](https://github.com/Seysa/japdl/releases "Dernière version")
 

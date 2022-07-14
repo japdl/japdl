@@ -1,10 +1,10 @@
 import { BrowserWindow } from "electron";
 import express from "express";
+import fs from "fs/promises";
+import { Server } from "http";
+import path from "path";
 import Config from "../handleConfig";
 import { setupLogListener } from "./handler";
-import fs from "fs/promises";
-import path from "path";
-import { Server } from "http";
 
 class HtmlFile {
   private PAGE = `<!DOCTYPE html>
@@ -59,8 +59,9 @@ function applyGet(outputDirectory: string) {
   });
 }
 
+export const PORT = 81818;
+
 export const setupWebserver = (win: BrowserWindow, config: Config): void => {
-  const PORT = 3000;
   const configData = config.getData();
   applyGet(configData.outputDirectory);
 

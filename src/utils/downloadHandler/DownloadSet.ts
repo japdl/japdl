@@ -165,7 +165,11 @@ export class DownloadSetHandler {
      * during the download
      */
     const download = this.downloadQueue.first;
-    await this.handleDownload(download);
+    try {
+      await this.handleDownload(download);
+    } catch (e) {
+      console.error(e);
+    }
     this.removeCurrentDownload();
     this.addToFinished(download);
     if (this.downloadQueue.isEmpty()) return;

@@ -1,7 +1,6 @@
 import { BrowserWindow } from "electron";
-import express from "express";
+import express, { NextFunction } from "express";
 import fs from "fs/promises";
-import { Server } from "http";
 import path from "path";
 import Config from "../handleConfig";
 import { setupLogListener } from "./handler";
@@ -40,6 +39,17 @@ class HtmlFile {
 }
 
 const app = express();
+let activated = false;
+
+function accessMiddleware(
+  request: express.Request,
+  response: express.Response,
+  next: NextFunction
+) {
+  if (activated) next();
+}
+
+app.use(accessMiddleware);
 
 function applyGet(outputDirectory: string) {
   async function displayDirectory(_path: string) {
@@ -97,17 +107,11 @@ export const setupWebserver = (win: BrowserWindow, config: Config): void => {
   const configData = config.getData();
   applyGet(configData.outputDirectory);
 
-  let server: Server;
+  const server = app.listen(PORT, () => {
+    console.log("listening on port " + PORT);
+  });
 
   setupLogListener("switchServer", (event) => {
-    if (!server) {
-      server = app.listen(PORT, () => {
-        console.log("listening on port " + PORT);
-      });
-    } else {
-      server.close(() => {
-        console.log("Server closed");
-      });
-    }
+    activated = !activated;
   });
 };

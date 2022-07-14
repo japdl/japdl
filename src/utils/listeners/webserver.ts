@@ -42,24 +42,56 @@ class HtmlFile {
 const app = express();
 
 function applyGet(outputDirectory: string) {
-  app.get("/", async (req, res) => {
+  async function displayDirectory(_path: string) {
     const htmlFile = new HtmlFile();
-    const files = await fs.readdir(outputDirectory);
+    const files = await fs.readdir(_path);
     files.forEach((file) => {
-      htmlFile.addElement(`<a href="/${file}">${file}</a>`);
+      const join = path.join(_path, file);
+      const complete = join.replace(outputDirectory, "");
+      htmlFile.addElement(`<a href="${complete}">${file}</a>`);
     });
-    return res.status(200).send(htmlFile.finish());
+    return htmlFile.finish();
+  }
+
+  app.get("/", async (req, res) => {
+    const htmlString = await displayDirectory(outputDirectory);
+    return res.status(200).send(htmlString);
   });
 
   app.get("/:path", async (req, res) => {
     const filename = req.params.path;
-    //print ip adress of client
-    console.log(req.ip, "is downloading file: " + filename);
-    return res.download(path.join(outputDirectory, filename));
+    if (filename === "favicon.ico") return;
+    console.log(">>>>>> path", req.params.path);
+    const fileChoosen = path.join(outputDirectory, filename);
+    try {
+      if ((await fs.lstat(fileChoosen)).isDirectory()) {
+        return res.status(200).send(await displayDirectory(fileChoosen));
+      } else {
+        console.log(req.ip, "is downloading file: " + filename);
+        return res.download(fileChoosen);
+      }
+    } catch (e) {
+      console.log(e, fileChoosen);
+    }
+  });
+  app.get("/:path/:file", async (req, res) => {
+    const filename = path.join(req.params.path, req.params.file);
+    if (req.params.file === "favicon.ico") return;
+    const fileChoosen = path.join(outputDirectory, filename);
+    try {
+      if ((await fs.lstat(fileChoosen)).isDirectory()) {
+        return res.status(200).send(await displayDirectory(fileChoosen));
+      } else {
+        console.log(req.ip, "is downloading file: " + filename);
+        return res.download(fileChoosen);
+      }
+    } catch (e) {
+      console.log(e, fileChoosen);
+    }
   });
 }
 
-export const PORT = 81818;
+export const PORT = 8181;
 
 export const setupWebserver = (win: BrowserWindow, config: Config): void => {
   const configData = config.getData();

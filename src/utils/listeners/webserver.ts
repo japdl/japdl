@@ -47,6 +47,7 @@ function accessMiddleware(
   next: NextFunction
 ) {
   if (activated) next();
+  else response.sendStatus(403);
 }
 
 app.use(accessMiddleware);
@@ -111,7 +112,11 @@ export const setupWebserver = (win: BrowserWindow, config: Config): void => {
     console.log("listening on port " + PORT);
   });
 
+  setupLogListener("serverStatus", (event) => {
+    event.returnValue = activated;
+  });
+
   setupLogListener("switchServer", (event) => {
-    activated = !activated;
+    event.returnValue = activated = !activated;
   });
 };

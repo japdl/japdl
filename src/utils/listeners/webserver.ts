@@ -47,7 +47,7 @@ function accessMiddleware(
   next: NextFunction
 ) {
   if (activated) next();
-  else response.sendStatus(403);
+  else response.status(403).send("Le transfert est désactivé");
 }
 
 app.use(accessMiddleware);
@@ -56,6 +56,13 @@ function applyGet(outputDirectory: string) {
   async function displayDirectory(_path: string) {
     const htmlFile = new HtmlFile();
     const files = await fs.readdir(_path);
+    // this is used to sort by alphanumerical order instead of the random javascript order
+    files.sort(
+      new Intl.Collator(undefined, {
+        numeric: true,
+        sensitivity: "base",
+      }).compare
+    );
     files.forEach((file) => {
       const join = path.join(_path, file);
       const complete = join.replace(outputDirectory, "");
@@ -69,36 +76,46 @@ function applyGet(outputDirectory: string) {
     return res.status(200).send(htmlString);
   });
 
+  async function handleFileRequest(
+    //@ts-expect-error express type
+    req: Request<any, any, QueryString.ParsedQs, Record<string, any>>,
+    //@ts-expect-error express type
+    res: Response<any, Record<string, any>, number>,
+    filename: string
+  ) {
+    try {
+      if ((await fs.lstat(filename)).isDirectory()) {
+        return res.status(200).send(await displayDirectory(filename));
+      } else {
+        console.log(req.ip, "is downloading file: " + filename);
+        return res.download(filename);
+      }
+    } catch (e) {
+      console.log(e, filename);
+    }
+  }
+
   app.get("/:path", async (req, res) => {
     const filename = req.params.path;
     if (filename === "favicon.ico") return;
-    console.log(">>>>>> path", req.params.path);
     const fileChoosen = path.join(outputDirectory, filename);
-    try {
-      if ((await fs.lstat(fileChoosen)).isDirectory()) {
-        return res.status(200).send(await displayDirectory(fileChoosen));
-      } else {
-        console.log(req.ip, "is downloading file: " + filename);
-        return res.download(fileChoosen);
-      }
-    } catch (e) {
-      console.log(e, fileChoosen);
-    }
+    handleFileRequest(req, res, fileChoosen);
   });
   app.get("/:path/:file", async (req, res) => {
     const filename = path.join(req.params.path, req.params.file);
     if (req.params.file === "favicon.ico") return;
     const fileChoosen = path.join(outputDirectory, filename);
-    try {
-      if ((await fs.lstat(fileChoosen)).isDirectory()) {
-        return res.status(200).send(await displayDirectory(fileChoosen));
-      } else {
-        console.log(req.ip, "is downloading file: " + filename);
-        return res.download(fileChoosen);
-      }
-    } catch (e) {
-      console.log(e, fileChoosen);
-    }
+    handleFileRequest(req, res, fileChoosen);
+  });
+  app.get("/:path/:directory/:file", async (req, res) => {
+    const filename = path.join(
+      req.params.path,
+      req.params.directory,
+      req.params.file
+    );
+    if (req.params.file === "favicon.ico") return;
+    const fileChoosen = path.join(outputDirectory, filename);
+    handleFileRequest(req, res, fileChoosen);
   });
 }
 

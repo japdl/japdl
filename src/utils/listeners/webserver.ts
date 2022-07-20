@@ -125,7 +125,7 @@ export const setupWebserver = (win: BrowserWindow, config: Config): void => {
   const configData = config.getData();
   applyGet(configData.outputDirectory);
 
-  const server = app.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log("listening on port " + PORT);
   });
 

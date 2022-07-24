@@ -1,6 +1,5 @@
 import { BrowserWindow } from "electron";
 import express, { NextFunction } from "express";
-import fsp from "fs/promises";
 import fs from "fs";
 import path from "path";
 import Config from "../handleConfig";
@@ -54,9 +53,9 @@ function accessMiddleware(
 app.use(accessMiddleware);
 
 function applyGet(outputDirectory: string) {
-  async function displayDirectory(_path: string) {
+  function displayDirectory(_path: string) {
     const htmlFile = new HtmlFile();
-    const files = await fsp.readdir(_path);
+    const files = fs.readdirSync(_path);
     // this is used to sort by alphanumerical order instead of the random javascript order
     files.sort(
       new Intl.Collator(undefined, {
@@ -75,12 +74,12 @@ function applyGet(outputDirectory: string) {
     return htmlFile.finish();
   }
 
-  app.get("/", async (req, res) => {
-    const htmlString = await displayDirectory(outputDirectory);
+  app.get("/", (req, res) => {
+    const htmlString = displayDirectory(outputDirectory);
     return res.status(200).send(htmlString);
   });
 
-  async function handleFileRequest(
+  function handleFileRequest(
     //@ts-expect-error express type
     req: Request<any, any, QueryString.ParsedQs, Record<string, any>>,
     //@ts-expect-error express type
@@ -88,8 +87,8 @@ function applyGet(outputDirectory: string) {
     filename: string
   ) {
     try {
-      if ((await fsp.lstat(filename)).isDirectory()) {
-        return res.status(200).send(await displayDirectory(filename));
+      if (fs.lstatSync(filename).isDirectory()) {
+        return res.status(200).send(displayDirectory(filename));
       } else {
         console.log(req.ip, "is downloading file: " + filename);
         return res.download(filename);
@@ -99,19 +98,19 @@ function applyGet(outputDirectory: string) {
     }
   }
 
-  app.get("/:path", async (req, res) => {
+  app.get("/:path", (req, res) => {
     const filename = req.params.path;
     if (filename === "favicon.ico") return;
     const fileChoosen = path.join(outputDirectory, filename);
     handleFileRequest(req, res, fileChoosen);
   });
-  app.get("/:path/:file", async (req, res) => {
+  app.get("/:path/:file", (req, res) => {
     const filename = path.join(req.params.path, req.params.file);
     if (req.params.file === "favicon.ico") return;
     const fileChoosen = path.join(outputDirectory, filename);
     handleFileRequest(req, res, fileChoosen);
   });
-  app.get("/:path/:directory/:file", async (req, res) => {
+  app.get("/:path/:directory/:file", (req, res) => {
     const filename = path.join(
       req.params.path,
       req.params.directory,

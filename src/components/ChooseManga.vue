@@ -1,6 +1,5 @@
 <template>
   <Container class="flex justify-center items-center flex-col">
-    <!-- Make a form containing an input, a submit button and a close button to clear results-->
     <form @submit.prevent="search" class="p-4 flex">
       <input
         type="search"
@@ -11,6 +10,7 @@
       />
       <BaseButton type="submit">Rechercher</BaseButton>
     </form>
+    <BaseButton @click="directSearch">Aller directement</BaseButton>
     <div id="suggestion">
       <Manga
         v-for="result in state.results"
@@ -36,7 +36,7 @@ import { startLoading, stopLoading } from "@/utils/loadingState";
 import BaseButton from "./BaseButton.vue";
 
 const emit = defineEmits<{
-  (event: "manga", manga: SearchInfos): void;
+  (event: "manga", manga: string): void;
 }>();
 
 const state = reactive({
@@ -55,7 +55,7 @@ function submitResult(result: SearchInfos) {
   // reset values
   state.results = [];
   mangaName.value = "";
-  emit("manga", result);
+  emit("manga", result.japscan);
 }
 
 function search() {
@@ -81,6 +81,10 @@ function search() {
       state.errors.push("La recherche n'a donné aucun résultat");
     }
   });
+}
+
+function directSearch() {
+  emit("manga", mangaName.value.trim().toLowerCase());
 }
 </script>
 

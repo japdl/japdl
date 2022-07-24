@@ -4,7 +4,11 @@
       <DebugVariables header="state" :state="state" />
       <DebugVariables header="manga" :state="manga" />
     </div>
-    <ChooseManga @manga="getMangaInfos($event.japscan)" />
+    <!-- <h1>Chercher un manga</h1> -->
+    <ChooseManga class="mb-2" @manga="getMangaInfos" />
+    <!-- <h1>Aller directement au manga</h1>
+    <ChooseMangaName @manga="getMangaInfos" /> -->
+    <p class="error">{{ state.error }}</p>
     <div id="afterMangaChoosen" class="p-6" v-if="manga.name && !state.loading">
       <div id="topView" class="flex gap-6 flex-wrap">
         <MangaImage :manga="manga.japscanName" class="mx-auto rounded" />
@@ -71,18 +75,19 @@
 <script lang="ts" setup>
 import { computed, reactive } from "vue";
 import ChooseManga from "@/components/ChooseManga.vue";
-import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
-import { ipcRenderer } from "electron";
-import ChooseRange from "@/components/Download/ChooseRange.vue";
-import ChooseOptions from "@/components/Download/ChooseOptions.vue";
+import ChooseMangaName from "@/components/ChooseMangaName.vue";
 import DebugVariables from "@/components/DebugVariables.vue";
 import MangaImage from "@/components/MangaImage.vue";
+import WebLink from "@/components/WebLink.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
+import ChooseRange from "@/components/Download/ChooseRange.vue";
+import ChooseOptions from "@/components/Download/ChooseOptions.vue";
+import MangaTree from "@/components/MangaTree/MangaTree.vue";
+import { ipcRenderer } from "electron";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
-import WebLink from "@/components/WebLink.vue";
 import { startLoading, stopLoading } from "@/utils/loadingState";
-import BaseButton from "@/components/BaseButton.vue";
-import MangaTree from "@/components/MangaTree/MangaTree.vue";
 
 const props = defineProps<{
   query?: LocationQuery;
@@ -101,10 +106,10 @@ const state = reactive({
 const manga = reactive({
   name: "" as string,
   japscanName: "" as string,
+  synopsis: "" as string,
+  type: "" as string,
   volumes: null as null | number,
   chapters: null as null | number,
-  type: "" as string,
-  synopsis: "" as string,
 });
 
 const isRangeInvalid = computed(() => {
@@ -120,6 +125,11 @@ const areOptionsInvalid = computed(() => {
   return state.options.compression === "" && !state.options.images;
 });
 
+function resetInfos(): void {
+  manga.type = manga.synopsis = manga.name = manga.japscanName = "";
+  manga.volumes = manga.chapters = null;
+}
+
 function downloadSelected(): void {
   const toSend = {
     type: manga.type,
@@ -134,8 +144,7 @@ function downloadSelected(): void {
 }
 function getMangaInfos(mangaName: string) {
   // reset last manga's infos
-  manga.type = "";
-  manga.volumes = manga.chapters = null;
+  resetInfos();
   console.log("Nom du manga: ", mangaName);
   state.loading = true;
   startLoading();
@@ -147,6 +156,8 @@ function getMangaInfos(mangaName: string) {
       manga.volumes = infos.volumes;
       manga.chapters = infos.chapters;
       manga.synopsis = infos.synopsis;
+    } else {
+      state.error = "Ce manga n'a pas été trouvé";
     }
     state.loading = false;
     stopLoading();

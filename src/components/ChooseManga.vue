@@ -11,6 +11,22 @@
       <BaseButton type="submit">Rechercher</BaseButton>
     </form>
     <BaseButton @click="directSearch">Aller directement</BaseButton>
+    <div
+      v-if="state.results.length === 0"
+      class="mt-2 max-w-lg flex flex-col gap-1"
+    >
+      <p>
+        Pour aller directement au manga, il faut entrer le nom du manga comme
+        dans le lien du manga sur japscan. Par exemple, One Piece sur japscan
+        est sur la page https://japscan.me/manga/<span class="font-bold"
+          >one-piece</span
+        >.
+      </p>
+      <p>
+        Il faut donc entrer <span class="font-bold">one-piece</span> dans la
+        recherche et cliquer sur le bouton "Aller directement".
+      </p>
+    </div>
     <div id="suggestion">
       <Manga
         v-for="result in state.results"

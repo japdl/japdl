@@ -1,6 +1,7 @@
 import { BrowserWindow } from "electron";
 import express, { NextFunction } from "express";
-import fs from "fs/promises";
+import fsp from "fs/promises";
+import fs from "fs";
 import path from "path";
 import Config from "../handleConfig";
 import { setupLogListener } from "./handler";
@@ -55,7 +56,7 @@ app.use(accessMiddleware);
 function applyGet(outputDirectory: string) {
   async function displayDirectory(_path: string) {
     const htmlFile = new HtmlFile();
-    const files = await fs.readdir(_path);
+    const files = await fsp.readdir(_path);
     // this is used to sort by alphanumerical order instead of the random javascript order
     files.sort(
       new Intl.Collator(undefined, {
@@ -66,6 +67,9 @@ function applyGet(outputDirectory: string) {
     files.forEach((file) => {
       const join = path.join(_path, file);
       const complete = join.replace(outputDirectory, "");
+      if (fs.lstatSync(join).isDirectory()) {
+        file += "/";
+      }
       htmlFile.addElement(`<a href="${complete}">${file}</a>`);
     });
     return htmlFile.finish();
@@ -84,7 +88,7 @@ function applyGet(outputDirectory: string) {
     filename: string
   ) {
     try {
-      if ((await fs.lstat(filename)).isDirectory()) {
+      if ((await fsp.lstat(filename)).isDirectory()) {
         return res.status(200).send(await displayDirectory(filename));
       } else {
         console.log(req.ip, "is downloading file: " + filename);

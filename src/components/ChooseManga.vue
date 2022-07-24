@@ -84,6 +84,7 @@ function search() {
 }
 
 function directSearch() {
+  state.errors.length = 0;
   emit("manga", mangaName.value.trim().toLowerCase());
 }
 </script>

@@ -1,16 +1,17 @@
 <template>
-  <span class="px-2 py-1 rounded bg-dark-primary">{{ props.name }}</span>
-  <span class="px-2 py-1 rounded bg-dark-background bg-white">{{
-    buildAddress(props.address)
-  }}</span>
+  <span class="px-2 py-1 rounded bg-container text-xl">{{ props.name }}</span>
+  <span
+    class="px-2 py-1 rounded bg-container bg-white flex justify-center items-center"
+    >{{ buildAddress(props.address) }}</span
+  >
   <button
-    class="px-2 py-1 bg-dark-primary rounded"
+    class="px-2 py-1 bg-dark-primary rounded hover:underline text-white"
     @click="copyToClipboard(props.address)"
   >
     Copier
   </button>
   <WebLink
-    class="px-2 py-1 bg-dark-primary rounded"
+    class="px-2 py-1 bg-dark-primary rounded text-white flex items-center"
     :link="`http://${buildAddress(props.address)}`"
     text="Voir"
   />

@@ -4,7 +4,9 @@ import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 import { setupJapscandlListeners } from "@/utils/listeners/japscan";
 import Config from "@/utils/handleConfig";
 import listenersHandler, { setupLogListener } from "./utils/listeners/handler";
+import contextMenu from "electron-context-menu";
 import yargs from "yargs";
+
 const argv = yargs.option("debug", {
   alias: "d",
   boolean: true,
@@ -30,6 +32,16 @@ if (!argv.debug) {
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
+
+contextMenu({
+  showInspectElement: argv.debug,
+  showSearchWithGoogle: false,
+  labels: {
+    copy: "Copier",
+    cut: "Couper",
+    paste: "Coller",
+  },
+});
 
 async function createWindow() {
   // Create the browser window.

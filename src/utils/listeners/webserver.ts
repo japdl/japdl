@@ -7,17 +7,19 @@ import { setupLogListener } from "./handler";
 
 class HtmlFile {
   private PAGE = `<!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Manga Download</title>
-    </head>
-    <body>
+<html lang="fr">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Manga Download</title>
+  </head>
+  <body>
+    <ul>
       $
-    </body>
-    </html>`;
+    </ul>
+  </body>
+</html>`;
   private elements: string[];
   private finished: boolean;
   constructor() {
@@ -33,7 +35,7 @@ class HtmlFile {
     if (!this.finished) {
       this.finished = true;
     }
-    const allElements = this.elements.join("<br><br>\n");
+    const allElements = this.elements.join("<br>\n");
     return this.PAGE.replace("$", allElements);
   }
 }
@@ -69,7 +71,7 @@ function applyGet(outputDirectory: string) {
       if (fs.lstatSync(join).isDirectory()) {
         file += "/";
       }
-      htmlFile.addElement(`<a href="${complete}">${file}</a>`);
+      htmlFile.addElement(`<li><a href="${complete}">${file}</a></li>`);
     });
     return htmlFile.finish();
   }

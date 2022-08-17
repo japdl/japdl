@@ -528,6 +528,13 @@
   resolved "https://registry.npmjs.org/@types/q/-/q-1.5.5.tgz"
   integrity sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==
 
+"@types/qrcode@^1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@types/qrcode/-/qrcode-1.4.3.tgz#f456303a42cb227ee0ab6d80f0790e8804976024"
+  integrity sha512-Kg3+t/609IWo7ufK+NQ3sm7ulZacK5PgxEHuvbU7zRw4i6aRj3aBqIIOw8ukFsrUWMHUxDRmgcoVumQ0szjyDA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/qs@*":
   version "6.9.7"
   resolved "https://registry.npmjs.org/@types/qs/-/qs-6.9.7.tgz"

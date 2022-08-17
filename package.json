@@ -41,6 +41,7 @@
     "@types/node-fetch": "^2.5.10",
     "@types/puppeteer": "^5.4.3",
     "@types/puppeteer-core": "^5.4.0",
+    "@types/qrcode": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

@@ -2,7 +2,7 @@
   <h1 v-if="error">
     Une erreur est survenue lors de la création du QR code: {{ error }}
   </h1>
-  <canvas v-else class="rounded-2xl" ref="canvas"></canvas>
+  <canvas v-else class="rounded" ref="canvas"></canvas>
 </template>
 
 <script lang="ts" setup>

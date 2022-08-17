@@ -25,6 +25,7 @@
     "express": "^4.18.1",
     "japscandl": "^3.0.3",
     "postcss": "^7",
+    "qrcode": "^1.5.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "typeface-roboto": "^1.1.13",
     "unlazy-loader": "^0.1.3",

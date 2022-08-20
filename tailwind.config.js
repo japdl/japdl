@@ -8,6 +8,8 @@ module.exports = {
         "dark-primary": "var(--dark-primary)",
         "dark-background": "var(--dark-background)",
         "light-background": "var(--light-background)",
+        theme: "var(--reverse-color)",
+        "reverse-theme": "var(--text-color)",
         container: "var(--container)",
       },
       fontFamily: {

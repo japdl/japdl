@@ -1,7 +1,7 @@
 <template>
   <div id="network" class="flex justify-center items-center gap-2 p-2">
     <div class="flex flex-col gap-1">
-      <span class="px-2 py-1 rounded bg-container text-xl">{{
+      <span class="px-2 py-1 rounded bg-container text-xl text-center">{{
         props.name
       }}</span>
       <span
@@ -37,7 +37,7 @@ const props = defineProps<{
 
 const fullAddress = computed(() => buildAddress(props.address));
 
-const webAddress = computed(() => `http://${fullAddress}`);
+const webAddress = computed(() => `http://${fullAddress.value}`);
 
 function buildAddress(address: string) {
   return `${address}:${PORT}`;

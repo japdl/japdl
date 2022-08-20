@@ -5,7 +5,11 @@
         props.name
       }}</span>
       <span
-        class="px-2 py-1 rounded bg-container bg-white flex justify-center items-center"
+        class="px-2 py-1 rounded flex justify-center items-center transition-colors"
+        :class="{
+          'bg-container': !lightUpAddress,
+          'bg-reverse-theme text-theme': lightUpAddress,
+        }"
         >{{ fullAddress }}</span
       >
       <WebLink
@@ -26,6 +30,7 @@ import { computed, defineProps } from "@vue/runtime-core";
 const props = defineProps<{
   name: string;
   address: string;
+  lightUpAddress?: boolean;
 }>();
 
 const fullAddress = computed(() => buildAddress(props.address));

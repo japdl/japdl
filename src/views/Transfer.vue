@@ -14,8 +14,14 @@
         Activez le transfert en cliquant sur le bouton "Transfert désactivé"
       </p>
       <p>
-        Ouvrez l'adresse indiquée dans le navigateur de votre appareil ou
-        scannez le QR code
+        Ouvrez
+        <span
+          class="underline text-blue-500 hover:text-blue-600 cursor-default transition-colors"
+          @mouseenter="lightenUp = true"
+          @mouseleave="lightenUp = false"
+          >l'adresse indiquée</span
+        >
+        dans le navigateur de votre appareil ou scannez le QR code
       </p>
       <p>
         Choisissez le manga ainsi que le fichier à télécharger en cliquant
@@ -30,8 +36,8 @@
       @click="switchTransfer"
       class="p-2 mt-6 mb-3 rounded bg-opacity-70 text-center transition-colors text-white"
       :class="{
-        'bg-red-500 hover:bg-red-700': !opened,
-        'bg-green-500 hover:bg-green-700 ': opened,
+        'bg-dark-primary hover:bg-primary': !opened,
+        'bg-green-700 hover:bg-green-500 ': opened,
       }"
     >
       Transfert {{ openedText }}
@@ -44,7 +50,11 @@
     </div>
     <div v-else>
       <div v-for="(net, key) in network" :key="key" class="flex gap-1">
-        <NetworkAddress :name="key" :address="net[0]" />
+        <NetworkAddress
+          :lightUpAddress="lightenUp"
+          :name="key"
+          :address="net[0]"
+        />
       </div>
     </div>
     <BaseButton @click="refreshNetwork">Actualiser</BaseButton>
@@ -57,6 +67,8 @@ import BaseButton from "@/components/BaseButton.vue";
 import NetworkAddress from "@/components/Transfer/NetworkAddress.vue";
 import { getNetwork } from "@/utils/network";
 import { ipcRenderer } from "electron";
+
+const lightenUp = ref(false);
 
 const network = ref(getNetwork());
 

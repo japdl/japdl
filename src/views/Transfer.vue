@@ -8,14 +8,17 @@
       </h2>
       <p>
         Vérifiez tout d'abord que votre ordinateur et l'autre appareil sont
-        connectés sur le même réseau (wifi, ethernet).
+        connectés sur le même réseau (wifi, ethernet)
       </p>
       <p>
         Activez le transfert en cliquant sur le bouton "Transfert désactivé"
       </p>
       <p>
-        Ouvrez l'adresse indiquée dans le navigateur de votre appareil puis
-        choisissez le manga ainsi que le fichier à télécharger en cliquant
+        Ouvrez l'adresse indiquée dans le navigateur de votre appareil ou
+        scannez le QR code
+      </p>
+      <p>
+        Choisissez le manga ainsi que le fichier à télécharger en cliquant
         dessus
       </p>
       <p>
@@ -25,7 +28,7 @@
 
     <button
       @click="switchTransfer"
-      class="p-2 rounded bg-opacity-70 text-center transition-colors text-white"
+      class="p-2 mt-6 mb-3 rounded bg-opacity-70 text-center transition-colors text-white"
       :class="{
         'bg-red-500 hover:bg-red-700': !opened,
         'bg-green-500 hover:bg-green-700 ': opened,

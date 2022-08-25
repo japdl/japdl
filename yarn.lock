@@ -5981,10 +5981,10 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-japscandl@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-3.0.3.tgz#0260f93e7075acb5c66d6717701222f4440831b3"
-  integrity sha512-C3pLRg5vaum8/1HhpypZWl1ZRxqTvs2iVlE7Zc+VaxEIBaMbP5WrcvEgTLISVFnFkAn60UNACsXlPVw9mynrQg==
+japscandl@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-3.1.0.tgz#1d096cfb72d811b59052b3a781bf832396612195"
+  integrity sha512-G8ElcS0J+cebhhachw/0X4JSg0o/8gAlgzygU9LbRMtBcLAfSFr0DN4iivZbBOIpIfkjPuN3DsqwVX4v3XOglg==
   dependencies:
     archiver "^5.3.0"
     node-fetch "^2.6.1"

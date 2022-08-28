@@ -6,6 +6,10 @@ import puppeteer from "puppeteer-core";
 import downloadHandler from "../downloadHandler";
 import MangaAttributes from "japscandl/js/src/MangaAttributes";
 
+ipcMain.on("website", (event) => {
+  event.returnValue = "https://japscan.me";
+});
+
 export async function setupJapscandlListeners(
   options: {
     chromePath?: string;
@@ -71,6 +75,8 @@ export async function setupJapscandlListeners(
             event.reply("searchResult", { results, value: data.value });
           }
         });
+
+        ipcMain.removeAllListeners("website");
 
         ipcMain.on("website", (event) => {
           event.returnValue = downloader.website;

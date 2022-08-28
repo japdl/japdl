@@ -72,6 +72,10 @@ export async function setupJapscandlListeners(
           }
         });
 
+        ipcMain.on("website", (event) => {
+          event.returnValue = downloader.website;
+        });
+
         resolve(downloader);
       })
       .catch((error) => reject(error));

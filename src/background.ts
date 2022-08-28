@@ -69,17 +69,21 @@ async function createWindow() {
     console.log("Config data:", config.getData());
     const { imageFormat, chromePath, outputDirectory } = config.getData();
     await listenersHandler(win, config, async () => {
-      setupJapscandlListeners(
-        {
-          imageFormat,
-          chromePath,
-          outputDirectory,
-        },
-        win
-      );
+      try {
+        await setupJapscandlListeners(
+          {
+            imageFormat,
+            chromePath,
+            outputDirectory,
+          },
+          win
+        );
+        ready = true;
+      } catch (e) {
+        ready = false;
+      }
     });
-    console.log("App is ready");
-    ready = true;
+    console.log("App is ready:", ready);
   } catch (e) {
     console.error("Error in config:", e);
   }

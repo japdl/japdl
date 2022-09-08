@@ -35,6 +35,7 @@ const handleChaptersDownload = async (
   await downloader.downloadChapters(manga, start, end, {
     compression,
     deleteAfterCompression,
+    compressAsOne: true,
     callback: (events) => {
       events.on("start", (manga, links) => {
         download.current = 0;

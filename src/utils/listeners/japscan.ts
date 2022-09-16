@@ -1,10 +1,10 @@
-import { Downloader } from "japscandl";
-import path from "path";
 import { BrowserWindow, ipcMain, shell } from "electron";
+import { Downloader } from "japscandl";
+import MangaAttributes from "japscandl/js/src/MangaAttributes";
 import { ComponentFlags } from "japscandl/js/src/utils/types";
+import path from "path";
 import puppeteer from "puppeteer-core";
 import downloadHandler from "../downloadHandler";
-import MangaAttributes from "japscandl/js/src/MangaAttributes";
 
 ipcMain.on("website", (event) => {
   event.returnValue = "https://japscan.me";

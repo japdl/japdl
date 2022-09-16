@@ -1,11 +1,11 @@
-import { app, protocol, BrowserWindow } from "electron";
-import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
-import { setupJapscandlListeners } from "@/utils/listeners/japscan";
 import Config from "@/utils/handleConfig";
-import listenersHandler, { setupLogListener } from "./utils/listeners/handler";
+import { setupJapscandlListeners } from "@/utils/listeners/japscan";
+import { app, BrowserWindow, protocol } from "electron";
 import contextMenu from "electron-context-menu";
+import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import yargs from "yargs";
+import listenersHandler, { setupLogListener } from "./utils/listeners/handler";
 
 const argv = yargs.option("debug", {
   alias: "d",
@@ -75,6 +75,9 @@ async function createWindow() {
             imageFormat,
             chromePath,
             outputDirectory,
+            flags: {
+              fast: true,
+            },
           },
           win
         );

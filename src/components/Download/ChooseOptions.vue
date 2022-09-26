@@ -56,7 +56,7 @@ const emit = defineEmits<{
 }>();
 
 const state = reactive({
-  compression: "" as "cbz" | "",
+  compression: "cbz" as "cbz" | "",
   images: false,
 });
 

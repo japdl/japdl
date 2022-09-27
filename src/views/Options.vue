@@ -4,6 +4,10 @@
     <ChooseImageFormat v-model:format="state.options.imageFormat" />
     <ChooseChromePath v-model:path="state.options.chromePath" />
     <ChooseDownloadDirectory v-model:path="state.options.outputDirectory" />
+    <h2 class="text-xl text-center underline opacity-80 font-bold">
+      Tout changement des options est appliqué au prochain démarrage de
+      l'application
+    </h2>
     <BaseButton class="text-2xl" @click="setData">
       Sauvegarder les modifications
     </BaseButton>

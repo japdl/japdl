@@ -16,7 +16,6 @@ nsis:
 
 # Linux configuration
 linux:
-  icon: "./src/assets/logo/large.ico"
   category: Utility
   target:
     - "AppImage"

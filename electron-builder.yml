@@ -2,6 +2,11 @@ publish:
     provider: 'github'
     releaseType: 'release'
 
+# Config for mac
+mac:
+  target:
+    - "default"
+
 # Windows configuration
 win:
   icon: "./src/assets/logo/large.ico"
@@ -20,12 +25,4 @@ linux:
   target:
     - "AppImage"
     - "deb"
-    - "rpm"
     - "zip"
-
-mac:
-  icon: "./src/assets/logo/large.ico"
-  category: public.app-category.utilities
-  target:
-    - "zip"
-    - "dmg"

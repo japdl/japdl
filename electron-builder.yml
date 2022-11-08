@@ -16,9 +16,17 @@ nsis:
 
 # Linux configuration
 linux:
+  icon: "./src/assets/logo/large.ico"
   category: Utility
   target:
     - "AppImage"
     - "deb"
     - "rpm"
     - "zip"
+
+mac:
+  icon: "./src/assets/logo/large.ico"
+  category: public.app-category.utilities
+  target:
+    - "zip"
+    - "dmg"

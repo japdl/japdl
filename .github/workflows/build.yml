@@ -11,16 +11,11 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
-
-      - name: "Install Python2 for mac"
-        uses: actions/setup-python@v4
-        with:
-          python-version: '2.7'
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1

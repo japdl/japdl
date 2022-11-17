@@ -2,11 +2,6 @@ publish:
     provider: 'github'
     releaseType: 'release'
 
-# Config for mac
-mac:
-  target:
-    - "default"
-
 # Windows configuration
 win:
   icon: "./src/assets/logo/large.ico"

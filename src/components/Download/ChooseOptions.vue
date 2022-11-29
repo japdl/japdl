@@ -4,17 +4,6 @@
     header="Options de téléchargement"
   >
     <div id="download-options" class="flex flex-col">
-      <div>
-        <label class="block">
-          <input type="radio" v-model="state.asOne" value="" />
-          Créer un fichier par chapitre</label
-        >
-        <label class="block">
-          <input type="radio" v-model="state.asOne" value="asOne" />
-          Créer un seul fichier regroupant tous les chapitres</label
-        >
-      </div>
-
       <label class="block">
         <input type="checkbox" v-model="state.images" value="images" />
         Conserver les images dans un dossier</label
@@ -27,6 +16,19 @@
         />
         {{ zipOption.label }}</label
       >
+      <div v-if="range && state.compression" class="mt-2">
+        <h3 class="text-xl font-bold mb-2">
+          Option spécifique au téléchargement de plusieurs chapitres
+        </h3>
+        <label class="block">
+          <input type="radio" v-model="state.asOne" value="" />
+          Créer un fichier par chapitre</label
+        >
+        <label class="block">
+          <input type="radio" v-model="state.asOne" value="asOne" />
+          Créer un seul fichier regroupant tous les chapitres</label
+        >
+      </div>
     </div>
   </Container>
   <span v-scroll-to class="text-gray-400 hover:text-current">
@@ -67,7 +69,7 @@ const emit = defineEmits<{
 const state = reactive({
   compression: "cbz" as "cbz" | "",
   images: false,
-  asOne: "" as "asOne" | "",
+  asOne: "asOne" as "asOne" | "",
 });
 
 onMounted(() => {
@@ -84,6 +86,7 @@ watch(
     emit("update:options", {
       compression: newCompression,
       images: state.images,
+      asOne: state.asOne === "asOne",
     });
   }
 );
@@ -94,6 +97,17 @@ watch(
     emit("update:options", {
       compression: state.compression,
       images: newImage,
+      asOne: state.asOne === "asOne",
+    });
+  }
+);
+watch(
+  () => state.asOne,
+  (newAsOne) => {
+    emit("update:options", {
+      compression: state.compression,
+      images: state.images,
+      asOne: newAsOne === "asOne",
     });
   }
 );

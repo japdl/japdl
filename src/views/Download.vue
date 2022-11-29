@@ -47,7 +47,13 @@
             <p class="error" v-if="isRangeInvalid">
               Veuillez entrer un numéro de {{ manga.type }}
             </p>
-            <ChooseOptions :range="!!(state.range.end && state.range.start)" v-model:options="state.options" />
+            <ChooseOptions
+              :range="
+                !!(state.range.end && state.range.start) &&
+                manga.type === 'chapitre'
+              "
+              v-model:options="state.options"
+            />
             <p class="error" v-if="areOptionsInvalid">
               Une option de type fichier ou l'option de téléchargement des
               images doit être cochée pour procéder au téléchargement
@@ -82,7 +88,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
-import {DownloadOptions } from "@/utils/types";
+import { DownloadOptions } from "@/utils/types";
 import { ipcRenderer } from "electron";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
@@ -137,7 +143,7 @@ function downloadSelected(): void {
     end: state.range.end,
     compression: !!state.options.compression,
     keepImages: state.options.images,
-    asOne: state.options.asOne
+    asOne: state.options.asOne,
   };
   console.log("Sending", toSend);
   ipcRenderer.send("download", toSend);

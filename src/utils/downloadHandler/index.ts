@@ -16,6 +16,7 @@ export type QueueDisplay = {
 export type Download = QueueDisplay & {
   compression: boolean;
   keepImages: boolean;
+  asOne?: boolean;
 };
 
 export type SideBarDownload =

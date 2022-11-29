@@ -4,11 +4,21 @@
     header="Options de téléchargement"
   >
     <div id="download-options" class="flex flex-col">
+      <div>
+        <label class="block">
+          <input type="radio" v-model="state.asOne" value="" />
+          Créer un fichier par chapitre</label
+        >
+        <label class="block">
+          <input type="radio" v-model="state.asOne" value="asOne" />
+          Créer un seul fichier regroupant tous les chapitres</label
+        >
+      </div>
+
       <label class="block">
         <input type="checkbox" v-model="state.images" value="images" />
         Conserver les images dans un dossier</label
       >
-
       <label v-for="zipOption in zipOptions" :key="zipOption.value">
         <input
           type="radio"
@@ -29,12 +39,14 @@ import { onMounted, reactive, watch } from "vue";
 import { defineProps, defineEmits } from "@vue/runtime-core";
 
 import Container from "../Container.vue";
+import { DownloadOptions } from "@/utils/types";
 
 /* we are not using props in the code, we only use them for the
  * v-model.
  */
 defineProps<{
-  options: { compression: "cbz" | ""; images: boolean };
+  range: boolean;
+  options: DownloadOptions;
 }>();
 
 const zipOptions = [
@@ -49,21 +61,20 @@ const zipOptions = [
 ];
 
 const emit = defineEmits<{
-  (
-    event: "update:options",
-    param: { compression: "cbz" | ""; images: boolean }
-  ): void;
+  (event: "update:options", param: DownloadOptions): void;
 }>();
 
 const state = reactive({
   compression: "cbz" as "cbz" | "",
   images: false,
+  asOne: "" as "asOne" | "",
 });
 
 onMounted(() => {
   emit("update:options", {
     compression: state.compression,
     images: state.images,
+    asOne: state.asOne === "asOne",
   });
 });
 

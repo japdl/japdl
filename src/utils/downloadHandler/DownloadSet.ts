@@ -112,7 +112,8 @@ export class DownloadSetHandler {
             download.start,
             download.end,
             download.compression,
-            !download.keepImages
+            !download.keepImages,
+            download.asOne,
           );
         }
       }

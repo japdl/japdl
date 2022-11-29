@@ -47,7 +47,7 @@
             <p class="error" v-if="isRangeInvalid">
               Veuillez entrer un numéro de {{ manga.type }}
             </p>
-            <ChooseOptions v-model:options="state.options" />
+            <ChooseOptions :range="!!(state.range.end && state.range.start)" v-model:options="state.options" />
             <p class="error" v-if="areOptionsInvalid">
               Une option de type fichier ou l'option de téléchargement des
               images doit être cochée pour procéder au téléchargement
@@ -75,7 +75,6 @@
 <script lang="ts" setup>
 import { computed, reactive } from "vue";
 import ChooseManga from "@/components/ChooseManga.vue";
-import ChooseMangaName from "@/components/ChooseMangaName.vue";
 import DebugVariables from "@/components/DebugVariables.vue";
 import MangaImage from "@/components/MangaImage.vue";
 import WebLink from "@/components/WebLink.vue";
@@ -83,7 +82,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import ChooseDownloadType from "@/components/Download/ChooseDownloadType.vue";
 import ChooseRange from "@/components/Download/ChooseRange.vue";
 import ChooseOptions from "@/components/Download/ChooseOptions.vue";
-import MangaTree from "@/components/MangaTree/MangaTree.vue";
+import {DownloadOptions } from "@/utils/types";
 import { ipcRenderer } from "electron";
 import { inject, defineProps } from "@vue/runtime-core";
 import { LocationQuery } from "vue-router";
@@ -97,7 +96,7 @@ const debug = inject("debug");
 
 const state = reactive({
   range: {} as { start?: number; end?: number },
-  options: {} as { compression: "cbz" | ""; images: boolean },
+  options: {} as DownloadOptions,
   error: "" as string,
   loading: false as boolean,
   japscanInitiated: ipcRenderer.sendSync("readyStatus") as boolean,
@@ -138,6 +137,7 @@ function downloadSelected(): void {
     end: state.range.end,
     compression: !!state.options.compression,
     keepImages: state.options.images,
+    asOne: state.options.asOne
   };
   console.log("Sending", toSend);
   ipcRenderer.send("download", toSend);

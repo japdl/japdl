@@ -17,7 +17,8 @@ const handleChaptersDownload = async (
   start: number,
   end: number,
   compression: boolean,
-  deleteAfterCompression: boolean
+  deleteAfterCompression: boolean,
+  asOne?: boolean
 ): Promise<void> => {
   const { downloader } = downloadSet;
   const download: ChaptersDownload = {
@@ -35,7 +36,7 @@ const handleChaptersDownload = async (
   await downloader.downloadChapters(manga, start, end, {
     compression,
     deleteAfterCompression,
-    compressAsOne: true,
+    compressAsOne: asOne,
     callback: (events) => {
       events.on("start", (manga, links) => {
         download.current = 0;

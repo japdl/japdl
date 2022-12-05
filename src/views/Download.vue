@@ -133,6 +133,8 @@ const areOptionsInvalid = computed(() => {
 function resetInfos(): void {
   manga.type = manga.synopsis = manga.name = manga.japscanName = "";
   manga.volumes = manga.chapters = null;
+  state.range = {};
+  state.options = {} as DownloadOptions;
 }
 
 function downloadSelected(): void {
@@ -164,6 +166,9 @@ function getMangaInfos(mangaName: string) {
       manga.synopsis = infos.synopsis;
     } else {
       state.error = "Ce manga n'a pas été trouvé";
+      setTimeout(() => {
+        state.error = "";
+      }, 3000);
     }
     state.loading = false;
     stopLoading();

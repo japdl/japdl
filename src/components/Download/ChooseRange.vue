@@ -1,6 +1,7 @@
 <template>
   <div class="flex justify-center items-center my-5">
     <input
+      :value="range.start"
       type="number"
       step="any"
       @input="setRange(($event?.target as HTMLTextAreaElement).value, range.end)"
@@ -11,6 +12,7 @@
     />
     <span class="ml-2 mr-2 text-xl">à</span>
     <input
+      :value="range.end"
       class="inputText"
       type="number"
       step="any"

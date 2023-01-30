@@ -1,6 +1,6 @@
 <template>
   <Container class="flex justify-center items-center flex-col">
-    <form @submit.prevent="search" class="p-4 flex">
+    <form @submit.prevent="directSearch" class="p-4 flex">
       <input
         type="search"
         class="rounded-md bg-gray-100 p-2 text-black"
@@ -8,9 +8,8 @@
         v-model="mangaName.value"
         required
       />
-      <BaseButton type="submit">Rechercher</BaseButton>
+      <BaseButton type="submit">Aller directement</BaseButton>
     </form>
-    <BaseButton @click="directSearch">Aller directement</BaseButton>
     <div
       v-if="state.results.length === 0"
       class="mt-2 max-w-lg flex flex-col gap-1"

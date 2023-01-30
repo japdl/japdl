@@ -45,6 +45,9 @@ export async function setupJapscandlListeners(
   return new Promise((resolve, reject) => {
     Downloader.launch(options)
       .then((downloader) => {
+        downloader.browser.on("disconnected", () => {
+          process.exit(1);
+        });
         ipcMain.on("getMangaContent", async (event, data) => {
           const content = await downloader.fetchMangaContent(data);
           event.reply("returnMangaContent", content);

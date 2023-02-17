@@ -75,9 +75,6 @@ async function createWindow() {
             imageFormat,
             chromePath,
             outputDirectory,
-            flags: {
-              fast: true,
-            },
           },
           win
         );

@@ -7,7 +7,7 @@ import puppeteer from "puppeteer-core";
 import downloadHandler from "../downloadHandler";
 
 ipcMain.on("website", (event) => {
-  event.returnValue = "https://japscan.me";
+  event.returnValue = "https://japscan.lol";
 });
 
 export async function setupJapscandlListeners(
@@ -43,7 +43,7 @@ export async function setupJapscandlListeners(
       });
   });
   return new Promise((resolve, reject) => {
-    Downloader.launch(options)
+    Downloader.getInstance(options)
       .then((downloader) => {
         downloader.browser.on("disconnected", () => {
           process.exit(1);

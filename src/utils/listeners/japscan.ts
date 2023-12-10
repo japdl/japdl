@@ -1,5 +1,5 @@
 import { BrowserWindow, app, ipcMain, shell } from "electron";
-import { Downloader } from "../../../../japscandl";
+import { Downloader } from "japscandl";
 import MangaAttributes from "japscandl/js/src/MangaAttributes";
 import { ComponentFlags } from "japscandl/js/src/utils/types";
 import path from "path";

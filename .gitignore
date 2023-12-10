@@ -2,6 +2,7 @@
 node_modules
 /dist
 manga
+cache
 
 # local env files
 .env.local

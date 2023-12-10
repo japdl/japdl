@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, shell } from "electron";
+import { BrowserWindow, app, ipcMain, shell } from "electron";
 import { Downloader } from "japscandl";
 import MangaAttributes from "japscandl/js/src/MangaAttributes";
 import { ComponentFlags } from "japscandl/js/src/utils/types";
@@ -45,6 +45,9 @@ export async function setupJapscandlListeners(
   return new Promise((resolve, reject) => {
     Downloader.getInstance(options)
       .then((downloader) => {
+        downloader.setCacheDirectory(
+          path.join(app.getPath("appData"), "Japdl", "fetch_cache")
+        );
         downloader.browser.on("disconnected", () => {
           process.exit(1);
         });

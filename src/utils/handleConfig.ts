@@ -5,11 +5,12 @@ import japscandl from "japscandl";
 import { setupLogListener } from "./listeners/handler";
 
 export type configData = {
-  [key: string]: string;
+  [key: string]: string | boolean;
   theme: "dark" | "light";
   outputDirectory: string;
   chromePath: string;
   imageFormat: "png" | "jpg";
+  fast: boolean;
 };
 
 const constraints = {
@@ -32,6 +33,7 @@ class Config {
       }
     })(),
     imageFormat: "png",
+    fast: false,
   };
 
   constructor() {
@@ -115,12 +117,7 @@ class Config {
     return this.data;
   }
 
-  setData(data: {
-    theme: "dark" | "light";
-    outputDirectory: string;
-    chromePath: string;
-    imageFormat: "png" | "jpg";
-  }): void {
+  setData(data: configData): void {
     this.data = data;
   }
 

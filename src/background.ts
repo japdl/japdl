@@ -67,7 +67,7 @@ async function createWindow() {
     console.log("Loading config");
     const config = new Config();
     console.log("Config data:", config.getData());
-    const { imageFormat, chromePath, outputDirectory } = config.getData();
+    const { imageFormat, chromePath, outputDirectory, fast } = config.getData();
     await listenersHandler(win, config, async () => {
       try {
         await setupJapscandlListeners(
@@ -75,6 +75,9 @@ async function createWindow() {
             imageFormat,
             chromePath,
             outputDirectory,
+            flags: {
+              fast,
+            },
           },
           win
         );

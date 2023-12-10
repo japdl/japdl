@@ -1,9 +1,9 @@
 <template>
   <div id="options" class="container xl:w-2/3 mx-auto flex flex-col gap-1">
     <DebugVariables v-if="debug" :state="state.options" title="options" />
-    <ChooseImageFormat v-model:format="state.options.imageFormat" />
     <ChooseChromePath v-model:path="state.options.chromePath" />
     <ChooseDownloadDirectory v-model:path="state.options.outputDirectory" />
+    <ChooseFast v-model:fast="state.options.fast" />
     <h2 class="text-xl text-center underline opacity-80 font-bold">
       Tout changement des options est appliqué au prochain démarrage de
       l'application
@@ -24,8 +24,8 @@ import { configData } from "@/utils/handleConfig";
 import { inject } from "@vue/runtime-core";
 import DebugVariables from "@/components/DebugVariables.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import ChooseImageFormat from "@/components/Options/ChooseImageFormat.vue";
 import ChooseChromePath from "@/components/Options/ChooseChromePath.vue";
+import ChooseFast from "@/components/Options/ChooseFast.vue";
 import ChooseDownloadDirectory from "@/components/Options/ChooseDownloadDirectory.vue";
 
 const debug = inject("debug");
@@ -50,6 +50,7 @@ function setData() {
     outputDirectory: state.options.outputDirectory,
     imageFormat: state.options.imageFormat,
     chromePath: state.options.chromePath,
+    fast: state.options.fast,
   } as configData);
   if (state.timeout) clearTimeout(state.timeout);
   if (data === "ok") {

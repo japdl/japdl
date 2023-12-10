@@ -9,13 +9,11 @@ export type configData = {
   theme: "dark" | "light";
   outputDirectory: string;
   chromePath: string;
-  imageFormat: "png" | "jpg";
   fast: boolean;
 };
 
 const constraints = {
   theme: ["dark", "light"],
-  imageFormat: ["png", "jpg"],
 };
 
 class Config {
@@ -32,8 +30,7 @@ class Config {
         return "";
       }
     })(),
-    imageFormat: "png",
-    fast: false,
+    fast: true,
   };
 
   constructor() {
@@ -58,6 +55,7 @@ class Config {
           console.log(`${field} is wrong: ${value}`);
           this.data[field] = this.BASIC_CONFIG_DATA[field];
         });
+        this.save();
       } else {
         console.error("Config file is corrupted. Creating a fresh one.");
         // set data to default
@@ -71,13 +69,13 @@ class Config {
     theme?: string;
     outputDirectory?: string;
     chromePath?: string;
-    imageFormat?: string;
+    fast?: boolean;
   } {
     const wrongFields = {} as {
       theme?: string;
       outputDirectory?: string;
       chromePath?: string;
-      imageFormat?: string;
+      fast?: boolean;
     };
     if (!data.theme || !constraints.theme.includes(data.theme)) {
       wrongFields.theme = data.theme;
@@ -85,20 +83,9 @@ class Config {
     if (!data.outputDirectory) {
       wrongFields.outputDirectory = data.outputDirectory;
     }
-    /*
-    if (
-      !data.chromePath ||
-      !fs.existsSync(data.chromePath) ||
-      !fs.lstatSync(data.chromePath).isFile()
-    ) {
-      wrongFields.chromePath = data.chromePath;
-    }
-    */
-    if (
-      !data.imageFormat ||
-      !constraints.imageFormat.includes(data.imageFormat)
-    ) {
-      wrongFields.imageFormat = data.imageFormat;
+
+    if (typeof data.fast !== "boolean") {
+      wrongFields.fast = data.fast;
     }
     return wrongFields;
   }

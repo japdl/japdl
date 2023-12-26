@@ -24,7 +24,6 @@ export async function setupJapscandlListeners(
     };
     flags?: ComponentFlags;
     outputDirectory?: string;
-    imageFormat?: "png" | "jpg";
   },
   win: BrowserWindow
 ): Promise<Downloader> {

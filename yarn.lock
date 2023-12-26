@@ -6005,10 +6005,10 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-japscandl@^7.6.1:
-  version "7.6.1"
-  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-7.6.1.tgz#4a06bed54b6b92e1eb99c854817758898c3399b1"
-  integrity sha512-5KGsymRa1GR8kxR5qb516BGo4qWJoCWHfeZP4dSI8ziK0zoFij537y7fEBbIzvdITLEuUFJ+MVmgAmat6Rrzqw==
+japscandl@^7.7.0:
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-7.7.0.tgz#6107aa4e34013df8e8a796e58c9515f9ca42f102"
+  integrity sha512-Sfo6ylHcO3cxeY6kD04zTtKm12q2t0EOMJjScwb+gRtN6v8p4zYNMCn4e/1cCxY0X1hDEx2ThOOZwOHgUNrGFw==
   dependencies:
     archiver "^5.3.0"
     axios "^1.3.2"

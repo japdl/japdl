@@ -5948,10 +5948,10 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-japscandl@^7.7.2:
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-7.7.2.tgz#5710d055deb28dbee0c4eb193ccb4909a7908f70"
-  integrity sha512-+im+suYkeKfB0rC+PPAsmaPLkn9YtllIL9SyPRb08Kw3nf3KMd/vCzg4gdn8MxklRe9vJ0VFvISu8TpKcy2yWQ==
+japscandl@^7.8.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/japscandl/-/japscandl-7.8.0.tgz#d0d8df3af3f7b556c2d94549165b2bf1e171cbac"
+  integrity sha512-7crNMzjDsChfqQzRoPg33j2hzL1TwdqGG0RiZGkaj0X++1oQ7sXIQugeBjpFX5JGzHVC0gmQBh+avig6mdvPvw==
   dependencies:
     archiver "^6.0.1"
     axios "^1.6.3"

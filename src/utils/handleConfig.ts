@@ -10,6 +10,7 @@ export type configData = {
   outputDirectory: string;
   chromePath: string;
   fast: boolean;
+  selector: string;
 };
 
 const constraints = {
@@ -31,6 +32,7 @@ class Config {
       }
     })(),
     fast: true,
+    selector: "",
   };
 
   constructor() {

@@ -4,6 +4,16 @@
     <ChooseChromePath v-model:path="state.options.chromePath" />
     <ChooseDownloadDirectory v-model:path="state.options.outputDirectory" />
     <ChooseFast v-model:fast="state.options.fast" />
+    <Container header="Selecteur CSS" id="cssSelector">
+      <input
+        type="text"
+        class="rounded-md bg-gray-100 p-2 text-black block w-full"
+        v-model="state.options.selector"
+      />
+      <p class="mt-2">
+        Si ce champ est vide, le sélecteur par défaut sera utilisé.
+      </p>
+    </Container>
     <h2 class="text-xl text-center underline opacity-80 font-bold">
       Tout changement des options est appliqué au prochain démarrage de
       l'application
@@ -27,6 +37,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import ChooseChromePath from "@/components/Options/ChooseChromePath.vue";
 import ChooseFast from "@/components/Options/ChooseFast.vue";
 import ChooseDownloadDirectory from "@/components/Options/ChooseDownloadDirectory.vue";
+import Container from "@/components/Container.vue";
 
 const debug = inject("debug");
 
@@ -51,6 +62,7 @@ function setData() {
     imageFormat: state.options.imageFormat,
     chromePath: state.options.chromePath,
     fast: state.options.fast,
+    selector: state.options.selector.trim(),
   } as configData);
   if (state.timeout) clearTimeout(state.timeout);
   if (data === "ok") {

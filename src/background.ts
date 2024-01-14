@@ -67,13 +67,14 @@ async function createWindow() {
     console.log("Loading config");
     const config = new Config();
     console.log("Config data:", config.getData());
-    const { chromePath, outputDirectory, fast } = config.getData();
+    const { chromePath, outputDirectory, fast, selector } = config.getData();
     await listenersHandler(win, config, async () => {
       try {
         await setupJapscandlListeners(
           {
             chromePath,
             outputDirectory,
+            selector: selector || undefined,
             flags: {
               fast,
             },

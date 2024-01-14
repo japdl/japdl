@@ -5,6 +5,7 @@ import { ComponentFlags } from "japscandl/js/src/utils/types";
 import path from "path";
 import puppeteer from "puppeteer-core";
 import downloadHandler from "../downloadHandler";
+import { setupLogListener } from "./handler";
 
 ipcMain.on("website", (event) => {
   event.returnValue = "https://japscan.lol";
@@ -24,10 +25,11 @@ export async function setupJapscandlListeners(
     };
     flags?: ComponentFlags;
     outputDirectory?: string;
+    selector?: string;
   },
   win: BrowserWindow
 ): Promise<Downloader> {
-  ipcMain.on("checkChromePath", (event, arg) => {
+  setupLogListener("checkChromePath", (event, arg) => {
     console.log("Checking chrome path with path: " + arg);
     puppeteer
       .launch({
@@ -50,11 +52,11 @@ export async function setupJapscandlListeners(
         downloader.browser.on("disconnected", () => {
           process.exit(1);
         });
-        ipcMain.on("getMangaContent", async (event, data) => {
+        setupLogListener("getMangaContent", async (event, data) => {
           const content = await downloader.fetchMangaContent(data);
           event.reply("returnMangaContent", content);
         });
-        ipcMain.on("getMangaInfos", async (event, data) => {
+        setupLogListener("getMangaInfos", async (event, data) => {
           try {
             const stats = await downloader.fetchStats(data);
             event.reply("replyMangaInfos", stats);
@@ -63,14 +65,14 @@ export async function setupJapscandlListeners(
           }
         });
 
-        ipcMain.on("download", downloadHandler(downloader, win));
-        ipcMain.on("openMangaFolder", (_, data) => {
+        setupLogListener("download", downloadHandler(downloader, win));
+        setupLogListener("openMangaFolder", (_, data) => {
           shell.openPath(
             path.resolve(path.join(downloader.outputDirectory, data))
           );
         });
 
-        ipcMain.on("search", async (event, data) => {
+        setupLogListener("search", async (event, data) => {
           const results = await downloader.searchManga(data.value);
           if (data.sync) {
             console.log("Sync");
@@ -83,7 +85,7 @@ export async function setupJapscandlListeners(
 
         ipcMain.removeAllListeners("website");
 
-        ipcMain.on("website", (event) => {
+        setupLogListener("website", (event) => {
           event.returnValue = downloader.website;
         });
 

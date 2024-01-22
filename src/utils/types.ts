@@ -3,3 +3,5 @@ export type DownloadOptions = {
   images: boolean;
   asOne?: boolean;
 };
+
+export type ConfigDownloadOptions = Omit<DownloadOptions, "asOne">;

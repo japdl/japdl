@@ -1,16 +1,17 @@
 import fs from "fs";
 import path from "path";
 import { app, BrowserWindow } from "electron";
-import japscandl from "japscandl";
+import japscandl from "../../japscandl";
 import { setupLogListener } from "./listeners/handler";
+import { ConfigDownloadOptions } from "./types";
 
 export type configData = {
-  [key: string]: string | boolean;
   theme: "dark" | "light";
   outputDirectory: string;
   chromePath: string;
   fast: boolean;
   selector: string;
+  downloadOptions: ConfigDownloadOptions | null;
 };
 
 const constraints = {
@@ -33,6 +34,7 @@ class Config {
     })(),
     fast: true,
     selector: "",
+    downloadOptions: null,
   };
 
   constructor() {
@@ -55,6 +57,7 @@ class Config {
         const wrongFields = this.detectDataProblems(this.data);
         Object.entries(wrongFields).forEach(([field, value]) => {
           console.log(`${field} is wrong: ${value}`);
+          //@ts-expect-error field is OK
           this.data[field] = this.BASIC_CONFIG_DATA[field];
         });
         this.save();
@@ -72,12 +75,14 @@ class Config {
     outputDirectory?: string;
     chromePath?: string;
     fast?: boolean;
+    downloadOptions?: null;
   } {
     const wrongFields = {} as {
       theme?: string;
       outputDirectory?: string;
       chromePath?: string;
       fast?: boolean;
+      downloadOptions?: null;
     };
     if (!data.theme || !constraints.theme.includes(data.theme)) {
       wrongFields.theme = data.theme;
@@ -89,6 +94,38 @@ class Config {
     if (typeof data.fast !== "boolean") {
       wrongFields.fast = data.fast;
     }
+
+    const checkDownloadOptions = (
+      param: unknown
+    ): param is ConfigDownloadOptions => {
+      if (typeof param !== "object" || param === null) {
+        return false;
+      }
+      const { compression, images } = param as ConfigDownloadOptions;
+      if (
+        typeof compression !== "string" ||
+        !["cbz", ""].includes(compression)
+      ) {
+        return false;
+      }
+      if (typeof images !== "boolean") {
+        return false;
+      }
+
+      if (compression === "" && !images) {
+        return false;
+      }
+
+      return true;
+    };
+
+    if (
+      data.downloadOptions !== null &&
+      !checkDownloadOptions(data.downloadOptions)
+    ) {
+      wrongFields.downloadOptions = data.downloadOptions;
+    }
+
     return wrongFields;
   }
 
@@ -110,7 +147,8 @@ class Config {
     this.data = data;
   }
 
-  setField(fieldName: string, value: string): void {
+  setField(fieldName: string, value: unknown): void {
+    // @ts-expect-error fieldName is OK
     this.data[fieldName] = value;
     this.save();
   }

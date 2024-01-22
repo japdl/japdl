@@ -4,6 +4,34 @@
     <ChooseChromePath v-model:path="state.options.chromePath" />
     <ChooseDownloadDirectory v-model:path="state.options.outputDirectory" />
     <ChooseFast v-model:fast="state.options.fast" />
+    <Container header="Mode de téléchargement par défaut" id="downloadPreset">
+      <div v-if="state.options.downloadOptions">
+        <ChooseOptions
+          :range="false"
+          :options="state.options.downloadOptions"
+        />
+        <BaseButton
+          class="text-2xl"
+          @click="state.options.downloadOptions = null"
+        >
+          Supprimer le mode de téléchargement par défaut
+        </BaseButton>
+      </div>
+      <div v-else>
+        Voulez vous activer les options de téléchargement par défaut ?
+        <BaseButton
+          class="text-2xl"
+          @click="
+            state.options.downloadOptions = {
+              compression: 'cbz',
+              images: false,
+            }
+          "
+        >
+          Activer
+        </BaseButton>
+      </div>
+    </Container>
     <Container header="Selecteur CSS" id="cssSelector">
       <input
         type="text"
@@ -38,6 +66,7 @@ import ChooseChromePath from "@/components/Options/ChooseChromePath.vue";
 import ChooseFast from "@/components/Options/ChooseFast.vue";
 import ChooseDownloadDirectory from "@/components/Options/ChooseDownloadDirectory.vue";
 import Container from "@/components/Container.vue";
+import ChooseOptions from "@/components/Download/ChooseOptions.vue";
 
 const debug = inject("debug");
 
@@ -59,10 +88,10 @@ function setData() {
   const data = ipcRenderer.sendSync("setDataSync", {
     theme: state.options.theme,
     outputDirectory: state.options.outputDirectory,
-    imageFormat: state.options.imageFormat,
     chromePath: state.options.chromePath,
     fast: state.options.fast,
     selector: state.options.selector.trim(),
+    downloadOptions: state.options.downloadOptions,
   } as configData);
   if (state.timeout) clearTimeout(state.timeout);
   if (data === "ok") {

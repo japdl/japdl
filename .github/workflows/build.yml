@@ -24,6 +24,7 @@ jobs:
 
       - name: Add SSH key to agent
         run: |
+          eval $(ssh-agent -s)
           echo "${{ secrets.DEPLOY_KEY }}" | ssh-add -
           ssh-keyscan github.com >> ~/.ssh/known_hosts
         env:

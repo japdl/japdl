@@ -22,6 +22,20 @@ jobs:
         with:
           node-version: 16
 
+      - name: Add SSH key to agent
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" | ssh-add -
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Clone Repository with Deploy Key
+        run: git clone git@github.com:japdl/japscandl.git
+
+      - name: Run npm run tsc in japscandl repo
+        working-directory: ./japscandl
+        run: npm run tsc
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:

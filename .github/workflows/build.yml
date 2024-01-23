@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: japdl/japscandl
-          token: ${{ secrets.github_token }}
+          token: ${{ secrets.DEPLOY_KEY }}
           path: japscandl
 
       - name: Install Node.js, NPM and Yarn

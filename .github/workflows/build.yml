@@ -29,7 +29,11 @@ jobs:
         with:
           node-version: 16
 
-      - name: Run npm run tsc in japscandl repo
+      - name: Install dependencies in japscandl
+        working-directory: ./japscandl
+        run: npm install
+
+      - name: Build japscandl
         working-directory: ./japscandl
         run: npm run tsc
 

@@ -1,6 +1,6 @@
 import { BrowserWindow } from "electron";
 import { Download, QueueDisplay, SideBarDownload } from ".";
-import { Downloader } from "japscandl";
+import { Downloader } from "../../../japscandl";
 import ObjectSet from "../ObjectSet";
 import handleChapterDownload from "./chapter";
 import handleChaptersDownload from "./chapters";

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { app, BrowserWindow } from "electron";
-import japscandl from "japscandl";
+import japscandl from "../../japscandl";
 import { setupLogListener } from "./listeners/handler";
 
 export type configData = {

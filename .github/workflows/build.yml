@@ -17,10 +17,25 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
+      - name: Checkout second repository
+        uses: actions/checkout@v2
+        with:
+          repository: japdl/japscandl
+          token: ${{ secrets.DEPLOY_KEY }}
+          path: japscandl
+
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
           node-version: 16
+
+      - name: Install dependencies in japscandl
+        working-directory: ./japscandl
+        run: npm install
+
+      - name: Build japscandl
+        working-directory: ./japscandl
+        run: npm run tsc
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1

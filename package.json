@@ -29,6 +29,7 @@
     "typeface-roboto": "^1.1.13",
     "unlazy-loader": "^0.1.3",
     "vue": "^3.2.20",
+    "puppeteer-core": "^9.0.0",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {

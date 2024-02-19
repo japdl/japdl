@@ -35,7 +35,7 @@ jobs:
 
       - name: Build japscandl
         working-directory: ./japscandl
-        run: npm run tsc
+        run: npm run --silent build
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1

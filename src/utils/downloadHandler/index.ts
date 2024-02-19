@@ -1,5 +1,5 @@
 import { BrowserWindow, Event } from "electron";
-import { Downloader } from "../../../japscandl";
+import { Downloader } from "../../../japscandl/js";
 import { ChapterDownload } from "./chapter";
 import { ChaptersDownload } from "./chapters";
 import { DownloadSetHandler } from "./DownloadSet";

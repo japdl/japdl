@@ -1,3 +1,6 @@
+# ⚠️ Project HS ⚠️
+Le projet n'est plus maintenu et ne fonctionne plus.
+
 # Japdl
 Japdl est un programme pour télécharger les mangas de japscan. Ce programme permet de créer des fichiers [`.cbz`](https://fr.wikipedia.org/wiki/CBZ_(format_de_fichier)) pouvant contenir les images de:
 - Tout un volume
@@ -7,12 +10,6 @@ Japdl est un programme pour télécharger les mangas de japscan. Ce programme pe
 Il est aussi possible de télécharger les images d'un chapitre ou d'un volume en format `.jpg` ou `.png`.
 
 Quelle est la différence avec [l'autre programme `Japdl`](https://github.com/Seysa/japdl-cli) ? Celui-ci est un programme avec une interface graphique au lieu d'une interface en ligne de commande. Il est donc recommandé d'utiliser cette version.
-
----
-# Discord
-
-Je suis disponible sur le serveur discord pour vos questions à l'adresse https://discord.gg/uUB5WbBceY.
-
 ---
 # Téléchargement
 [Cliquez ici pour télécharger la dernière version](https://github.com/Seysa/japdl/releases "Dernière version")
